@@ -174,6 +174,7 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
         intent.putExtra(NuevaTarjetaActivity.EXTRA_TARJETA_ALIAS, tarjeta.getAlias());
         intent.putExtra(NuevaTarjetaActivity.EXTRA_TARJETA_LIMITE, tarjeta.getLimiteCredito());
         intent.putExtra(NuevaTarjetaActivity.EXTRA_TARJETA_DIA_CORTE, tarjeta.getDiaCorte());
+        intent.putExtra(NuevaTarjetaActivity.EXTRA_TARJETA_DIA_PAGO, tarjeta.getDiaPago());
         intent.putExtra(NuevaTarjetaActivity.EXTRA_TARJETA_VENCIMIENTO, tarjeta.getFechaVencimiento());
         intent.putExtra(NuevaTarjetaActivity.EXTRA_TARJETA_NOTAS, tarjeta.getNotas());
         intent.putExtra(NuevaTarjetaActivity.EXTRA_TARJETA_DEUDA, tarjeta.getDeudaActual());

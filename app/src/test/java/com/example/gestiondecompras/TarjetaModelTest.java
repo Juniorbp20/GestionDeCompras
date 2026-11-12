@@ -52,6 +52,7 @@ public class TarjetaModelTest {
         t.setLimite(50000.0);
         t.setDeudaActual(12000.0);
         t.setDiaCorte(15);
+        t.setDiaPago(5);
         t.setFechaVencimiento("12-27");
         t.setNotas("Notas");
 
@@ -61,7 +62,13 @@ public class TarjetaModelTest {
         assertEquals(50000.0, t.getLimiteCredito(), 0.001);
         assertEquals(12000.0, t.getDeudaActual(), 0.001);
         assertEquals(15, t.getDiaCorte());
+        assertEquals(5, t.getDiaPago());
         assertEquals("12-27", t.getFechaVencimiento());
         assertEquals("Notas", t.getNotas());
+    }
+
+    @Test
+    public void diaPago_porDefectoEsCero() {
+        assertEquals(0, new Tarjeta().getDiaPago());
     }
 }

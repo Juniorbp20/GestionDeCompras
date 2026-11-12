@@ -1,27 +1,36 @@
 package com.example.gestiondecompras.activities;
 
 import android.annotation.SuppressLint;
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.gestiondecompras.GestionComprasApp;
 import com.example.gestiondecompras.R;
 import com.example.gestiondecompras.databinding.ActivitySettingsBinding;
 import com.example.gestiondecompras.utils.GoogleDriveService;
 import com.example.gestiondecompras.utils.UpdateChecker;
 import com.example.gestiondecompras.database.AppDatabase;
+import com.example.gestiondecompras.workers.NotificationWorker;
+import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -46,6 +55,18 @@ public class SettingsActivity extends AppCompatActivity {
     private GoogleDriveService googleDriveService;
     private Runnable pendingAction;
     private static final String DB_NAME = "GestionCompras.db";
+
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
+                updateNotificationPermissionStatus();
+                if (!granted) {
+                    Toast.makeText(this, R.string.notif_permiso_requerido, Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                            && !shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                        abrirAjustesNotificaciones();
+                    }
+                }
+            });
 
     private final ActivityResultLauncher<android.content.Intent> googleSignInLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -78,7 +99,14 @@ public class SettingsActivity extends AppCompatActivity {
         setupToolbar();
         loadSettings();
         setupListeners();
+        updateNotificationPermissionStatus();
         updateGoogleLoginStatus();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateNotificationPermissionStatus();
     }
 
     private void setupGoogleSignIn() {
@@ -105,7 +133,22 @@ public class SettingsActivity extends AppCompatActivity {
         else binding.rbSystem.setChecked(true);
 
         int reminderDays = sharedPreferences.getInt("reminder_time", 3);
-        binding.etReminderTime.setText(String.valueOf(reminderDays));
+        binding.etDiasEntrega.setText(String.valueOf(sharedPreferences.getInt("dias_entrega", 1)));
+        binding.etDiasCorte.setText(String.valueOf(sharedPreferences.getInt("dias_corte", reminderDays)));
+        binding.etDiasPago.setText(String.valueOf(sharedPreferences.getInt("dias_pago", 3)));
+
+        binding.swNotificaciones.setChecked(sharedPreferences.getBoolean("notif_enabled", true));
+        binding.llOpcionesNotificacion.setVisibility(
+                binding.swNotificaciones.isChecked() ? View.VISIBLE : View.GONE);
+
+        int frecuencia = sharedPreferences.getInt("notif_frequency_hours", 6);
+        if (frecuencia == 12) {
+            binding.chipFrecuencia12.setChecked(true);
+        } else if (frecuencia == 24) {
+            binding.chipFrecuencia24.setChecked(true);
+        } else {
+            binding.chipFrecuencia6.setChecked(true);
+        }
 
         selectedHour = sharedPreferences.getInt("reminder_hour", 9);
         selectedMinute = sharedPreferences.getInt("reminder_minute", 0);
@@ -127,12 +170,73 @@ public class SettingsActivity extends AppCompatActivity {
         binding.tvReminderClockTime.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
     }
 
+    private void updateNotificationPermissionStatus() {
+        boolean activo = NotificationWorker.puedeNotificar(this);
+        binding.tvEstadoPermiso.setText(activo ? R.string.notif_estado_activo : R.string.notif_estado_inactivo);
+        binding.tvEstadoPermiso.setTextColor(ContextCompat.getColor(this,
+                activo ? R.color.success_color : R.color.error_color));
+    }
+
+    private void solicitarPermisoNotificaciones() {
+        if (NotificationWorker.puedeNotificar(this)) {
+            abrirAjustesNotificaciones();
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        } else {
+            abrirAjustesNotificaciones();
+        }
+    }
+
+    private void abrirAjustesNotificaciones() {
+        try {
+            Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+            startActivity(intent);
+        } catch (Exception e) {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        }
+    }
+
+    private void probarNotificacion() {
+        if (!NotificationWorker.puedeNotificar(this)) {
+            Toast.makeText(this, R.string.notif_permiso_requerido, Toast.LENGTH_SHORT).show();
+            solicitarPermisoNotificaciones();
+            return;
+        }
+        if (NotificationWorker.enviarNotificacionPrueba(this)) {
+            Toast.makeText(this, R.string.notif_prueba_enviada, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private int leerDias(TextInputEditText campo, int predeterminado) {
+        String texto = campo.getText() != null ? campo.getText().toString().trim() : "";
+        if (texto.isEmpty()) {
+            return predeterminado;
+        }
+        try {
+            int valor = Integer.parseInt(texto);
+            return valor >= 0 && valor <= 30 ? valor : -1;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     private void setupListeners() {
         binding.tvReminderClockTime.setOnClickListener(v -> new android.app.TimePickerDialog(this, (view, hourOfDay, minute) -> {
             selectedHour = hourOfDay;
             selectedMinute = minute;
             updateTimeText();
         }, selectedHour, selectedMinute, true).show());
+
+        binding.swNotificaciones.setOnCheckedChangeListener((buttonView, isChecked) ->
+                binding.llOpcionesNotificacion.setVisibility(isChecked ? View.VISIBLE : View.GONE));
+
+        binding.tvEstadoPermiso.setOnClickListener(v -> solicitarPermisoNotificaciones());
+        binding.btnProbarNotificacion.setOnClickListener(v -> probarNotificacion());
 
         binding.btnReset.setOnClickListener(v -> showResetConfirmation());
         binding.btnContact.setOnClickListener(v -> contactSupport());
@@ -271,19 +375,37 @@ public class SettingsActivity extends AppCompatActivity {
         
         AppCompatDelegate.setDefaultNightMode(theme);
 
+        int diasEntrega = leerDias(binding.etDiasEntrega, 1);
+        int diasCorte = leerDias(binding.etDiasCorte, 3);
+        int diasPago = leerDias(binding.etDiasPago, 3);
+        if (diasEntrega < 0 || diasCorte < 0 || diasPago < 0) {
+            Toast.makeText(this, R.string.notif_dias_invalidos, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int frecuencia = 6;
+        if (binding.chipFrecuencia12.isChecked()) {
+            frecuencia = 12;
+        } else if (binding.chipFrecuencia24.isChecked()) {
+            frecuencia = 24;
+        }
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("theme", theme);
         editor.putBoolean("biometric_enabled", binding.swBiometric.isChecked());
-        try {
-            int reminderTime = Integer.parseInt(String.valueOf(binding.etReminderTime.getText()));
-            editor.putInt("reminder_time", reminderTime);
-        } catch (NumberFormatException ignored) {
-        }
+        editor.putBoolean("notif_enabled", binding.swNotificaciones.isChecked());
+        editor.putInt("dias_entrega", diasEntrega);
+        editor.putInt("dias_corte", diasCorte);
+        editor.putInt("dias_pago", diasPago);
+        editor.putInt("notif_frequency_hours", frecuencia);
+        editor.putInt("reminder_time", diasCorte);
         editor.putInt("reminder_hour", selectedHour);
         editor.putInt("reminder_minute", selectedMinute);
         editor.apply();
 
-        Toast.makeText(this, "Configuración guardada", Toast.LENGTH_SHORT).show();
+        GestionComprasApp.reprogramarRecordatorios(this);
+
+        Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_SHORT).show();
         finish();
     }
 

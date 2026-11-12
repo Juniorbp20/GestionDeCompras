@@ -64,6 +64,22 @@ public class TarjetaDaoTest {
         assertEquals("Popular", tarjetas.get(0).getBanco());
         assertEquals(49000.0, tarjetas.get(0).getDisponible(), 0.001);
         assertEquals(15, tarjetas.get(0).getDiaCorte());
+        assertEquals(0, tarjetas.get(0).getDiaPago());
+    }
+
+    @Test
+    public void diaPago_seGuardaYActualiza() {
+        Tarjeta t = nuevaTarjeta("Popular", "Visa", 50000.0, 1000.0);
+        t.setDiaPago(5);
+        long id = dao.insert(t);
+
+        Tarjeta guardada = dao.getAllTarjetas().get(0);
+        assertEquals(5, guardada.getDiaPago());
+
+        t.setId(id);
+        t.setDiaPago(20);
+        assertEquals(1, dao.update(t));
+        assertEquals(20, dao.getAllTarjetas().get(0).getDiaPago());
     }
 
     @Test
