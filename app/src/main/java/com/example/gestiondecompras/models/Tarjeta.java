@@ -15,6 +15,8 @@ public class Tarjeta {
     public double deudaActual;
     @androidx.room.ColumnInfo(name = "dia_corte")
     public int diaCorte;
+    @androidx.room.ColumnInfo(name = "dia_pago", defaultValue = "0")
+    public int diaPago; // 1-31; 0 = sin configurar
     @androidx.room.ColumnInfo(name = "fecha_vencimiento")
     public String fechaVencimiento; // MM-YY
     public String notas;
@@ -77,6 +79,14 @@ public class Tarjeta {
 
     public void setDiaCorte(int diaCorte) {
         this.diaCorte = diaCorte;
+    }
+
+    public int getDiaPago() {
+        return diaPago;
+    }
+
+    public void setDiaPago(int diaPago) {
+        this.diaPago = diaPago;
     }
 
     public String getFechaVencimiento() {

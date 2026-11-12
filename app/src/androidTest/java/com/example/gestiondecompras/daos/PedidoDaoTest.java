@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Calendar;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
@@ -235,5 +236,101 @@ public class PedidoDaoTest {
 
         assertEquals(1, dao.countPedidosPorTarjeta(tarjetaId));
         assertEquals(0, dao.countPedidosPorTarjeta(999));
+    }
+
+    @Test
+    public void resumenDiario_calculaSoloPedidosNoCanceladosDelDia() {
+        Calendar ahora = Calendar.getInstance();
+        long inicio = inicioDelDia(ahora);
+        long fin = finDelDia(ahora);
+        long ayer = inicio - 24 * 60 * 60 * 1000L;
+
+        Pedido hoy = nuevoPedido(Pedido.ESTADO_PENDIENTE, "Ana Lopez", 100.0, ahora.getTimeInMillis());
+        hoy.fechaRegistroEpoch = ahora.getTimeInMillis();
+        dao.insert(hoy);
+
+        Pedido ayerPedido = nuevoPedido(Pedido.ESTADO_PENDIENTE, "Luis Perez", 200.0, ayer);
+        ayerPedido.fechaRegistroEpoch = ayer;
+        dao.insert(ayerPedido);
+
+        Pedido cancelado = nuevoPedido(Pedido.ESTADO_CANCELADO, "Carlos Diaz", 300.0, ahora.getTimeInMillis());
+        cancelado.fechaRegistroEpoch = ahora.getTimeInMillis();
+        dao.insert(cancelado);
+
+        assertEquals(1, dao.countPedidosEnRango(inicio, fin));
+        assertEquals(100.0, dao.totalVentasEnRango(inicio, fin), 0.001);
+        assertEquals(40.0, dao.totalGananciaEnRango(inicio, fin), 0.001);
+        assertEquals(1, dao.countEntregasEnRango(inicio, fin));
+    }
+
+    @Test
+    public void entregasPendientesEnRango_excluyeEntregadasYCanceladas() {
+        Calendar ahora = Calendar.getInstance();
+        long inicio = inicioDelDia(ahora);
+        Calendar mananaCal = (Calendar) ahora.clone();
+        mananaCal.add(Calendar.DAY_OF_YEAR, 1);
+        long finManana = finDelDia(mananaCal);
+
+        dao.insert(nuevoPedido(Pedido.ESTADO_PENDIENTE, "Hoy", 100.0, ahora.getTimeInMillis()));
+        dao.insert(nuevoPedido(Pedido.ESTADO_PENDIENTE, "Manana", 200.0, mananaCal.getTimeInMillis()));
+        dao.insert(nuevoPedido(Pedido.ESTADO_ENTREGADO, "Entregado", 300.0, ahora.getTimeInMillis()));
+        dao.insert(nuevoPedido(Pedido.ESTADO_CANCELADO, "Cancelado", 400.0, ahora.getTimeInMillis()));
+
+        List<Pedido> entregas = dao.getEntregasPendientesEnRango(inicio, finManana);
+        assertEquals(2, entregas.size());
+        assertEquals("Hoy", entregas.get(0).getClienteNombre());
+        assertEquals("Manana", entregas.get(1).getClienteNombre());
+    }
+
+    @Test
+    public void porCobrarGlobal_sumaSaldosPendientes() {
+        long pendienteId = dao.insert(nuevoPedido(Pedido.ESTADO_PENDIENTE, "Pendiente", 100.0, null));
+        long entregadoId = dao.insert(nuevoPedido(Pedido.ESTADO_ENTREGADO, "Entregado", 200.0, null));
+        dao.insert(nuevoPedido(Pedido.ESTADO_PAGADO, "Pagado", 300.0, null));
+        dao.insert(nuevoPedido(Pedido.ESTADO_CANCELADO, "Cancelado", 400.0, null));
+
+        Abono abono = new Abono();
+        abono.pedidoId = entregadoId;
+        abono.monto = 50.0;
+        abono.fechaEpoch = System.currentTimeMillis();
+        abono.metodo = Abono.METODO_EFECTIVO;
+        db.abonoDao().insert(abono);
+
+        assertEquals(2, dao.countPorCobrar());
+        assertEquals(250.0, dao.totalPorCobrarGlobal(), 0.001);
+        assertNotNull(dao.getPedidoById(pendienteId));
+    }
+
+    @Test
+    public void countAtrasados_cuentaSoloPendientesConFechaVencida() {
+        Calendar ahora = Calendar.getInstance();
+        long inicio = inicioDelDia(ahora);
+        long ayer = inicio - 24 * 60 * 60 * 1000L;
+        long manana = inicio + 24 * 60 * 60 * 1000L;
+
+        dao.insert(nuevoPedido(Pedido.ESTADO_PENDIENTE, "Atrasado", 100.0, ayer));
+        dao.insert(nuevoPedido(Pedido.ESTADO_PENDIENTE, "Futuro", 200.0, manana));
+        dao.insert(nuevoPedido(Pedido.ESTADO_PAGADO, "Pagado", 300.0, ayer));
+        dao.insert(nuevoPedido(Pedido.ESTADO_CANCELADO, "Cancelado", 400.0, ayer));
+
+        assertEquals(1, dao.countAtrasados(inicio));
+    }
+
+    private long inicioDelDia(Calendar fecha) {
+        Calendar inicio = (Calendar) fecha.clone();
+        inicio.set(Calendar.HOUR_OF_DAY, 0);
+        inicio.set(Calendar.MINUTE, 0);
+        inicio.set(Calendar.SECOND, 0);
+        inicio.set(Calendar.MILLISECOND, 0);
+        return inicio.getTimeInMillis();
+    }
+
+    private long finDelDia(Calendar fecha) {
+        Calendar fin = (Calendar) fecha.clone();
+        fin.set(Calendar.HOUR_OF_DAY, 23);
+        fin.set(Calendar.MINUTE, 59);
+        fin.set(Calendar.SECOND, 59);
+        fin.set(Calendar.MILLISECOND, 999);
+        return fin.getTimeInMillis();
     }
 }

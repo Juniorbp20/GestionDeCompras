@@ -52,7 +52,7 @@ public class TarjetasAdapter extends RecyclerView.Adapter<TarjetasAdapter.Tarjet
     }
 
     static class TarjetaViewHolder extends RecyclerView.ViewHolder {
-        TextView tvBanco, tvAlias, tvLimite, tvDeuda, tvDisponible, tvCorte, tvVence;
+        TextView tvBanco, tvAlias, tvLimite, tvDeuda, tvDisponible, tvCorte, tvPago, tvVence;
         ProgressBar pbUso;
         public TarjetaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,6 +62,7 @@ public class TarjetasAdapter extends RecyclerView.Adapter<TarjetasAdapter.Tarjet
             tvDeuda = itemView.findViewById(R.id.tvDeuda);
             tvDisponible = itemView.findViewById(R.id.tvDisponible);
             tvCorte = itemView.findViewById(R.id.tvCorte);
+            tvPago = itemView.findViewById(R.id.tvPago);
             tvVence = itemView.findViewById(R.id.tvVence);
             pbUso = itemView.findViewById(R.id.pbUso);
         }
@@ -74,6 +75,9 @@ public class TarjetasAdapter extends RecyclerView.Adapter<TarjetasAdapter.Tarjet
             double disponible = Math.max(0, t.getLimiteCredito() - t.getDeudaActual());
             tvDisponible.setText(context.getString(R.string.tarjeta_disponible_format, disponible));
             tvCorte.setText(context.getString(R.string.tarjeta_corte_format, t.getDiaCorte()));
+            tvPago.setText(t.getDiaPago() > 0
+                    ? context.getString(R.string.tarjeta_pago_format, t.getDiaPago())
+                    : context.getString(R.string.tarjeta_pago_sin_configurar));
             tvVence.setText(context.getString(R.string.tarjeta_vence_format, t.getDiaVencimiento()));
             int progress = 0;
             if (t.getLimiteCredito() > 0) {

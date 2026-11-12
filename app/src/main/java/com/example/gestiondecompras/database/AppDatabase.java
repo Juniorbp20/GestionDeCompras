@@ -30,7 +30,7 @@ import com.example.gestiondecompras.models.Tienda;
                 Gasto.class,
                 Abono.class
         },
-        version = 5,
+        version = 6,
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -56,6 +56,13 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     };
 
+    static final Migration MIGRATION_5_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
+            db.execSQL("ALTER TABLE `tarjetas` ADD COLUMN `dia_pago` INTEGER NOT NULL DEFAULT 0");
+        }
+    };
+
     private static final Callback PREPOPULATE_CALLBACK = new Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -75,7 +82,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "GestionCompras.db")
-                            .addMigrations(MIGRATION_4_5)
+                            .addMigrations(MIGRATION_4_5, MIGRATION_5_6)
                             .fallbackToDestructiveMigration()
                             .setJournalMode(JournalMode.TRUNCATE) // Asegura que todo esté en el archivo .db
                             .addCallback(PREPOPULATE_CALLBACK)

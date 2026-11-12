@@ -22,6 +22,7 @@ public class NuevaTarjetaActivity extends AppCompatActivity {
     public static final String EXTRA_TARJETA_ALIAS = "extra_tarjeta_alias";
     public static final String EXTRA_TARJETA_LIMITE = "extra_tarjeta_limite";
     public static final String EXTRA_TARJETA_DIA_CORTE = "extra_tarjeta_dia_corte";
+    public static final String EXTRA_TARJETA_DIA_PAGO = "extra_tarjeta_dia_pago";
     public static final String EXTRA_TARJETA_VENCIMIENTO = "extra_tarjeta_vencimiento";
     public static final String EXTRA_TARJETA_NOTAS = "extra_tarjeta_notas";
     public static final String EXTRA_TARJETA_DEUDA = "extra_tarjeta_deuda";
@@ -73,6 +74,7 @@ public class NuevaTarjetaActivity extends AppCompatActivity {
         binding.etAlias.setText(intent.getStringExtra(EXTRA_TARJETA_ALIAS));
         binding.etLimite.setText(valorNumerico(intent, EXTRA_TARJETA_LIMITE));
         binding.etDiaCorte.setText(valorEntero(intent, EXTRA_TARJETA_DIA_CORTE));
+        binding.etDiaPago.setText(valorEntero(intent, EXTRA_TARJETA_DIA_PAGO));
         binding.etFechaVencimiento.setText(intent.getStringExtra(EXTRA_TARJETA_VENCIMIENTO));
         binding.etNotas.setText(intent.getStringExtra(EXTRA_TARJETA_NOTAS));
         deudaOriginal = intent.getDoubleExtra(EXTRA_TARJETA_DEUDA, 0d);
@@ -150,6 +152,7 @@ public class NuevaTarjetaActivity extends AppCompatActivity {
         String alias = texto(binding.etAlias);
         String limiteTexto = texto(binding.etLimite);
         String diaCorteTexto = texto(binding.etDiaCorte);
+        String diaPagoTexto = texto(binding.etDiaPago);
         String fechaVencimiento = texto(binding.etFechaVencimiento);
         String notas = texto(binding.etNotas);
 
@@ -165,13 +168,28 @@ public class NuevaTarjetaActivity extends AppCompatActivity {
 
         double limite;
         int diaCorte;
+        int diaPago;
         try {
             limite = Double.parseDouble(limiteTexto);
             diaCorte = Integer.parseInt(diaCorteTexto);
+            diaPago = diaPagoTexto.isEmpty() ? 0 : Integer.parseInt(diaPagoTexto);
         } catch (NumberFormatException ex) {
             Toast.makeText(this, R.string.tarjeta_campos_obligatorios, Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if (diaCorte < 1 || diaCorte > 31) {
+            binding.etDiaCorte.setError(getString(R.string.tarjeta_dia_invalido));
+            Toast.makeText(this, R.string.tarjeta_dia_invalido, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (diaPago < 0 || diaPago > 31) {
+            binding.etDiaPago.setError(getString(R.string.tarjeta_dia_invalido));
+            Toast.makeText(this, R.string.tarjeta_dia_invalido, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        binding.etDiaCorte.setError(null);
+        binding.etDiaPago.setError(null);
 
         Tarjeta tarjeta = new Tarjeta();
         tarjeta.setId(tarjetaIdEdicion);
@@ -179,6 +197,7 @@ public class NuevaTarjetaActivity extends AppCompatActivity {
         tarjeta.setAlias(alias);
         tarjeta.setLimiteCredito(limite);
         tarjeta.setDiaCorte(diaCorte);
+        tarjeta.setDiaPago(diaPago);
         tarjeta.setFechaVencimiento(fechaVencimiento);
         tarjeta.setNotas(notas);
         tarjeta.setDeudaActual(deudaOriginal);

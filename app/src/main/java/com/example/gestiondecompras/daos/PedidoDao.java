@@ -34,6 +34,10 @@ public interface PedidoDao {
     @Query("SELECT * FROM pedidos WHERE fecha_entrega IS NOT NULL AND date(fecha_entrega/1000,'unixepoch')=date(:epoch/1000,'unixepoch') ORDER BY fecha_entrega ASC")
     List<Pedido> getEntregasPorDia(long epoch);
 
+    @Query("SELECT * FROM pedidos WHERE estado = 'pendiente' AND fecha_entrega IS NOT NULL " +
+           "AND fecha_entrega >= :desde AND fecha_entrega <= :hasta ORDER BY fecha_entrega ASC")
+    List<Pedido> getEntregasPendientesEnRango(long desde, long hasta);
+
     @Query("SELECT * FROM pedidos WHERE date(fecha_registro_epoch/1000,'unixepoch')=date(:epoch/1000,'unixepoch') AND (:busqueda = '' OR cliente_nombre LIKE '%' || :busqueda || '%') ORDER BY fecha_registro_epoch ASC")
     List<Pedido> pedidosPorDiaYCliente(long epoch, String busqueda);
 
@@ -55,6 +59,34 @@ public interface PedidoDao {
 
     @Query("SELECT COUNT(*) FROM pedidos WHERE estado = 'pendiente' AND fecha_entrega < :todayEpoch")
     int getOverdueOrdersCount(long todayEpoch);
+
+    @Query("SELECT COUNT(*) FROM pedidos WHERE estado = 'pendiente' AND fecha_entrega IS NOT NULL AND fecha_entrega < :inicioHoy")
+    int countAtrasados(long inicioHoy);
+
+    @Query("SELECT COUNT(*) FROM pedidos WHERE estado != 'cancelado' " +
+           "AND fecha_registro_epoch >= :desde AND fecha_registro_epoch <= :hasta")
+    int countPedidosEnRango(long desde, long hasta);
+
+    @Query("SELECT COALESCE(SUM(total_general), 0) FROM pedidos WHERE estado != 'cancelado' " +
+           "AND fecha_registro_epoch >= :desde AND fecha_registro_epoch <= :hasta")
+    double totalVentasEnRango(long desde, long hasta);
+
+    @Query("SELECT COALESCE(SUM(ganancia), 0) FROM pedidos WHERE estado != 'cancelado' " +
+           "AND fecha_registro_epoch >= :desde AND fecha_registro_epoch <= :hasta")
+    double totalGananciaEnRango(long desde, long hasta);
+
+    @Query("SELECT COUNT(*) FROM pedidos WHERE estado != 'cancelado' AND fecha_entrega IS NOT NULL " +
+           "AND fecha_entrega >= :desde AND fecha_entrega <= :hasta")
+    int countEntregasEnRango(long desde, long hasta);
+
+    @Query("SELECT COUNT(*) FROM pedidos p WHERE p.estado != 'pagado' AND p.estado != 'cancelado' " +
+           "AND p.total_general - COALESCE((SELECT SUM(a.monto) FROM abonos a WHERE a.pedido_id = p.id), 0) > 0.001")
+    int countPorCobrar();
+
+    @Query("SELECT COALESCE(SUM(p.total_general - COALESCE((SELECT SUM(a.monto) FROM abonos a WHERE a.pedido_id = p.id), 0)), 0) " +
+           "FROM pedidos p WHERE p.estado != 'pagado' AND p.estado != 'cancelado' " +
+           "AND p.total_general - COALESCE((SELECT SUM(a.monto) FROM abonos a WHERE a.pedido_id = p.id), 0) > 0.001")
+    double totalPorCobrarGlobal();
 
     @Query("SELECT * FROM pedidos WHERE estado = 'pendiente' AND fecha_entrega IS NOT NULL AND fecha_entrega < :todayEpoch ORDER BY fecha_entrega ASC")
     List<Pedido> getPedidosAtrasados(long todayEpoch);
