@@ -3,10 +3,24 @@ name: Android CD - Publish Release
 on:
   push:
     tags:
-      - '[vV]*' # Modificado para que acepte tanto "v" minúscula como "V" mayúscula
+      - '[vV]*' # Release manual: al subir un tag vX.Y.Z
+    branches:
+      - main
+      - master
+      - GestionCompra # Release automático al hacer push a la rama de trabajo
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versión a publicar (ej. 1.0.5). Vacío = siguiente patch.'
+        required: false
+        type: string
 
 permissions:
   contents: write
+
+concurrency:
+  group: android-release
+  cancel-in-progress: false
 
 env:
   KEYSTORE_PATH: ${{ github.workspace }}/keystore.jks
@@ -15,7 +29,82 @@ env:
   KEYSTORE_KEY_PASS: ${{ secrets.KEYSTORE_KEY_PASS }}
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      version_code: ${{ steps.version.outputs.version_code }}
+      tag: ${{ steps.version.outputs.tag }}
+      should_release: ${{ steps.version.outputs.should_release }}
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Resolver versión del release
+        id: version
+        shell: bash
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          SHOULD_RELEASE=true
+
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            # Release manual: la versión sale del tag
+            TAG="${GITHUB_REF_NAME}"
+            VERSION="${TAG#[vV]}"
+          else
+            # Push a rama: si el commit ya tiene tag, el release lo hace el workflow del tag
+            HEAD_SHA="$(git rev-parse HEAD)"
+            EXISTING_TAG="$(git ls-remote --tags origin \
+              | awk -v sha="$HEAD_SHA" '$1 == sha { print $2 }' \
+              | sed 's#refs/tags/##' \
+              | grep -v '\^{}' \
+              | head -n 1 || true)"
+
+            if [[ -n "${EXISTING_TAG}" ]]; then
+              echo "El commit ${HEAD_SHA} ya tiene el tag ${EXISTING_TAG}; se omite el release automático."
+              VERSION="${EXISTING_TAG#[vV]}"
+              SHOULD_RELEASE=false
+            elif [[ -n "${INPUT_VERSION}" ]]; then
+              VERSION="${INPUT_VERSION#[vV]}"
+            else
+              # Siguiente patch tomando el tag más reciente por fecha de creación
+              LAST_TAG="$(git for-each-ref --sort=-creatordate \
+                --format='%(refname:short)' 'refs/tags/v*' 'refs/tags/V*' | head -n 1)"
+              if [[ -z "${LAST_TAG}" ]]; then
+                VERSION="1.0.0"
+              else
+                BASE="${LAST_TAG#[vV]}"
+                MAJOR="$(echo "$BASE" | cut -d. -f1 | tr -cd '0-9')"
+                MINOR="$(echo "$BASE" | cut -d. -f2 | tr -cd '0-9')"
+                PATCH="$(echo "$BASE" | cut -d. -f3 | tr -cd '0-9')"
+                MAJOR=${MAJOR:-1}; MINOR=${MINOR:-0}; PATCH=${PATCH:-0}
+                VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
+              fi
+            fi
+          fi
+
+          MAJOR="$(echo "$VERSION" | cut -d. -f1 | tr -cd '0-9')"
+          MINOR="$(echo "$VERSION" | cut -d. -f2 | tr -cd '0-9')"
+          PATCH="$(echo "$VERSION" | cut -d. -f3 | tr -cd '0-9')"
+          MAJOR=${MAJOR:-0}; MINOR=${MINOR:-0}; PATCH=${PATCH:-0}
+          VERSION_CODE=$((MAJOR * 10000 + MINOR * 100 + PATCH))
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          echo "should_release=$SHOULD_RELEASE" >> "$GITHUB_OUTPUT"
+          echo "Versión: $VERSION (versionCode $VERSION_CODE) / tag v$VERSION / release=$SHOULD_RELEASE"
+
   build:
+    needs: prepare
+    if: needs.prepare.outputs.should_release == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -37,27 +126,20 @@ jobs:
           fi
           echo "${{ secrets.ANDROID_KEYSTORE_B64 }}" | base64 -d > keystore.jks
 
-      - name: Derivar versiones del tag
-        id: version
-        shell: bash
-        run: |
-          TAG="${GITHUB_REF_NAME#v}"
-          TAG="${TAG#V}"
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$TAG"
-          MAJOR=${MAJOR:-0}; MINOR=${MINOR:-0}; PATCH=${PATCH:-0}
-          echo "APP_VERSION_NAME=$TAG" >> "$GITHUB_ENV"
-          echo "APP_VERSION_CODE=$((MAJOR*10000 + MINOR*100 + PATCH))" >> "$GITHUB_ENV"
-
       - name: Compilar APK firmado
         shell: bash
-        run: chmod +x gradlew && ./gradlew assembleRelease
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease \
+            -PversionName="${{ needs.prepare.outputs.version }}" \
+            -PversionCode="${{ needs.prepare.outputs.version_code }}"
 
       - name: Renombrar APK
         shell: bash
         run: |
           FOUND_APK=$(find app/build/outputs/apk/release/ -name "*.apk" | head -n 1)
           if [ -n "$FOUND_APK" ]; then
-            mv "$FOUND_APK" "GestionCompras-${GITHUB_REF_NAME}.apk"
+            mv "$FOUND_APK" "GestionCompras-v${{ needs.prepare.outputs.version }}.apk"
           else
             echo "No se encontró ningún APK en app/build/outputs/apk/release/" && exit 1
           fi
@@ -70,7 +152,8 @@ jobs:
           if-no-files-found: error
 
   publish-and-release:
-    needs: build
+    needs: [prepare, build]
+    if: needs.prepare.outputs.should_release == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -82,7 +165,9 @@ jobs:
       - name: Crear GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Release ${{ github.ref_name }}"
+          tag_name: ${{ needs.prepare.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          name: "Release ${{ needs.prepare.outputs.tag }}"
           # Subimos directamente el APK firmado en lugar de un ZIP
           files: ./*.apk
           generate_release_notes: true

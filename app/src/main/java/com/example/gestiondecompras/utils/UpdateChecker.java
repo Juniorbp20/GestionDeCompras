@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 public class UpdateChecker {
 
     private static final String TAG = "UPDATER";
-    private static final String REPO = "Juniorbp20/appAndroid";
+    private static final String REPO = "Juniorbp20/GestionDeCompras";
     private static final String API_URL = "https://api.github.com/repos/" + REPO + "/releases/latest";
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(2);
 
@@ -40,6 +40,7 @@ public class UpdateChecker {
                 conn.setConnectTimeout(10000);
                 conn.setReadTimeout(10000);
                 conn.setRequestProperty("Accept", "application/vnd.github+json");
+                conn.setRequestProperty("User-Agent", "GestionDeCompras/" + BuildConfig.VERSION_NAME);
                 int code = conn.getResponseCode();
                 if (code == 200) {
                     try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
@@ -83,8 +84,12 @@ public class UpdateChecker {
     }
 
     public static boolean esNuevaVersion(String nueva) {
+        return esNuevaVersion(BuildConfig.VERSION_NAME, nueva);
+    }
+
+    static boolean esNuevaVersion(String actual, String nueva) {
         String[] newParts = split(normalize(nueva));
-        String[] curParts = split(normalize(BuildConfig.VERSION_NAME));
+        String[] curParts = split(normalize(actual));
         for (int i = 0; i < Math.max(newParts.length, curParts.length); i++) {
             int nv = i < newParts.length ? parseInt(newParts[i]) : 0;
             int cv = i < curParts.length ? parseInt(curParts[i]) : 0;
