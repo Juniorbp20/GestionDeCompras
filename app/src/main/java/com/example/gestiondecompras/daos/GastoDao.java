@@ -27,10 +27,12 @@ public interface GastoDao {
 
     @Query("SELECT * FROM gastos WHERE (:desde IS NULL OR fechaEpoch >= :desde) "
             + "AND (:hasta IS NULL OR fechaEpoch <= :hasta) "
+            + "AND (:categoria = '' OR categoria = :categoria) "
             + "AND (:busqueda = '' OR descripcion LIKE '%' || :busqueda || '%' "
-            + "OR categoria LIKE '%' || :busqueda || '%') "
+            + "OR categoria LIKE '%' || :busqueda || '%' "
+            + "OR notas LIKE '%' || :busqueda || '%') "
             + "ORDER BY fechaEpoch DESC")
-    List<Gasto> getGastosFiltrados(Long desde, Long hasta, String busqueda);
+    List<Gasto> getGastosFiltrados(Long desde, Long hasta, String busqueda, String categoria);
 
     @Query("SELECT COALESCE(SUM(monto), 0) FROM gastos WHERE fechaEpoch >= :desde AND fechaEpoch <= :hasta")
     double getTotalRango(long desde, long hasta);

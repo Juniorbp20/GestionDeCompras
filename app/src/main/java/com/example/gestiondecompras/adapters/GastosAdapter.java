@@ -9,10 +9,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiondecompras.R;
 import com.example.gestiondecompras.models.Gasto;
+import com.example.gestiondecompras.utils.CategoriaGastoUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,11 +66,12 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.ViewHolder
         holder.tvCategoria.setText(gasto.getCategoria() + " - " + sdf.format(new Date(gasto.getFechaEpoch())));
         holder.tvMonto.setText(String.format(Locale.getDefault(), "RD$ %,.2f", gasto.getMonto()));
 
-        int[] iconoTint = iconoCategoria(gasto.getCategoria());
-        holder.ivIcono.setImageResource(iconoTint[0]);
+        int color = ContextCompat.getColor(holder.itemView.getContext(),
+                CategoriaGastoUtils.color(gasto.getCategoria()));
+        holder.ivIcono.setImageResource(CategoriaGastoUtils.icono(gasto.getCategoria()));
         holder.ivIcono.setBackgroundTintList(ColorStateList.valueOf(
-                ContextCompat.getColor(holder.itemView.getContext(), R.color.dashboard_badge_red_bg)));
-        holder.ivIcono.setImageTintList(ColorStateList.valueOf(iconoTint[1]));
+                ColorUtils.setAlphaComponent(color, 38)));
+        holder.ivIcono.setImageTintList(ColorStateList.valueOf(color));
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -81,25 +84,6 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.ViewHolder
             }
             return true;
         });
-    }
-
-    private int[] iconoCategoria(String categoria) {
-        if (Gasto.CAT_COMIDA.equals(categoria)) {
-            return new int[]{R.drawable.ic_restaurant, R.color.error_color};
-        } else if (Gasto.CAT_TRANSPORTE.equals(categoria)) {
-            return new int[]{R.drawable.ic_car, R.color.error_color};
-        } else if (Gasto.CAT_HOGAR.equals(categoria)) {
-            return new int[]{R.drawable.ic_home, R.color.error_color};
-        } else if (Gasto.CAT_SERVICIOS.equals(categoria)) {
-            return new int[]{R.drawable.ic_bolt, R.color.error_color};
-        } else if (Gasto.CAT_SALUD.equals(categoria)) {
-            return new int[]{R.drawable.ic_medical, R.color.error_color};
-        } else if (Gasto.CAT_ENTRETENIMIENTO.equals(categoria)) {
-            return new int[]{R.drawable.ic_movie, R.color.error_color};
-        } else if (Gasto.CAT_COMPRAS.equals(categoria)) {
-            return new int[]{R.drawable.ic_cart, R.color.error_color};
-        }
-        return new int[]{R.drawable.ic_wallet, R.color.error_color};
     }
 
     @Override

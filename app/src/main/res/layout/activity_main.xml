@@ -344,10 +344,10 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:background="@drawable/bg_icon_badge_green"
+                            android:background="@drawable/bg_icon_badge_red"
                             android:padding="9dp"
                             android:src="@drawable/ic_wallet"
-                            android:tint="@color/success_color" />
+                            android:tint="@color/dashboard_card_overdue" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -359,7 +359,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/finanzas_balance_mes"
+                                android:text="@string/gastos_dashboard_title"
                                 android:textColor="@color/gray"
                                 android:textSize="13sp" />
 

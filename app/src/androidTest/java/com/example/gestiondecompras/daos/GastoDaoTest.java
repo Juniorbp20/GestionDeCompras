@@ -46,6 +46,13 @@ public class GastoDaoTest {
         return g;
     }
 
+    private Gasto nuevoGastoConNotas(String categoria, String descripcion, String notas,
+                                     double monto, long epoch) {
+        Gasto g = nuevoGasto(categoria, descripcion, monto, epoch);
+        g.notas = notas;
+        return g;
+    }
+
     @Test
     public void insertYGetAll_ordenaDescPorFecha() {
         dao.insert(nuevoGasto(Gasto.CAT_COMIDA, "Mercado", 100.0, DIA_1));
@@ -68,16 +75,24 @@ public class GastoDaoTest {
     }
 
     @Test
-    public void getGastosFiltrados_rangoYBusqueda() {
+    public void getGastosFiltrados_rangoBusquedaYCategoria() {
         dao.insert(nuevoGasto(Gasto.CAT_COMIDA, "Mercado semanal", 100.0, DIA_1));
         dao.insert(nuevoGasto(Gasto.CAT_TRANSPORTE, "Gasolina", 50.0, DIA_2));
-        dao.insert(nuevoGasto(Gasto.CAT_COMIDA, "Almuerzo", 25.0, DIA_3));
+        dao.insert(nuevoGastoConNotas(Gasto.CAT_COMIDA, "Almuerzo", "con cliente", 25.0, DIA_3));
 
-        assertEquals(3, dao.getGastosFiltrados(null, null, "").size());
-        assertEquals(2, dao.getGastosFiltrados(DIA_2, DIA_3, "").size());
-        assertEquals(1, dao.getGastosFiltrados(DIA_3, null, "").size());
-        assertEquals(1, dao.getGastosFiltrados(null, null, "me").size());
-        assertEquals(0, dao.getGastosFiltrados(null, null, "nada").size());
+        assertEquals(3, dao.getGastosFiltrados(null, null, "", "").size());
+        assertEquals(2, dao.getGastosFiltrados(DIA_2, DIA_3, "", "").size());
+        assertEquals(1, dao.getGastosFiltrados(DIA_3, null, "", "").size());
+        assertEquals(1, dao.getGastosFiltrados(null, null, "me", "").size());
+        assertEquals(0, dao.getGastosFiltrados(null, null, "nada", "").size());
+
+        assertEquals(2, dao.getGastosFiltrados(null, null, "", Gasto.CAT_COMIDA).size());
+        assertEquals(1, dao.getGastosFiltrados(DIA_1, DIA_2, "", Gasto.CAT_TRANSPORTE).size());
+        assertEquals(1, dao.getGastosFiltrados(null, null, "gas", Gasto.CAT_TRANSPORTE).size());
+        assertEquals(0, dao.getGastosFiltrados(null, null, "gas", Gasto.CAT_COMIDA).size());
+
+        assertEquals(1, dao.getGastosFiltrados(null, null, "cliente", "").size());
+        assertEquals(1, dao.getGastosFiltrados(null, null, "cliente", Gasto.CAT_COMIDA).size());
     }
 
     @Test
