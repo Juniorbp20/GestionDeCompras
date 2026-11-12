@@ -49,6 +49,16 @@
     <color name="dashboard_card_overdue">#EF5350</color>
     <color name="dashboard_card_earnings">#66BB6A</color>
 
+    <!-- Colores de categorías de gastos -->
+    <color name="category_food">#FFB74D</color>
+    <color name="category_transport">#64B5F6</color>
+    <color name="category_home">#A1887F</color>
+    <color name="category_services">#FFD54F</color>
+    <color name="category_health">#EF5350</color>
+    <color name="category_entertainment">#BA68C8</color>
+    <color name="category_shopping">#4DB6AC</color>
+    <color name="category_other">#90A4AE</color>
+
     <color name="status_pending">#FFC107</color>
     <color name="status_delivered">#64B5F6</color>
     <color name="status_paid">#66BB6A</color>

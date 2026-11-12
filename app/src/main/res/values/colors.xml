@@ -59,6 +59,16 @@
     <color name="dashboard_card_overdue">#F44336</color>
     <color name="dashboard_card_earnings">#4CAF50</color>
     <color name="gray_medium">#9E9E9E</color>
+
+    <!-- Colores de categorías de gastos -->
+    <color name="category_food">#EF6C00</color>
+    <color name="category_transport">#1E88E5</color>
+    <color name="category_home">#6D4C41</color>
+    <color name="category_services">#F9A825</color>
+    <color name="category_health">#E53935</color>
+    <color name="category_entertainment">#8E24AA</color>
+    <color name="category_shopping">#00897B</color>
+    <color name="category_other">#546E7A</color>
     
     <!-- Tutorial -->
     <color name="tutorial_card">#FFFFFF</color>

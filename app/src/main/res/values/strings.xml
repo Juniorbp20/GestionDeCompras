@@ -72,9 +72,31 @@
     <string name="gastos_eliminar_message">\u00BFEst\u00E1s seguro de que deseas eliminar este gasto?</string>
     <string name="toast_gasto_eliminado">Gasto eliminado</string>
     <string name="finanzas_title">Finanzas</string>
-    <string name="finanzas_resumen_mes">Resumen del mes</string>
-    <string name="finanzas_ingresos_mes">Ingresos del mes</string>
-    <string name="finanzas_balance_mes">Balance del mes</string>
+    <string name="finanzas_ingresos">Ingresos</string>
+    <string name="finanzas_gastos">Gastos</string>
+    <string name="finanzas_balance">Balance</string>
+    <string name="finanzas_mes_anterior">Mes anterior</string>
+    <string name="finanzas_mes_siguiente">Mes siguiente</string>
+    <string name="finanzas_categorias_title">Gastos por categoría</string>
+    <string name="finanzas_categorias_hint">Toca una categoría para filtrar el listado</string>
+    <string name="finanzas_sin_gastos">No hay gastos en este periodo</string>
+    <string name="finanzas_sin_resultados">No hay gastos con estos filtros</string>
+    <string name="finanzas_rango_fechas">Rango de fechas</string>
+    <string name="finanzas_limpiar">Limpiar</string>
+    <string name="finanzas_promedio_diario">Promedio diario: %1$s</string>
+    <string name="finanzas_variacion_mas">%1$s más que el periodo anterior</string>
+    <string name="finanzas_variacion_menos">%1$s menos que el periodo anterior</string>
+    <string name="finanzas_variacion_igual">Igual que el periodo anterior</string>
+    <string name="finanzas_todo_el_tiempo">Todo el tiempo</string>
+    <string name="finanzas_todas_categorias">Todas las categorías</string>
+    <plurals name="finanzas_cantidad_periodo">
+        <item quantity="one">%1$d gasto en el periodo</item>
+        <item quantity="other">%1$d gastos en el periodo</item>
+    </plurals>
+    <plurals name="finanzas_resumen_filtro">
+        <item quantity="one">%1$d gasto · %2$s</item>
+        <item quantity="other">%1$d gastos · %2$s</item>
+    </plurals>
     <string name="abono_inicial">Abono inicial (opcional)</string>
     <string name="pagado_completo">Pagado completo</string>
     <string name="abono_registrar">Registrar abono</string>
@@ -285,11 +307,12 @@
 
     <string name="ayuda_gastos_title">5. Finanzas</string>
     <string name="ayuda_gastos_desc">
-<b>Resumen:</b> La secci\u00F3n "Finanzas" te muestra los ingresos del mes (abonos cobrados), los gastos del mes y el balance resultante.\n
-<b>Gastos:</b> Usa el bot\u00F3n (+) para anotar tus gastos personales: elige categor\u00EDa (Comida, Transporte, Hogar, Servicios, Salud, Entretenimiento, Compras u Otros), monto, fecha y descripci\u00F3n.\n
-<b>Filtros:</b> Busca por texto y filtra por rango de fechas (Desde/Hasta). Mant\u00E9n presionado un campo de fecha para limpiarlo.\n
+<b>Resumen:</b> La secci\u00F3n "Finanzas" te muestra los ingresos del periodo (abonos cobrados), los gastos y el balance resultante. Usa las flechas para moverte entre meses; ver\u00E1s tambi\u00E9n la variaci\u00F3n contra el periodo anterior y el promedio diario.\n
+<b>Categor\u00EDas:</b> Debajo del resumen aparece el desglose por categor\u00EDa. Toca una categor\u00EDa para filtrar el listado y t\u00F3cala de nuevo para quitar el filtro.\n
+<b>Gastos:</b> Usa el bot\u00F3n (+) para anotar tus gastos personales: elige categor\u00EDa, monto, fecha, descripci\u00F3n y notas opcionales.\n
+<b>Filtros:</b> Busca por descripci\u00F3n, categor\u00EDa o notas, y combina la b\u00FAsqueda con la categor\u00EDa o con un rango de fechas personalizado. Mant\u00E9n presionado un campo de fecha para limpiarlo y usa "Limpiar" para volver al mes actual.\n
 <b>Editar o borrar:</b> Toca o mant\u00E9n presionado un gasto para editarlo o eliminarlo.\n
-<b>Dashboard:</b> La card "Balance del mes" del inicio te muestra el resultado y abre Finanzas de un toque.
+<b>Dashboard:</b> La card "Gastos del mes" del inicio muestra el total del mes y abre Finanzas de un toque.
 </string>
 
     <string name="ayuda_reportes_title">6. Reportes y Ganancias</string>

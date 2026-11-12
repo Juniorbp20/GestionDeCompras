@@ -23,7 +23,8 @@
             android:id="@+id/ivIcono"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:background="@drawable/bg_icon_badge_red"
+            android:background="@drawable/bg_icon_badge"
+            android:backgroundTint="@color/dashboard_badge_red_bg"
             android:padding="9dp"
             android:src="@drawable/ic_wallet"
             android:tint="@color/error_color" />

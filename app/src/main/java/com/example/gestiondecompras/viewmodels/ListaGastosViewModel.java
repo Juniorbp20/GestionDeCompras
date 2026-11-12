@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.gestiondecompras.database.AppDatabase;
 import com.example.gestiondecompras.models.Gasto;
 import com.example.gestiondecompras.models.GastoCategoria;
+import com.example.gestiondecompras.models.ResumenFinanciero;
+import com.example.gestiondecompras.utils.FinanzasUtils;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -23,12 +25,12 @@ public class ListaGastosViewModel extends AndroidViewModel {
     private final ExecutorService executorService;
 
     private final MutableLiveData<List<Gasto>> gastos = new MutableLiveData<>();
-    private final MutableLiveData<Double> totalPeriodo = new MutableLiveData<>();
-    private final MutableLiveData<Double> totalMes = new MutableLiveData<>();
-    private final MutableLiveData<Double> ingresosMes = new MutableLiveData<>();
-    private final MutableLiveData<Double> balanceMes = new MutableLiveData<>();
-    private final MutableLiveData<Integer> cantidadMes = new MutableLiveData<>();
-    private final MutableLiveData<List<GastoCategoria>> totalesPorCategoria = new MutableLiveData<>();
+    private final MutableLiveData<ResumenFinanciero> resumen = new MutableLiveData<>();
+
+    private Long ultimoDesde;
+    private Long ultimoHasta;
+    private String ultimaBusqueda = "";
+    private String ultimaCategoria = "";
 
     public ListaGastosViewModel(@NonNull Application application) {
         super(application);
@@ -40,55 +42,68 @@ public class ListaGastosViewModel extends AndroidViewModel {
         return gastos;
     }
 
-    public LiveData<Double> getTotalPeriodo() {
-        return totalPeriodo;
+    public LiveData<ResumenFinanciero> getResumen() {
+        return resumen;
     }
 
-    public LiveData<Double> getTotalMes() {
-        return totalMes;
-    }
+    /**
+     * Carga la lista filtrada y, en paralelo, el resumen del periodo seleccionado.
+     * El resumen solo depende de las fechas, no de la búsqueda ni de la categoría.
+     */
+    public void loadGastos(Long desde, Long hasta, String busqueda, String categoria) {
+        ultimoDesde = desde;
+        ultimoHasta = hasta;
+        ultimaBusqueda = busqueda != null ? busqueda : "";
+        ultimaCategoria = categoria != null ? categoria : "";
 
-    public LiveData<Double> getIngresosMes() {
-        return ingresosMes;
-    }
-
-    public LiveData<Double> getBalanceMes() {
-        return balanceMes;
-    }
-
-    public LiveData<Integer> getCantidadMes() {
-        return cantidadMes;
-    }
-
-    public LiveData<List<GastoCategoria>> getTotalesPorCategoria() {
-        return totalesPorCategoria;
-    }
-
-    public void loadGastos(Long desde, Long hasta, String busqueda) {
         executorService.execute(() -> {
-            List<Gasto> lista = db.gastoDao().getGastosFiltrados(desde, hasta, busqueda);
-            gastos.postValue(lista != null ? lista : Collections.emptyList());
+            List<Gasto> lista = db.gastoDao().getGastosFiltrados(
+                    desde, hasta, ultimaBusqueda, ultimaCategoria);
+            if (lista == null) {
+                lista = Collections.emptyList();
+            }
+            gastos.postValue(lista);
+
+            long desdeQuery = desde != null ? desde : 0L;
+            long hastaQuery = hasta != null ? hasta : Long.MAX_VALUE;
+
+            ResumenFinanciero datos = new ResumenFinanciero();
+            datos.gastos = db.gastoDao().getTotalRango(desdeQuery, hastaQuery);
+            datos.ingresos = db.abonoDao().getTotalRango(desdeQuery, hastaQuery);
+            datos.balance = datos.ingresos - datos.gastos;
+            datos.cantidadGastos = db.gastoDao().getCantidadRango(desdeQuery, hastaQuery);
+
+            List<GastoCategoria> categorias = db.gastoDao()
+                    .getTotalesPorCategoria(desdeQuery, hastaQuery);
+            datos.categorias = categorias != null ? categorias : Collections.emptyList();
 
             if (desde != null && hasta != null) {
-                totalPeriodo.postValue(db.gastoDao().getTotalRango(desde, hasta));
-                List<GastoCategoria> categorias = db.gastoDao().getTotalesPorCategoria(desde, hasta);
-                totalesPorCategoria.postValue(categorias != null ? categorias : Collections.emptyList());
+                int dias = FinanzasUtils.diasDelPeriodo(desde, hasta);
+                datos.mostrarPromedio = dias > 0;
+                datos.promedioDiario = dias > 0 ? datos.gastos / dias : 0;
+
+                long duracion = Math.max(1L, hasta - desde + 1L);
+                long anteriorHasta = desde - 1L;
+                long anteriorDesde = anteriorHasta - duracion + 1L;
+                if (anteriorDesde >= 0) {
+                    datos.gastosPeriodoAnterior = db.gastoDao()
+                            .getTotalRango(anteriorDesde, anteriorHasta);
+                    datos.hayPeriodoAnterior = datos.gastosPeriodoAnterior > 0;
+                    if (datos.hayPeriodoAnterior) {
+                        datos.variacionPorcentual = FinanzasUtils.variacionPorcentual(
+                                datos.gastos, datos.gastosPeriodoAnterior);
+                    }
+                }
             }
 
-            long[] mes = inicioYFinDelMes();
-            double gastosMes = db.gastoDao().getTotalRango(mes[0], mes[1]);
-            double ingresos = db.abonoDao().getTotalRango(mes[0], mes[1]);
-            totalMes.postValue(gastosMes);
-            ingresosMes.postValue(ingresos);
-            balanceMes.postValue(ingresos - gastosMes);
-            cantidadMes.postValue(db.gastoDao().getCantidadRango(mes[0], mes[1]));
+            resumen.postValue(datos);
         });
     }
 
     public void deleteGasto(Gasto gasto) {
         executorService.execute(() -> {
             db.gastoDao().delete(gasto);
-            loadGastos(null, null, "");
+            loadGastos(ultimoDesde, ultimoHasta, ultimaBusqueda, ultimaCategoria);
         });
     }
 
