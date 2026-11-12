@@ -5,9 +5,9 @@ on:
     tags:
       - '[vV]*' # Release manual: al subir un tag vX.Y.Z
     branches:
-      - main
-      - master
-      - GestionCompra # Release automático al hacer push a la rama de trabajo
+      - main # Release automático solo al integrar cambios en main
+    paths-ignore:
+      - '.github/**' # Cambios solo de configuración no publican release
   workflow_dispatch:
     inputs:
       version:
