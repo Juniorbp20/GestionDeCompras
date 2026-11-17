@@ -82,6 +82,12 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
                 Toast.makeText(this, R.string.toast_tarjeta_eliminada, Toast.LENGTH_SHORT).show();
             } else if ("tarjeta_error".equals(mensaje)) {
                 Toast.makeText(this, R.string.toast_tarjeta_error, Toast.LENGTH_SHORT).show();
+            } else if ("tarjeta_pagada".equals(mensaje)) {
+                Toast.makeText(this, R.string.toast_tarjeta_pagada, Toast.LENGTH_SHORT).show();
+            } else if ("pago_excede_deuda".equals(mensaje)) {
+                Toast.makeText(this, R.string.dialog_pago_tarjeta_excede_deuda, Toast.LENGTH_SHORT).show();
+            } else if ("pago_invalido".equals(mensaje)) {
+                Toast.makeText(this, R.string.dialog_pago_tarjeta_error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -137,14 +143,8 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
                     Toast.makeText(this, R.string.dialog_pago_tarjeta_excede_deuda, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                double nuevaDeuda = Dinero.restar(tarjeta.getDeudaActual(), pago);
-                if (nuevaDeuda < 0) {
-                    Toast.makeText(this, R.string.dialog_pago_tarjeta_excede_deuda, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                tarjeta.setDeudaActual(nuevaDeuda);
-                viewModel.updateTarjeta(tarjeta);
-                Toast.makeText(this, R.string.toast_tarjeta_pagada, Toast.LENGTH_SHORT).show();
+                // El servicio vuelve a validar contra la deuda guardada y la actualiza
+                viewModel.registrarPago(tarjeta, pago);
                 dialog.dismiss();
             } catch (NumberFormatException ex) {
                 Toast.makeText(this, R.string.dialog_pago_tarjeta_error, Toast.LENGTH_SHORT).show();

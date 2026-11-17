@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.viewmodels;
 
+import com.example.gestiondecompras.servicios.PedidosServicio;
 import com.example.gestiondecompras.utils.Dinero;
 import android.app.Application;
 
@@ -60,38 +61,17 @@ public class ListaPedidosViewModel extends AndroidViewModel {
 
     public void registrarAbono(Pedido pedido, double monto, String metodo, String notas,
                                MutableLiveData<Boolean> resultado) {
-        executorService.execute(() -> db.runInTransaction(() -> {
-            Abono abono = new Abono();
-            abono.pedidoId = pedido.getId();
-            abono.monto = Dinero.redondear(monto);
-            abono.fechaEpoch = System.currentTimeMillis();
-            abono.metodo = metodo;
-            abono.notas = notas;
-            db.abonoDao().insert(abono);
-
-            double totalAbonado = db.abonoDao().getTotalAbonado(pedido.getId());
-            pedido.totalAbonado = totalAbonado;
-            if (pedido.estaPagadoCompleto()) {
-                pedido.estado = Pedido.ESTADO_PAGADO;
-            }
-            db.pedidoDao().update(pedido);
+        executorService.execute(() -> {
+            new PedidosServicio(db).registrarAbono(pedido, monto, metodo, notas);
             resultado.postValue(true);
-        }));
+        });
     }
 
     public void eliminarAbono(Pedido pedido, Abono abono, MutableLiveData<Boolean> resultado) {
-        executorService.execute(() -> db.runInTransaction(() -> {
-            db.abonoDao().delete(abono);
-
-            double totalAbonado = db.abonoDao().getTotalAbonado(pedido.getId());
-            pedido.totalAbonado = totalAbonado;
-            if (Pedido.ESTADO_PAGADO.equalsIgnoreCase(pedido.getEstado())
-                    && !pedido.estaPagadoCompleto()) {
-                pedido.estado = Pedido.ESTADO_PENDIENTE;
-            }
-            db.pedidoDao().update(pedido);
+        executorService.execute(() -> {
+            new PedidosServicio(db).eliminarAbono(pedido, abono);
             resultado.postValue(true);
-        }));
+        });
     }
 
     public LiveData<List<Abono>> getAbonos(long pedidoId) {
@@ -104,9 +84,7 @@ public class ListaPedidosViewModel extends AndroidViewModel {
     }
 
     public void deletePedido(Pedido pedido) {
-        executorService.execute(() -> {
-            db.pedidoDao().delete(pedido);
-        });
+        executorService.execute(() -> new PedidosServicio(db).eliminarPedido(pedido));
     }
 
     public void updatePedido(Pedido pedido) {

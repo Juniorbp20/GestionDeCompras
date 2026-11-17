@@ -23,4 +23,7 @@ public interface TarjetaDao {
 
     @Query("SELECT * FROM tarjetas")
     List<Tarjeta> getAllTarjetas();
+
+    @Query("SELECT * FROM tarjetas WHERE id = :id LIMIT 1")
+    Tarjeta getTarjetaById(long id);
 }

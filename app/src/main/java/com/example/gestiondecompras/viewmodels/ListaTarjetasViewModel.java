@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.viewmodels;
 
+import com.example.gestiondecompras.servicios.TarjetasServicio;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -43,21 +44,30 @@ public class ListaTarjetasViewModel extends AndroidViewModel {
     public void deleteTarjeta(Tarjeta tarjeta) {
         executorService.execute(() -> {
             try {
-                int pendientes = db.pedidoDao().countPedidosPorTarjeta(tarjeta.id);
-                if (pendientes > 0) {
+                TarjetasServicio.ResultadoEliminacion r = new TarjetasServicio(db).eliminar(tarjeta);
+                if (r == TarjetasServicio.ResultadoEliminacion.EN_USO) {
                     mensajes.postValue("tarjeta_en_uso");
-                    return;
+                } else {
+                    mensajes.postValue("tarjeta_eliminada");
+                    loadTarjetas();
                 }
-                // Los pedidos antiguos (entregados, pagados, cancelados) referencian la tarjeta
-                // mediante una clave foránea: se desvinculan antes de borrarla para no violarla.
-                db.runInTransaction(() -> {
-                    db.pedidoDao().desvincularTarjeta(tarjeta.id);
-                    db.tarjetaDao().delete(tarjeta);
-                });
-                mensajes.postValue("tarjeta_eliminada");
-                loadTarjetas();
             } catch (Exception e) {
                 mensajes.postValue("tarjeta_error");
+            }
+        });
+    }
+
+    /** Registra un pago a la tarjeta (reduce su deuda) y recarga la lista. */
+    public void registrarPago(Tarjeta tarjeta, double monto) {
+        executorService.execute(() -> {
+            TarjetasServicio.ResultadoPago r = new TarjetasServicio(db).registrarPago(tarjeta.id, monto);
+            if (r == TarjetasServicio.ResultadoPago.REGISTRADO) {
+                mensajes.postValue("tarjeta_pagada");
+                loadTarjetas();
+            } else if (r == TarjetasServicio.ResultadoPago.EXCEDE_DEUDA) {
+                mensajes.postValue("pago_excede_deuda");
+            } else {
+                mensajes.postValue("pago_invalido");
             }
         });
     }
