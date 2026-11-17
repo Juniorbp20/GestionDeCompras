@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.activities;
 
+import com.example.gestiondecompras.utils.Dinero;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -238,7 +239,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
             Snackbar.make(binding.rvPedidos, R.string.abono_pedido_cancelado, Snackbar.LENGTH_SHORT).show();
             return;
         }
-        if (pedido.getSaldo() <= 0.001) {
+        if (!Dinero.esPositivo(pedido.getSaldo())) {
             Snackbar.make(binding.rvPedidos, R.string.abono_pedido_pagado, Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -263,16 +264,16 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
             String montoTexto = etMonto.getText() != null ? etMonto.getText().toString().trim() : "";
             double monto;
             try {
-                monto = Double.parseDouble(montoTexto);
+                monto = Dinero.redondear(Double.parseDouble(montoTexto));
             } catch (NumberFormatException ex) {
                 etMonto.setError(getString(R.string.abono_monto_invalido));
                 return;
             }
-            if (monto <= 0) {
+            if (!Dinero.esPositivo(monto)) {
                 etMonto.setError(getString(R.string.abono_monto_invalido));
                 return;
             }
-            if (monto > pedido.getSaldo() + 0.001) {
+            if (Dinero.mayorQue(monto, pedido.getSaldo())) {
                 etMonto.setError(getString(R.string.abono_excede_saldo));
                 return;
             }
@@ -414,7 +415,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
                     startActivity(i);
                 })
                 .accion(R.drawable.ic_swap, R.string.accion_cambiar_estado, () -> mostrarDialogoEstado(pedido));
-        if (!Pedido.ESTADO_CANCELADO.equalsIgnoreCase(pedido.getEstado()) && pedido.getSaldo() > 0.001) {
+        if (!Pedido.ESTADO_CANCELADO.equalsIgnoreCase(pedido.getEstado()) && Dinero.esPositivo(pedido.getSaldo())) {
             hoja.accion(R.drawable.ic_payments, R.string.abono_registrar,
                     () -> mostrarDialogoAbono(pedido, null, null, null));
         }
@@ -473,13 +474,13 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
                     String nuevoEstado = valores[which];
                     if (!Pedido.ESTADO_PAGADO.equals(nuevoEstado)
                             && !Pedido.ESTADO_CANCELADO.equals(nuevoEstado)
-                            && pedido.getSaldo() <= 0.001) {
+                            && !Dinero.esPositivo(pedido.getSaldo())) {
                         Snackbar.make(binding.rvPedidos, R.string.abono_pedido_pagado,
                                 Snackbar.LENGTH_SHORT).show();
                         dialog.dismiss();
                         return;
                     }
-                    if (Pedido.ESTADO_PAGADO.equals(nuevoEstado) && pedido.getSaldo() > 0.001) {
+                    if (Pedido.ESTADO_PAGADO.equals(nuevoEstado) && Dinero.esPositivo(pedido.getSaldo())) {
                         MutableLiveData<Boolean> resultado = new MutableLiveData<>();
                         resultado.observe(this, ok -> {
                             if (Boolean.TRUE.equals(ok)) {

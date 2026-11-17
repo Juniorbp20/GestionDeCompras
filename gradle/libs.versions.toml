@@ -38,6 +38,7 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 viewbinding = { group = "androidx.databinding", name = "viewbinding", version.ref = "viewbinding" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata", version.ref = "lifecycle" }
 lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "lifecycle" }

@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.viewmodels;
 
+import com.example.gestiondecompras.utils.Dinero;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -62,7 +63,7 @@ public class ListaPedidosViewModel extends AndroidViewModel {
         executorService.execute(() -> db.runInTransaction(() -> {
             Abono abono = new Abono();
             abono.pedidoId = pedido.getId();
-            abono.monto = monto;
+            abono.monto = Dinero.redondear(monto);
             abono.fechaEpoch = System.currentTimeMillis();
             abono.metodo = metodo;
             abono.notas = notas;

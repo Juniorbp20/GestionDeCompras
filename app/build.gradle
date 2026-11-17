@@ -23,6 +23,18 @@ android {
         versionName appVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Exporta el esquema de Room (app/schemas) para versionarlo y probar migraciones
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+
+    sourceSets {
+        // Los esquemas exportados se usan en las pruebas de migración (MigrationTestHelper)
+        androidTest.assets.srcDirs += files("$projectDir/schemas")
     }
 
     buildFeatures {
@@ -86,6 +98,7 @@ dependencies {
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.androidx.test.core
     androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.room.testing
     implementation libs.biometric
     implementation libs.play.services.ads.core
     implementation libs.guava

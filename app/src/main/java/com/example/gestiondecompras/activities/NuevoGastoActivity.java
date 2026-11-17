@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.activities;
 
+import com.example.gestiondecompras.utils.Dinero;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -139,7 +140,7 @@ public class NuevoGastoActivity extends AppCompatActivity {
             Gasto gasto = new Gasto();
             gasto.setCategoria(categoria);
             gasto.setDescripcion(descripcion);
-            gasto.setMonto(monto);
+            gasto.setMonto(Dinero.redondear(monto));
             gasto.setFechaEpoch(fechaSeleccionada);
             gasto.setNotas(notas);
 
@@ -152,7 +153,7 @@ public class NuevoGastoActivity extends AppCompatActivity {
         } else {
             gastoEditar.setCategoria(categoria);
             gastoEditar.setDescripcion(descripcion);
-            gastoEditar.setMonto(monto);
+            gastoEditar.setMonto(Dinero.redondear(monto));
             gastoEditar.setFechaEpoch(fechaSeleccionada);
             gastoEditar.setNotas(notas);
 

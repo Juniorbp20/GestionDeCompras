@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.activities;
 
+import com.example.gestiondecompras.utils.Dinero;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -195,7 +196,7 @@ public class NuevaTarjetaActivity extends AppCompatActivity {
         tarjeta.setId(tarjetaIdEdicion);
         tarjeta.setBanco(banco);
         tarjeta.setAlias(alias);
-        tarjeta.setLimiteCredito(limite);
+        tarjeta.setLimiteCredito(Dinero.redondear(limite));
         tarjeta.setDiaCorte(diaCorte);
         tarjeta.setDiaPago(diaPago);
         tarjeta.setFechaVencimiento(fechaVencimiento);

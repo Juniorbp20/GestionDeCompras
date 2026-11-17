@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.activities;
 
+import com.example.gestiondecompras.utils.Dinero;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -257,7 +258,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         double monto;
         double ganancia;
         try {
-            monto = Double.parseDouble(montoTexto);
+            monto = Dinero.redondear(Double.parseDouble(montoTexto));
             ganancia = Double.parseDouble(gananciaTexto);
         } catch (NumberFormatException ex) {
             Toast.makeText(this, "Verifica los valores numéricos.", Toast.LENGTH_SHORT).show();
@@ -265,15 +266,16 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         }
 
         // VALIDACIÓN INTELIGENTE DE LÍMITE DE TARJETA
-        double diferencia = (pedidoIdEdicion > 0) ? monto - originalMonto : monto;
-        if (tarjeta.getLimiteCredito() > 0 && (tarjeta.getDeudaActual() + diferencia) > tarjeta.getLimiteCredito()) {
+        double diferencia = (pedidoIdEdicion > 0) ? Dinero.restar(monto, originalMonto) : monto;
+        if (tarjeta.getLimiteCredito() > 0
+                && Dinero.mayorQue(Dinero.sumar(tarjeta.getDeudaActual(), diferencia), tarjeta.getLimiteCredito())) {
             Toast.makeText(this, "El monto de la compra supera el limite de la tarjeta.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         boolean isGananciaFija = binding.rbGananciaFija.isChecked();
-        double totalGanancia = isGananciaFija ? ganancia : monto * (ganancia / 100);
-        double totalGeneral = monto + totalGanancia;
+        double totalGanancia = Dinero.redondear(isGananciaFija ? ganancia : monto * (ganancia / 100));
+        double totalGeneral = Dinero.sumar(monto, totalGanancia);
 
         double abonoInicial = 0;
         if (pedidoIdEdicion == 0) {
@@ -283,18 +285,18 @@ public class NuevoPedidoActivity extends AppCompatActivity {
                 String abonoTexto = Objects.requireNonNull(binding.etAbonoInicial.getText()).toString().trim();
                 if (!abonoTexto.isEmpty()) {
                     try {
-                        abonoInicial = Double.parseDouble(abonoTexto);
+                        abonoInicial = Dinero.redondear(Double.parseDouble(abonoTexto));
                     } catch (NumberFormatException ex) {
                         Toast.makeText(this, R.string.abono_monto_invalido, Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
             }
-            if (abonoInicial < 0 || abonoInicial > totalGeneral + 0.001) {
+            if (abonoInicial < 0 || Dinero.mayorQue(abonoInicial, totalGeneral)) {
                 Toast.makeText(this, R.string.abono_excede_total, Toast.LENGTH_SHORT).show();
                 return;
             }
-        } else if (totalGeneral < totalAbonadoOriginal - 0.001) {
+        } else if (Dinero.mayorQue(totalAbonadoOriginal, totalGeneral)) {
             Toast.makeText(this, R.string.abono_total_menor_abonado, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -318,7 +320,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
 
         if (pedidoIdEdicion > 0) {
             boolean estabaPagado = Pedido.ESTADO_PAGADO.equalsIgnoreCase(estadoOriginal);
-            boolean sigueCompleto = totalAbonadoOriginal >= totalGeneral - 0.001;
+            boolean sigueCompleto = Dinero.mayorOIgual(totalAbonadoOriginal, totalGeneral);
             if (sigueCompleto && !Pedido.ESTADO_CANCELADO.equalsIgnoreCase(estadoOriginal)) {
                 pedido.estado = Pedido.ESTADO_PAGADO;
             } else if (estabaPagado) {
@@ -327,7 +329,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
                 pedido.estado = estadoOriginal;
             }
         } else {
-            pedido.estado = abonoInicial >= totalGeneral - 0.001
+            pedido.estado = Dinero.mayorOIgual(abonoInicial, totalGeneral)
                     ? Pedido.ESTADO_PAGADO
                     : Pedido.ESTADO_PENDIENTE;
         }

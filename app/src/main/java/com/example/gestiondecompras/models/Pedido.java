@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.models;
 
+import com.example.gestiondecompras.utils.Dinero;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -193,10 +194,10 @@ public class Pedido {
     }
 
     public double getSaldo() {
-        return Math.max(0, totalGeneral - totalAbonado);
+        return Dinero.saldo(totalGeneral, totalAbonado);
     }
 
     public boolean estaPagadoCompleto() {
-        return totalAbonado >= totalGeneral - 0.001;
+        return Dinero.mayorOIgual(totalAbonado, totalGeneral);
     }
 }

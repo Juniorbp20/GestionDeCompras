@@ -57,6 +57,14 @@ jobs:
           reporter: "java-junit"
           fail-on-error: "false"
 
+      - name: Subir esquema de la base de datos
+        if: always() && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: "room-schemas"
+          path: "app/schemas/"
+          if-no-files-found: warn
+
       - name: Subir APK
         if: always()
         uses: actions/upload-artifact@v4

@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.viewmodels;
 
+import com.example.gestiondecompras.utils.Dinero;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -81,11 +82,11 @@ public class NuevoPedidoViewModel extends AndroidViewModel {
                 // Obtener el pedido anterior para comparar el monto
                 Pedido oldPedido = db.pedidoDao().getPedidoById(pedido.getId());
                 if (oldPedido != null) {
-                    double diff = pedido.getMontoCompra() - oldPedido.getMontoCompra();
+                    double diff = Dinero.restar(pedido.getMontoCompra(), oldPedido.getMontoCompra());
 
                     // Solo actualizar la deuda si hay una diferencia en el monto numérico
-                    if (diff != 0 && tarjeta != null && pedido.tarjetaId == tarjeta.id) {
-                        tarjeta.setDeudaActual(tarjeta.getDeudaActual() + diff);
+                    if (!Dinero.esCero(diff) && tarjeta != null && pedido.tarjetaId == tarjeta.id) {
+                        tarjeta.setDeudaActual(Dinero.sumar(tarjeta.getDeudaActual(), diff));
                         db.tarjetaDao().update(tarjeta);
                     }
                 }
@@ -95,14 +96,14 @@ public class NuevoPedidoViewModel extends AndroidViewModel {
                 pedido.id = pedidoId;
 
                 if (tarjeta != null) {
-                    tarjeta.setDeudaActual(tarjeta.getDeudaActual() + pedido.getMontoCompra());
+                    tarjeta.setDeudaActual(Dinero.sumar(tarjeta.getDeudaActual(), pedido.getMontoCompra()));
                     db.tarjetaDao().update(tarjeta);
                 }
 
-                if (abonoInicial > 0) {
+                if (Dinero.esPositivo(abonoInicial)) {
                     Abono abono = new Abono();
                     abono.pedidoId = pedidoId;
-                    abono.monto = abonoInicial;
+                    abono.monto = Dinero.redondear(abonoInicial);
                     abono.fechaEpoch = System.currentTimeMillis();
                     abono.metodo = metodoAbono != null ? metodoAbono : Abono.METODO_EFECTIVO;
                     db.abonoDao().insert(abono);

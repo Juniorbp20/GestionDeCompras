@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.activities;
 
+import com.example.gestiondecompras.utils.Dinero;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -130,11 +131,12 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
                 if (pago <= 0) {
                     throw new NumberFormatException();
                 }
-                if (pago > tarjeta.getDeudaActual()) {
+                pago = Dinero.redondear(pago);
+                if (Dinero.mayorQue(pago, tarjeta.getDeudaActual())) {
                     Toast.makeText(this, R.string.dialog_pago_tarjeta_excede_deuda, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                double nuevaDeuda = tarjeta.getDeudaActual() - pago;
+                double nuevaDeuda = Dinero.restar(tarjeta.getDeudaActual(), pago);
                 if (nuevaDeuda < 0) {
                     Toast.makeText(this, R.string.dialog_pago_tarjeta_excede_deuda, Toast.LENGTH_SHORT).show();
                     return;
