@@ -514,6 +514,44 @@
                         </LinearLayout>
                     </LinearLayout>
 
+                    <!-- Copia automática diaria -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/respaldo_auto_titulo"
+                                android:textAppearance="@style/TextAppearance.App.TitleSmall"
+                                android:textColor="@color/gray_dark" />
+
+                            <TextView
+                                android:id="@+id/tv_respaldo_ultimo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/respaldo_auto_nunca"
+                                android:textAppearance="@style/TextAppearance.App.BodySmall"
+                                android:textColor="@color/gray" />
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/sw_respaldo_auto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/respaldo_auto_titulo" />
+                    </LinearLayout>
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_drive_backup"
                         style="@style/Widget.App.Button.Outlined"

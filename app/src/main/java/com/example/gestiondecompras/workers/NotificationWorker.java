@@ -164,6 +164,8 @@ public class NotificationWorker extends Worker {
                 .setContentText(texto)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(texto))
                 .setContentIntent(pendingIntentPedidos(context, "por_cobrar", 101))
+                .addAction(R.drawable.ic_chat, context.getString(R.string.recordatorio_enviar_varios),
+                        pendingIntentPedidos(context, "por_cobrar", 104))
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setOnlyAlertOnce(true);
 

@@ -78,6 +78,31 @@ public final class DetallePedido {
         return R.color.status_pending;
     }
 
+    /** Texto del recordatorio de pago que se envía al cliente por WhatsApp. */
+    public static String mensajeRecordatorio(@NonNull Context context, @NonNull Pedido pedido) {
+        String tienda = pedido.getTienda() != null && !pedido.getTienda().isEmpty()
+                ? pedido.getTienda() : context.getString(R.string.recordatorio_tu_compra);
+        return context.getString(R.string.recordatorio_mensaje, pedido.getClienteNombre(),
+                moneda(pedido.getSaldo()), tienda);
+    }
+
+    /** Abre WhatsApp con el recordatorio de pago dirigido al teléfono del cliente. */
+    public static void recordarPagoPorWhatsApp(@NonNull Context context, @NonNull Pedido pedido, String telefono) {
+        String numero = ContactoUtils.numeroWhatsApp(telefono);
+        if (numero.isEmpty()) {
+            Toast.makeText(context, R.string.recordatorio_sin_telefono, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            String texto = java.net.URLEncoder.encode(mensajeRecordatorio(context, pedido), "UTF-8");
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    android.net.Uri.parse("https://wa.me/" + numero + "?text=" + texto));
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException | java.io.UnsupportedEncodingException e) {
+            Toast.makeText(context, R.string.no_app_disponible, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * Comparte con el cliente el resumen del pedido. No incluye el costo ni la ganancia:
      * es información interna del negocio que el cliente no debe ver.

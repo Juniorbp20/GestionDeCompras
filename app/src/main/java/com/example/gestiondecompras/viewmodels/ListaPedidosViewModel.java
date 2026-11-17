@@ -83,6 +83,14 @@ public class ListaPedidosViewModel extends AndroidViewModel {
         return abonos;
     }
 
+    /** Busca el teléfono del cliente del pedido (en segundo plano). */
+    public void obtenerTelefonoCliente(long clienteId, MutableLiveData<String> telefono) {
+        executorService.execute(() -> {
+            com.example.gestiondecompras.models.Cliente c = db.clienteDao().getClienteById(clienteId);
+            telefono.postValue(c != null && c.telefono != null ? c.telefono : "");
+        });
+    }
+
     public void deletePedido(Pedido pedido) {
         executorService.execute(() -> new PedidosServicio(db).eliminarPedido(pedido));
     }

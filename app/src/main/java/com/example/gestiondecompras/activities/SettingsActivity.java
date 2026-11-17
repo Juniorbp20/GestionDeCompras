@@ -302,7 +302,42 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
+    /** Estado del interruptor de copia automática y fecha de la última copia. */
+    private void actualizarRespaldoAutomatico() {
+        boolean activo = sharedPreferences.getBoolean(
+                com.example.gestiondecompras.workers.RespaldoWorker.PREF_ACTIVO, false);
+        binding.swRespaldoAuto.setOnCheckedChangeListener(null);
+        binding.swRespaldoAuto.setChecked(activo);
+        binding.swRespaldoAuto.setOnCheckedChangeListener((boton, marcado) -> cambiarRespaldoAutomatico(marcado));
+
+        long ultimo = sharedPreferences.getLong(
+                com.example.gestiondecompras.workers.RespaldoWorker.PREF_ULTIMO, 0L);
+        if (ultimo > 0) {
+            String fecha = java.text.DateFormat.getDateTimeInstance(
+                    java.text.DateFormat.MEDIUM, java.text.DateFormat.SHORT).format(new java.util.Date(ultimo));
+            binding.tvRespaldoUltimo.setText(getString(R.string.respaldo_auto_ultima, fecha));
+        } else {
+            binding.tvRespaldoUltimo.setText(R.string.respaldo_auto_nunca);
+        }
+    }
+
+    private void cambiarRespaldoAutomatico(boolean activar) {
+        if (activar && GoogleSignIn.getLastSignedInAccount(this) == null) {
+            Toast.makeText(this, R.string.respaldo_auto_requiere_cuenta, Toast.LENGTH_LONG).show();
+            binding.swRespaldoAuto.setChecked(false);
+            return;
+        }
+        sharedPreferences.edit()
+                .putBoolean(com.example.gestiondecompras.workers.RespaldoWorker.PREF_ACTIVO, activar)
+                .apply();
+        com.example.gestiondecompras.workers.RespaldoWorker.programar(this);
+        if (activar) {
+            Toast.makeText(this, R.string.respaldo_auto_activada, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void updateGoogleLoginStatus() {
+        actualizarRespaldoAutomatico();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
             binding.btnGoogleLogout.setText(R.string.google_cerrar_sesion);

@@ -27,4 +27,14 @@ public class ContactoUtilsTest {
         assertEquals("", ContactoUtils.numeroWhatsApp("12345"));
         assertEquals("", ContactoUtils.numeroWhatsApp(null));
     }
+
+    @Test
+    public void mismoTelefono_ignoraFormatoYCodigoDePais() {
+        org.junit.Assert.assertTrue(ContactoUtils.mismoTelefono("+1 (809) 555-1234", "8095551234"));
+        org.junit.Assert.assertTrue(ContactoUtils.mismoTelefono("809.555.1234", "1-809-555-1234"));
+        org.junit.Assert.assertFalse(ContactoUtils.mismoTelefono("8095551234", "8295551234"));
+        org.junit.Assert.assertFalse(ContactoUtils.mismoTelefono("", ""));
+        org.junit.Assert.assertFalse(ContactoUtils.mismoTelefono(null, "8095551234"));
+        org.junit.Assert.assertFalse(ContactoUtils.mismoTelefono("123", "123"));
+    }
 }

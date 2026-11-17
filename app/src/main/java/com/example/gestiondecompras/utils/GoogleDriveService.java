@@ -44,32 +44,37 @@ public class GoogleDriveService {
     public void uploadBackup(java.io.File localFile, DriveCallback<String> callback) {
         executor.execute(() -> {
             try {
-                FileList result = driveService.files().list()
-                        .setQ("name = '" + DRIVE_FILE_NAME + "' and trashed = false")
-                        .setSpaces("drive")
-                        .execute();
-
-                File fileMetadata = new File();
-                fileMetadata.setName(DRIVE_FILE_NAME);
-
-                FileContent mediaContent = new FileContent("application/octet-stream", localFile);
-
-                File uploadedFile;
-                if (result.getFiles().isEmpty()) {
-                    uploadedFile = driveService.files().create(fileMetadata, mediaContent)
-                            .setFields("id")
-                            .execute();
-                } else {
-                    String existingId = result.getFiles().get(0).getId();
-                    uploadedFile = driveService.files().update(existingId, null, mediaContent)
-                            .setFields("id")
-                            .execute();
-                }
-                callback.onSuccess(uploadedFile.getId());
+                callback.onSuccess(uploadBackupSync(localFile));
             } catch (IOException e) {
                 callback.onError(e);
             }
         });
+    }
+
+    /** Sube (o reemplaza) la copia en Drive de forma síncrona. No llamar desde el hilo principal. */
+    public String uploadBackupSync(java.io.File localFile) throws IOException {
+        FileList result = driveService.files().list()
+                .setQ("name = '" + DRIVE_FILE_NAME + "' and trashed = false")
+                .setSpaces("drive")
+                .execute();
+
+        File fileMetadata = new File();
+        fileMetadata.setName(DRIVE_FILE_NAME);
+
+        FileContent mediaContent = new FileContent("application/octet-stream", localFile);
+
+        File uploadedFile;
+        if (result.getFiles().isEmpty()) {
+            uploadedFile = driveService.files().create(fileMetadata, mediaContent)
+                    .setFields("id")
+                    .execute();
+        } else {
+            String existingId = result.getFiles().get(0).getId();
+            uploadedFile = driveService.files().update(existingId, null, mediaContent)
+                    .setFields("id")
+                    .execute();
+        }
+        return uploadedFile.getId();
     }
 
     public void downloadBackup(java.io.File localFile, DriveCallback<Void> callback) {

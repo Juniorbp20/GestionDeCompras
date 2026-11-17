@@ -372,6 +372,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         if (!Pedido.ESTADO_CANCELADO.equalsIgnoreCase(pedido.getEstado()) && Dinero.esPositivo(pedido.getSaldo())) {
             hoja.accion(R.drawable.ic_payments, R.string.abono_registrar,
                     () -> mostrarDialogoAbono(pedido, null, null, null));
+            hoja.accion(R.drawable.ic_chat, R.string.recordatorio_whatsapp, () -> recordarPago(pedido));
         }
         hoja.accion(R.drawable.ic_share, R.string.pedido_enviar_resumen, () -> DetallePedido.compartirResumen(this, pedido))
                 .peligrosa(R.drawable.ic_delete, R.string.accion_eliminar,
@@ -385,6 +386,17 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         } else {
             binding.toolbar.setTitle(R.string.pedidos_title);
         }
+    }
+
+    /** Abre WhatsApp con el recordatorio de pago para el cliente del pedido. */
+    private void recordarPago(Pedido pedido) {
+        androidx.lifecycle.MutableLiveData<String> telefono = new androidx.lifecycle.MutableLiveData<>();
+        telefono.observe(this, tel -> {
+            if (tel != null) {
+                DetallePedido.recordarPagoPorWhatsApp(this, pedido, tel);
+            }
+        });
+        viewModel.obtenerTelefonoCliente(pedido.clienteId, telefono);
     }
 
     /** Oculta el pedido y lo borra al cerrarse el aviso, salvo que se pulse "Deshacer". */

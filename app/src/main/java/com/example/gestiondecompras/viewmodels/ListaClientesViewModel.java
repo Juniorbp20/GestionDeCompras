@@ -47,6 +47,36 @@ public class ListaClientesViewModel extends AndroidViewModel {
         });
     }
 
+    /**
+     * Importa un cliente salvo que ya exista otro con el mismo teléfono (o, sin teléfono,
+     * con el mismo nombre). En ese caso devuelve el existente por {@code duplicado} sin insertar.
+     */
+    public void importarCliente(Cliente nuevo, androidx.lifecycle.MutableLiveData<Cliente> duplicado,
+                                Runnable alImportar) {
+        executorService.execute(() -> {
+            Cliente existente = null;
+            for (Cliente c : db.clienteDao().getAllClientes()) {
+                boolean mismoTelefono = com.example.gestiondecompras.utils.ContactoUtils
+                        .mismoTelefono(c.telefono, nuevo.telefono);
+                boolean mismoNombreSinTelefono = com.example.gestiondecompras.utils.ContactoUtils
+                        .claveTelefono(nuevo.telefono).isEmpty()
+                        && c.nombre != null && nuevo.nombre != null
+                        && c.nombre.trim().equalsIgnoreCase(nuevo.nombre.trim());
+                if (mismoTelefono || mismoNombreSinTelefono) {
+                    existente = c;
+                    break;
+                }
+            }
+            if (existente != null) {
+                duplicado.postValue(existente);
+            } else {
+                db.clienteDao().insert(nuevo);
+                loadClientes();
+                new android.os.Handler(android.os.Looper.getMainLooper()).post(alImportar);
+            }
+        });
+    }
+
     public void insertCliente(Cliente cliente) {
         executorService.execute(() -> {
             db.clienteDao().insert(cliente);
