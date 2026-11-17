@@ -29,6 +29,10 @@ public interface CuentaDao {
     @Query("SELECT * FROM fin_cuentas WHERE archivada = 0 ORDER BY nombre")
     List<Cuenta> getActivas();
 
+    /** Busca una cuenta (activa o archivada) por nombre, sin distinguir mayúsculas ni espacios. */
+    @Query("SELECT * FROM fin_cuentas WHERE TRIM(LOWER(nombre)) = TRIM(LOWER(:nombre)) LIMIT 1")
+    Cuenta buscarPorNombre(String nombre);
+
     @Query("SELECT COUNT(*) FROM fin_movimientos WHERE cuenta_id = :id")
     int contarMovimientos(long id);
 

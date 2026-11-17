@@ -173,6 +173,7 @@ public class NuevoMovimientoActivity extends AppCompatActivity {
 
     private void cargarCuentas(@Nullable Long cuentaId) {
         executor.execute(() -> {
+            FinanzasServicio.asegurarCuentasBase(this, db);
             List<Cuenta> lista = db.cuentaDao().getActivas();
             if (cuentaId != null) {
                 boolean esta = false;
@@ -192,8 +193,16 @@ public class NuevoMovimientoActivity extends AppCompatActivity {
                     nombres.add(lista.get(i).nombre);
                     if (cuentaId != null && lista.get(i).id == cuentaId) cuentaSeleccionada = i + 1;
                 }
-                // Por defecto, la primera cuenta (normalmente "Efectivo") al crear
-                if (cuentaId == null && edicion == null && !lista.isEmpty()) cuentaSeleccionada = 1;
+                // Por defecto al crear: la cuenta de efectivo (o la primera si no hay)
+                if (cuentaId == null && edicion == null && !lista.isEmpty()) {
+                    cuentaSeleccionada = 1;
+                    for (int i = 0; i < lista.size(); i++) {
+                        if (Cuenta.TIPO_EFECTIVO.equals(lista.get(i).tipo)) {
+                            cuentaSeleccionada = i + 1;
+                            break;
+                        }
+                    }
+                }
                 binding.spCuenta.setAdapter(new ArrayAdapter<>(this, R.layout.item_dropdown, nombres));
                 binding.spCuenta.setText(nombres.get(cuentaSeleccionada), false);
             });

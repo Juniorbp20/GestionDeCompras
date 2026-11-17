@@ -1,5 +1,8 @@
 package com.example.gestiondecompras.servicios;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -103,6 +106,53 @@ public class FinanzasServicio {
 
     public FinanzasServicio(@NonNull AppDatabase db) {
         this.db = db;
+    }
+
+    // ===== Cuentas predeterminadas =====
+
+    private static final String PREFS = "finanzas_prefs";
+    private static final String CLAVE_CUENTAS_BASE = "cuentas_base_v1";
+
+    /** Nombre y tipo de las cuentas con las que empieza Finanzas. */
+    static final String[][] CUENTAS_BASE = {
+            {"Efectivo", Cuenta.TIPO_EFECTIVO},
+            {"Transferencia", Cuenta.TIPO_BANCO},
+            {"Depósito", Cuenta.TIPO_BANCO}
+    };
+
+    /**
+     * Crea las cuentas base que falten (comparando por nombre). Devuelve cuántas creó.
+     * No toca las existentes, aunque estén archivadas.
+     */
+    public int crearCuentasBase() {
+        return db.runInTransaction(() -> {
+            int creadas = 0;
+            for (String[] base : CUENTAS_BASE) {
+                if (db.cuentaDao().buscarPorNombre(base[0]) == null) {
+                    Cuenta c = new Cuenta();
+                    c.nombre = base[0];
+                    c.tipo = base[1];
+                    c.saldoInicial = 0;
+                    db.cuentaDao().insert(c);
+                    creadas++;
+                }
+            }
+            return creadas;
+        });
+    }
+
+    /**
+     * Crea las cuentas base una sola vez por instalación: si el usuario las borra después,
+     * no vuelven a aparecer. Llamar fuera del hilo principal.
+     */
+    public static void asegurarCuentasBase(@NonNull Context context, @NonNull AppDatabase db) {
+        SharedPreferences prefs = context.getApplicationContext()
+                .getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        if (prefs.getBoolean(CLAVE_CUENTAS_BASE, false)) {
+            return;
+        }
+        new FinanzasServicio(db).crearCuentasBase();
+        prefs.edit().putBoolean(CLAVE_CUENTAS_BASE, true).apply();
     }
 
     // ===== Movimientos =====

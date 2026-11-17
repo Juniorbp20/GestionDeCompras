@@ -731,4 +731,7 @@
     <string name="tarjeta_vence_corto">Vence</string>
     <string name="tarjeta_fechas_ayuda">Corte y pago: día del mes (1-31). Vence: MM/AA.</string>
     <string name="tarjeta_notas_hint">Notas (opcional)</string>
+    <string name="cliente_elegir_contacto">Importar</string>
+    <string name="cliente_guardar_contacto">Exportar</string>
+    <string name="cliente_contacto_cargado">Datos cargados de %1$s</string>
 </resources>
