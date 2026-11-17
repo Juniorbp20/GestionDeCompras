@@ -49,6 +49,17 @@ public class FinanzasServicioTest {
         TestDb.cerrar(db);
     }
 
+    @Test
+    public void crearCuentasBase_creaSoloLasQueFaltan() {
+        // setUp ya creó "Efectivo": solo faltan Transferencia y Depósito
+        assertEquals(2, servicio.crearCuentasBase());
+        assertEquals(Cuenta.TIPO_BANCO, db.cuentaDao().buscarPorNombre("transferencia").tipo);
+        assertEquals(Cuenta.TIPO_BANCO, db.cuentaDao().buscarPorNombre(" Depósito ").tipo);
+        // Una segunda llamada no duplica nada
+        assertEquals(0, servicio.crearCuentasBase());
+        assertEquals(4, db.cuentaDao().getTodas().size());
+    }
+
     private long categoria(String nombre, String tipo) {
         CategoriaFin c = new CategoriaFin();
         c.nombre = nombre;

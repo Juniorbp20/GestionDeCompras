@@ -1,7 +1,16 @@
 package com.example.gestiondecompras.activities;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +34,15 @@ public class NuevoClienteActivity extends AppCompatActivity {
     @Nullable
     private Cliente clienteEdicion;
 
+    /** Selector de contactos del sistema: da acceso solo al contacto elegido, sin pedir permiso. */
+    private final ActivityResultLauncher<Intent> lanzadorContacto = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), resultado -> {
+                if (resultado.getResultCode() == RESULT_OK && resultado.getData() != null
+                        && resultado.getData().getData() != null) {
+                    rellenarDesdeContacto(resultado.getData().getData());
+                }
+            });
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +53,84 @@ public class NuevoClienteActivity extends AppCompatActivity {
 
         setupToolbar();
         setupSaveButton();
+        setupContactos();
         cargarSiEsEdicion();
+    }
+
+    private void setupContactos() {
+        binding.btnElegirContacto.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+            try {
+                lanzadorContacto.launch(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this, R.string.no_app_disponible, Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.btnGuardarContacto.setOnClickListener(v -> guardarEnContactos());
+    }
+
+    /** Rellena nombre, apellido y teléfono con el contacto elegido. */
+    private void rellenarDesdeContacto(Uri uri) {
+        String[] columnas = {
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+        };
+        try (Cursor cursor = getContentResolver().query(uri, columnas, null, null, null)) {
+            if (cursor == null || !cursor.moveToFirst()) {
+                Toast.makeText(this, R.string.contacto_error_importar, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String nombreCompleto = cursor.getString(0);
+            String telefono = cursor.getString(1);
+            if (!TextUtils.isEmpty(nombreCompleto)) {
+                String[] partes = nombreCompleto.trim().split("\\s+", 2);
+                binding.etNombre.setText(partes[0]);
+                binding.etApellido.setText(partes.length > 1 ? partes[1] : "");
+                binding.etNombre.setError(null);
+            }
+            if (!TextUtils.isEmpty(telefono)) {
+                binding.etTelefono.setText(telefono.trim());
+            }
+            Toast.makeText(this, getString(R.string.cliente_contacto_cargado,
+                    nombreCompleto != null ? nombreCompleto.trim() : ""), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.contacto_error_importar, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /** Abre la app de contactos del teléfono con los datos del cliente ya escritos. */
+    private void guardarEnContactos() {
+        String nombre = texto(binding.etNombre);
+        if (nombre.isEmpty()) {
+            binding.etNombre.setError(getString(R.string.cliente_nombre_requerido));
+            binding.etNombre.requestFocus();
+            return;
+        }
+        String apellido = texto(binding.etApellido);
+        String telefono = texto(binding.etTelefono);
+        String direccion = texto(binding.etDireccion);
+
+        Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
+        intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+        intent.putExtra(ContactsContract.Intents.Insert.NAME,
+                apellido.isEmpty() ? nombre : nombre + " " + apellido);
+        if (!telefono.isEmpty()) {
+            intent.putExtra(ContactsContract.Intents.Insert.PHONE, telefono);
+            intent.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE,
+                    ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
+        }
+        if (!direccion.isEmpty()) {
+            intent.putExtra(ContactsContract.Intents.Insert.POSTAL, direccion);
+        }
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.no_app_disponible, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static String texto(android.widget.EditText campo) {
+        return campo.getText() != null ? campo.getText().toString().trim() : "";
     }
 
     private void setupToolbar() {

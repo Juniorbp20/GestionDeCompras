@@ -99,6 +99,7 @@ public class FinanzasViewModel extends AndroidViewModel {
     /** Recarga todo (al volver de un formulario, tras borrar, etc.). */
     public void recargar() {
         executor.execute(() -> {
+            FinanzasServicio.asegurarCuentasBase(getApplication(), db);
             // Los recurrentes vencidos se registran antes de mostrar los datos
             servicio.generarRecurrentes(System.currentTimeMillis());
             categorias.postValue(servicio.mapaCategorias());
