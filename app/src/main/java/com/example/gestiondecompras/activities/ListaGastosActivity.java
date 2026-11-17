@@ -394,7 +394,7 @@ public class ListaGastosActivity extends AppCompatActivity implements GastosAdap
         binding.tvTotalMes.setText(formatoMoneda(resumen.gastos));
         binding.tvBalanceMes.setText(formatoMoneda(resumen.balance));
         binding.tvBalanceMes.setTextColor(ContextCompat.getColor(this,
-                resumen.balance < 0 ? R.color.error_color : R.color.success_color));
+                resumen.balance < 0 ? R.color.hero_negative : R.color.hero_positive));
 
         binding.tvCantidadMes.setText(getResources().getQuantityString(
                 R.plurals.finanzas_cantidad_periodo,
@@ -428,15 +428,15 @@ public class ListaGastosActivity extends AppCompatActivity implements GastosAdap
         int color;
         if (Math.abs(variacion) < 0.05) {
             texto = R.string.finanzas_variacion_igual;
-            color = R.color.gray;
+            color = R.color.hero_text_secondary;
             binding.tvVariacionGastos.setText(texto);
         } else if (variacion > 0) {
             texto = R.string.finanzas_variacion_mas;
-            color = R.color.error_color;
+            color = R.color.hero_negative;
             binding.tvVariacionGastos.setText(getString(texto, valor));
         } else {
             texto = R.string.finanzas_variacion_menos;
-            color = R.color.success_color;
+            color = R.color.hero_positive;
             binding.tvVariacionGastos.setText(getString(texto, valor));
         }
 

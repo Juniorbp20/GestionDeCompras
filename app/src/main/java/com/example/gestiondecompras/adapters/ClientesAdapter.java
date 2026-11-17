@@ -51,10 +51,29 @@ public class ClientesAdapter extends RecyclerView.Adapter<ClientesAdapter.Client
         notifyDataSetChanged();
     }
 
+    /** Devuelve hasta dos iniciales del nombre (p. ej. "Ana Pérez" -> "AP"). */
+    static String iniciales(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return "?";
+        }
+        String[] partes = nombre.trim().split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (String parte : partes) {
+            if (!parte.isEmpty()) {
+                sb.appendCodePoint(parte.codePointAt(0));
+            }
+            if (sb.length() >= 2) {
+                break;
+            }
+        }
+        return sb.toString().toUpperCase(java.util.Locale.getDefault());
+    }
+
     static class ClienteViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNombre, tvTelefono, tvEmail, tvCantidadPedidos, tvTotalCompras;
+        TextView tvInicial, tvNombre, tvTelefono, tvEmail, tvCantidadPedidos, tvTotalCompras;
         public ClienteViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvInicial = itemView.findViewById(R.id.tvInicial);
             tvNombre = itemView.findViewById(R.id.tvNombre);
             tvTelefono = itemView.findViewById(R.id.tvTelefono);
             tvEmail = itemView.findViewById(R.id.tvEmail);
@@ -63,6 +82,8 @@ public class ClientesAdapter extends RecyclerView.Adapter<ClientesAdapter.Client
         }
         void bind(Cliente c) {
             tvNombre.setText(c.getNombre());
+            String apellido = c.getApellido() != null ? c.getApellido() : "";
+            tvInicial.setText(iniciales(c.getNombre() + " " + apellido));
             if (c.getTelefono() != null && !c.getTelefono().isEmpty()) { tvTelefono.setText(c.getTelefono()); tvTelefono.setVisibility(View.VISIBLE);} else tvTelefono.setVisibility(View.GONE);
             if (c.getEmail() != null && !c.getEmail().isEmpty()) { tvEmail.setText(c.getEmail()); tvEmail.setVisibility(View.VISIBLE);} else tvEmail.setVisibility(View.GONE);
             

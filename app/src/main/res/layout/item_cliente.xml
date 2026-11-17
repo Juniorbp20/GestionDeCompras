@@ -1,18 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
-        <TextView android:id="@+id/tvNombre" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="16sp" android:text="Nombre"/>
-        <TextView android:id="@+id/tvTelefono" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Teléfono" android:visibility="gone"/>
-        <TextView android:id="@+id/tvEmail" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Email" android:visibility="gone"/>
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
-            <TextView android:id="@+id/tvCantidadPedidos" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="0 pedidos"/>
-            <TextView android:id="@+id/tvTotalCompras" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RD$ 0.00"/>
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="6dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="18dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- Iniciales del cliente -->
+        <TextView
+            android:id="@+id/tvInicial"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_avatar"
+            android:fontFamily="@font/inter_semibold"
+            android:gravity="center"
+            android:textColor="@color/gold_300"
+            android:textSize="16sp"
+            tools:text="AP" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Nombre"
+                android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                android:textColor="@color/gray_dark" />
+
+            <TextView
+                android:id="@+id/tvTelefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Teléfono"
+                android:textAppearance="@style/TextAppearance.App.BodySmall"
+                android:textColor="@color/gray"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Email"
+                android:textAppearance="@style/TextAppearance.App.BodySmall"
+                android:textColor="@color/gray"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTotalCompras"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:fontFeatureSettings="tnum"
+                android:text="RD$ 0.00"
+                android:textColor="@color/gray_dark"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvCantidadPedidos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_chip_estado"
+                android:fontFamily="@font/inter_medium"
+                android:text="0 pedidos"
+                android:textColor="@color/accent_gold"
+                android:textSize="11sp" />
         </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+</com.google.android.material.card.MaterialCardView>
