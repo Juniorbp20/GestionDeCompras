@@ -47,9 +47,14 @@ public class NotificationWorker extends Worker {
     private static final int ID_COBROS = 1001;
     private static final int ID_RESUMEN = 1002;
     private static final int ID_PRUEBA = 1003;
-    private static final int BASE_ENTREGA = 2000;
-    private static final int BASE_CORTE = 3000;
-    private static final int BASE_PAGO = 4000;
+    // Rangos separados por un millón para que los IDs de entregas, cortes y pagos nunca coincidan.
+    private static final int RANGO_IDS = 1_000_000;
+    private static final int BASE_ENTREGA = RANGO_IDS;
+    private static final int BASE_CORTE = 2 * RANGO_IDS;
+    private static final int BASE_PAGO = 3 * RANGO_IDS;
+
+    /** Canales de versiones anteriores que ya no se usan. */
+    private static final String[] CANALES_OBSOLETOS = {"default_channel", "recordatorios_diarios"};
 
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -76,7 +81,7 @@ public class NotificationWorker extends Worker {
         try {
             AppDatabase db = AppDatabase.getInstance(context);
             enviarResumenDiarioSiCorresponde(context, prefs, db, ahora);
-            enviarRecordatorioCobros(context, db, ahora);
+            enviarRecordatorioCobros(context, prefs, db, ahora);
             enviarRecordatoriosEntregas(context, prefs, db, ahora);
             enviarRecordatoriosTarjetas(context, prefs, db, ahora);
             purgarDedupe(prefs, ahora);
@@ -92,29 +97,39 @@ public class NotificationWorker extends Worker {
             return;
         }
 
-        long inicioHoy = inicioDelDia(ahora);
-        long finHoy = finDelDia(ahora);
+        // Si el resumen se programa por la mañana, el día en curso apenas tiene actividad:
+        // en ese caso se resume el día anterior completo.
+        int horaResumen = RecordatorioUtils.normalizarHoraResumen(prefs.getInt("reminder_hour", 9));
+        boolean resumirAyer = RecordatorioUtils.resumirDiaAnterior(horaResumen);
+        Calendar dia = (Calendar) ahora.clone();
+        if (resumirAyer) {
+            dia.add(Calendar.DAY_OF_YEAR, -1);
+        }
 
-        int pedidosHoy = db.pedidoDao().countPedidosEnRango(inicioHoy, finHoy);
-        double ventas = db.pedidoDao().totalVentasEnRango(inicioHoy, finHoy);
-        double ganancia = db.pedidoDao().totalGananciaEnRango(inicioHoy, finHoy);
-        double cobrado = db.abonoDao().getTotalRango(inicioHoy, finHoy);
+        long inicioDia = inicioDelDia(dia);
+        long finDia = finDelDia(dia);
+
+        int pedidosDia = db.pedidoDao().countPedidosEnRango(inicioDia, finDia);
+        double ventas = db.pedidoDao().totalVentasEnRango(inicioDia, finDia);
+        double ganancia = db.pedidoDao().totalGananciaEnRango(inicioDia, finDia);
+        double cobrado = db.abonoDao().getTotalRango(inicioDia, finDia);
         double porCobrar = db.pedidoDao().totalPorCobrarGlobal();
-        int entregasHoy = db.pedidoDao().countEntregasEnRango(inicioHoy, finHoy);
-        int atrasados = db.pedidoDao().countAtrasados(inicioHoy);
+        int entregasDia = db.pedidoDao().countEntregasEnRango(inicioDia, finDia);
+        int atrasados = db.pedidoDao().countAtrasados(inicioDelDia(ahora));
 
-        String detalle = context.getString(R.string.notif_resumen_pedidos, pedidosHoy) + "\n"
+        String detalle = context.getString(R.string.notif_resumen_pedidos, pedidosDia) + "\n"
                 + context.getString(R.string.notif_resumen_ventas, ventas) + "\n"
                 + context.getString(R.string.notif_resumen_ganancia, ganancia) + "\n"
                 + context.getString(R.string.notif_resumen_cobrado, cobrado) + "\n"
                 + context.getString(R.string.notif_resumen_por_cobrar, porCobrar) + "\n"
-                + context.getString(R.string.notif_resumen_entregas, entregasHoy) + "\n"
+                + context.getString(R.string.notif_resumen_entregas, entregasDia) + "\n"
                 + context.getString(R.string.notif_resumen_atrasados, atrasados);
 
         NotificationCompat.Builder builder = base(context, CANAL_RESUMEN)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentTitle(context.getString(R.string.notif_resumen_title))
-                .setContentText(context.getString(R.string.notif_resumen_pedidos, pedidosHoy)
+                .setContentTitle(context.getString(resumirAyer
+                        ? R.string.notif_resumen_title_ayer : R.string.notif_resumen_title))
+                .setContentText(context.getString(R.string.notif_resumen_pedidos, pedidosDia)
                         + " · " + context.getString(R.string.notif_resumen_por_cobrar, porCobrar))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(detalle));
 
@@ -122,11 +137,18 @@ public class NotificationWorker extends Worker {
         prefs.edit().putString(PREF_ULTIMO_RESUMEN, RecordatorioUtils.claveDia(ahora)).apply();
     }
 
-    private void enviarRecordatorioCobros(Context context, AppDatabase db, Calendar ahora) {
+    private void enviarRecordatorioCobros(Context context, SharedPreferences prefs,
+                                          AppDatabase db, Calendar ahora) {
         int cantidad = db.pedidoDao().countPorCobrar();
         NotificationManagerCompat manager = NotificationManagerCompat.from(context);
         if (cantidad <= 0) {
             manager.cancel(ID_COBROS);
+            return;
+        }
+
+        // Un solo aviso de cobros al día: evita que suene en cada ejecución del trabajo.
+        String clave = RecordatorioUtils.claveDedupe("cob", 0, "d", ahora);
+        if (yaEnviada(prefs, clave)) {
             return;
         }
 
@@ -142,9 +164,11 @@ public class NotificationWorker extends Worker {
                 .setContentText(texto)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(texto))
                 .setContentIntent(pendingIntentPedidos(context, "por_cobrar", 101))
-                .setCategory(NotificationCompat.CATEGORY_REMINDER);
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setOnlyAlertOnce(true);
 
         notificar(context, ID_COBROS, builder);
+        marcarEnviada(prefs, clave);
     }
 
     private void enviarRecordatoriosEntregas(Context context, SharedPreferences prefs,
@@ -200,7 +224,7 @@ public class NotificationWorker extends Worker {
                 .setContentIntent(pendingIntentPedidos(context, "pendiente", 102))
                 .setCategory(NotificationCompat.CATEGORY_REMINDER);
 
-        int id = BASE_ENTREGA + (int) (pedido.id % 100000);
+        int id = BASE_ENTREGA + (int) (pedido.id % RANGO_IDS);
         notificar(context, id, builder);
         marcarEnviada(prefs, clave);
     }
@@ -264,7 +288,7 @@ public class NotificationWorker extends Worker {
                 .setCategory(NotificationCompat.CATEGORY_REMINDER);
 
         int base = esCorte ? BASE_CORTE : BASE_PAGO;
-        int id = base + (int) (tarjeta.id % 100000);
+        int id = base + (int) (tarjeta.id % RANGO_IDS);
         notificar(context, id, builder);
     }
 
@@ -427,6 +451,10 @@ public class NotificationWorker extends Worker {
         NotificationManager manager = context.getSystemService(NotificationManager.class);
         if (manager == null) {
             return;
+        }
+
+        for (String obsoleto : CANALES_OBSOLETOS) {
+            manager.deleteNotificationChannel(obsoleto);
         }
 
         crearCanal(manager, CANAL_COBROS,
