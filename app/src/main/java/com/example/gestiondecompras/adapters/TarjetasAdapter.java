@@ -41,6 +41,11 @@ public class TarjetasAdapter extends RecyclerView.Adapter<TarjetasAdapter.Tarjet
         holder.bind(t);
         holder.itemView.setOnClickListener(v -> { if (listener != null) listener.onTarjetaClick(t); });
         holder.itemView.setOnLongClickListener(v -> { if (listener != null) listener.onTarjetaLongClick(t); return true; });
+        View btnMas = holder.itemView.findViewById(R.id.btnMas);
+        if (btnMas != null) {
+            btnMas.setVisibility(listener != null ? View.VISIBLE : View.GONE);
+            btnMas.setOnClickListener(v -> { if (listener != null) listener.onTarjetaLongClick(t); });
+        }
     }
 
     @Override

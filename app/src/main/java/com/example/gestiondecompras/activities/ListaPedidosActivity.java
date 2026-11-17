@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiondecompras.R;
+import com.example.gestiondecompras.utils.HojaAcciones;
+import com.example.gestiondecompras.utils.NavegacionInferior;
 import com.example.gestiondecompras.adapters.AbonosAdapter;
 import com.example.gestiondecompras.adapters.PedidosAdapter;
 import com.example.gestiondecompras.databinding.ActivityListaPedidosBinding;
@@ -64,6 +66,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
             }
         }
 
+        configurarNavegacion();
         setupRecyclerView();
         setupFilters();
         setupFab();
@@ -77,6 +80,22 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
     protected void onResume() {
         super.onResume();
         cargarPedidos();
+    }
+
+    /**
+     * Como pestaña principal muestra la barra inferior y oculta la flecha atrás.
+     * Abierta desde un cliente (pedidos de ese cliente) es una vista de detalle:
+     * sin barra inferior y con flecha para volver a Clientes.
+     */
+    private void configurarNavegacion() {
+        if (filtroClienteId != null) {
+            binding.bottomNav.setVisibility(View.GONE);
+            return;
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        binding.toolbar.setNavigationIcon(null);
+        NavegacionInferior.configurar(this, binding.bottomNav, R.id.tab_pedidos,
+                () -> binding.rvPedidos.smoothScrollToPosition(0));
     }
 
     private void setupRecyclerView() {
@@ -265,9 +284,9 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
             MutableLiveData<Boolean> resultado = new MutableLiveData<>();
             resultado.observe(this, ok -> {
                 if (Boolean.TRUE.equals(ok)) {
-                    tvAbonado.setText(moneda(pedido.getTotalAbonado()));
-                    tvSaldo.setText(moneda(pedido.getSaldo()));
-                    aplicarEstado(tvEstado, pedido.getEstado());
+                    if (tvAbonado != null) tvAbonado.setText(moneda(pedido.getTotalAbonado()));
+                    if (tvSaldo != null) tvSaldo.setText(moneda(pedido.getSaldo()));
+                    if (tvEstado != null) aplicarEstado(tvEstado, pedido.getEstado());
                     Snackbar.make(binding.rvPedidos, R.string.abono_guardado, Snackbar.LENGTH_SHORT).show();
                     cargarPedidos();
                     dialog.dismiss();
@@ -376,7 +395,38 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
     @Override
     public void onPedidoLongClick(Pedido pedido) {
         if (pedido != null) {
-            mostrarDialogoEstado(pedido);
+            mostrarAccionesPedido(pedido);
+        }
+    }
+
+    /** Hoja inferior con todas las acciones del pedido, en el orden común de la app. */
+    private void mostrarAccionesPedido(Pedido pedido) {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault());
+        String subtitulo = (pedido.getTienda() != null && !pedido.getTienda().isEmpty()
+                ? pedido.getTienda() + " · " : "") + moneda(pedido.getTotalGeneral());
+
+        HojaAcciones hoja = HojaAcciones.de(this, pedido.getClienteNombre())
+                .subtitulo(subtitulo)
+                .accion(R.drawable.ic_visibility, R.string.accion_ver_detalle, () -> onPedidoClick(pedido))
+                .accion(R.drawable.ic_edit, R.string.accion_editar, () -> {
+                    Intent i = new Intent(this, NuevoPedidoActivity.class);
+                    i.putExtra("pedido_id", pedido.getId());
+                    startActivity(i);
+                })
+                .accion(R.drawable.ic_swap, R.string.accion_cambiar_estado, () -> mostrarDialogoEstado(pedido));
+        if (!Pedido.ESTADO_CANCELADO.equalsIgnoreCase(pedido.getEstado()) && pedido.getSaldo() > 0.001) {
+            hoja.accion(R.drawable.ic_payments, R.string.abono_registrar,
+                    () -> mostrarDialogoAbono(pedido, null, null, null));
+        }
+        hoja.accion(R.drawable.ic_share, R.string.pedido_enviar_resumen, () -> enviarResumenCliente(pedido, sdf))
+                .peligrosa(R.drawable.ic_delete, R.string.accion_eliminar,
+                        () -> confirmarEliminarPedido(pedido, RecyclerView.NO_POSITION))
+                .mostrar();
+    }
+
+    private void restaurarFila(int position) {
+        if (position != RecyclerView.NO_POSITION) {
+            adapter.notifyItemChanged(position);
         }
     }
 
@@ -396,8 +446,8 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
                     viewModel.deletePedido(pedido);
                     Snackbar.make(binding.rvPedidos, R.string.snackbar_pedido_eliminado, Snackbar.LENGTH_SHORT).show();
                 })
-                .setNegativeButton(R.string.accion_cancelar, (dialog, which) -> adapter.notifyItemChanged(position))
-                .setOnCancelListener(dialog -> adapter.notifyItemChanged(position))
+                .setNegativeButton(R.string.accion_cancelar, (dialog, which) -> restaurarFila(position))
+                .setOnCancelListener(dialog -> restaurarFila(position))
                 .show();
     }
 

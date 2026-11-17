@@ -41,6 +41,11 @@ public class ClientesAdapter extends RecyclerView.Adapter<ClientesAdapter.Client
         holder.bind(c);
         holder.itemView.setOnClickListener(v -> { if (listener != null) listener.onClienteClick(c); });
         holder.itemView.setOnLongClickListener(v -> { if (listener != null) listener.onClienteLongClick(c); return true; });
+        View btnMas = holder.itemView.findViewById(R.id.btnMas);
+        if (btnMas != null) {
+            btnMas.setVisibility(listener != null ? View.VISIBLE : View.GONE);
+            btnMas.setOnClickListener(v -> { if (listener != null) listener.onClienteLongClick(c); });
+        }
     }
 
     @Override

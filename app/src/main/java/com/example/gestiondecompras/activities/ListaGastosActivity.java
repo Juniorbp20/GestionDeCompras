@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.gestiondecompras.R;
+import com.example.gestiondecompras.utils.HojaAcciones;
+import com.example.gestiondecompras.utils.NavegacionInferior;
 import com.example.gestiondecompras.adapters.GastosAdapter;
 import com.example.gestiondecompras.databinding.ActivityListaGastosBinding;
 import com.example.gestiondecompras.models.Gasto;
@@ -68,14 +70,17 @@ public class ListaGastosActivity extends AppCompatActivity implements GastosAdap
         viewModel = new ViewModelProvider(this).get(ListaGastosViewModel.class);
 
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        binding.toolbar.setNavigationOnClickListener(v -> finish());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        binding.toolbar.setNavigationIcon(null);
 
         setupRecyclerView();
         setupCategoriasSpinner();
         setupFiltros();
         observeViewModel();
         seleccionarMesActual();
+
+        NavegacionInferior.configurar(this, binding.bottomNav, R.id.tab_finanzas,
+                () -> binding.rvGastos.smoothScrollToPosition(0));
     }
 
     @Override
@@ -469,22 +474,11 @@ public class ListaGastosActivity extends AppCompatActivity implements GastosAdap
     }
 
     private void mostrarOpcionesGasto(Gasto gasto) {
-        CharSequence[] opciones = {
-                getString(R.string.accion_editar),
-                getString(R.string.accion_eliminar)
-        };
-
-        new AlertDialog.Builder(this)
-                .setTitle(gasto.getDescripcion())
-                .setItems(opciones, (dialog, which) -> {
-                    if (which == 0) {
-                        editarGasto(gasto);
-                    } else if (which == 1) {
-                        confirmarEliminar(gasto);
-                    }
-                })
-                .setNegativeButton(R.string.accion_cancelar, null)
-                .show();
+        HojaAcciones.de(this, gasto.getDescripcion())
+                .subtitulo(gasto.getCategoria() + " · " + formatoMoneda(gasto.getMonto()))
+                .accion(R.drawable.ic_edit, R.string.accion_editar, () -> editarGasto(gasto))
+                .peligrosa(R.drawable.ic_delete, R.string.accion_eliminar, () -> confirmarEliminar(gasto))
+                .mostrar();
     }
 
     private void editarGasto(Gasto gasto) {

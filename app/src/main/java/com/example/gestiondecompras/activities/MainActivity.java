@@ -33,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.example.gestiondecompras.R;
 import com.example.gestiondecompras.adapters.PedidosAdapter;
 import com.example.gestiondecompras.databinding.ActivityMainBinding;
+import com.example.gestiondecompras.utils.NavegacionInferior;
 import com.example.gestiondecompras.utils.UpdateChecker;
 import com.google.android.gms.ads.AdRequest;
 import com.example.gestiondecompras.viewmodels.DashboardViewModel;
@@ -64,75 +65,19 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        applySystemBarsPadding();
-
         viewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
 
         updateGreeting();
         setupUpcomingList();
         setupClickListeners();
-        setupDrawer(); 
+        setupNavegacion();
         observeViewModel();
         
         checkBiometricSecurity();
         checkFirstRun();
         loadBannerAd();
         askNotificationPermission();
-        updateGoogleUserInfo();
         checkForUpdates();
-    }
-
-    private void applySystemBarsPadding() {
-        View contentRoot = (View) binding.toolbar.getParent();
-        if (Build.VERSION.SDK_INT >= 30) {
-            android.view.WindowInsets wi = getWindow().getDecorView().getRootWindowInsets();
-            int top = 0, bottom = 0;
-            if (wi != null) {
-                top = wi.getInsets(android.view.WindowInsets.Type.statusBars()).top;
-                bottom = wi.getInsets(android.view.WindowInsets.Type.navigationBars()).bottom;
-            }
-            contentRoot.setPadding(contentRoot.getPaddingLeft(), top,
-                    contentRoot.getPaddingRight(), bottom);
-        } else {
-            int statusBarId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-            if (statusBarId > 0) {
-                int top = getResources().getDimensionPixelSize(statusBarId);
-                contentRoot.setPadding(contentRoot.getPaddingLeft(), top,
-                        contentRoot.getPaddingRight(), contentRoot.getPaddingBottom());
-            }
-        }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) applySystemBarsPadding();
-    }
-
-    private void updateGoogleUserInfo() {
-        View headerView = binding.navView.getHeaderView(0);
-        if (headerView == null) return;
-
-        ImageView ivProfile = headerView.findViewById(R.id.iv_google_profile);
-        TextView tvName = headerView.findViewById(R.id.tv_google_name);
-        TextView tvEmail = headerView.findViewById(R.id.tv_google_email);
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
-            tvName.setText(account.getDisplayName());
-            tvEmail.setText(account.getEmail());
-            if (account.getPhotoUrl() != null) {
-                Glide.with(this)
-                        .load(account.getPhotoUrl())
-                        .placeholder(R.drawable.ic_shoppong)
-                        .circleCrop()
-                        .into(ivProfile);
-            }
-        } else {
-            tvName.setText(getString(R.string.app_name));
-            tvEmail.setText("Sin cuenta vinculada");
-            ivProfile.setImageResource(R.drawable.ic_shoppong);
-        }
     }
 
     private void askNotificationPermission() {
@@ -200,46 +145,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupDrawer() {
-        binding.navView.setCheckedItem(R.id.nav_home);
+    /** Barra inferior (Inicio activo) y acceso directo a Ajustes en la barra superior. */
+    private void setupNavegacion() {
+        NavegacionInferior.configurar(this, binding.bottomNav, R.id.tab_inicio,
+                () -> binding.scrollInicio.smoothScrollTo(0, 0));
 
-        binding.toolbar.setNavigationOnClickListener(v -> 
-            binding.drawerLayout.openDrawer(androidx.core.view.GravityCompat.START)
-        );
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.navView, (v, insets) -> {
-            Insets statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars());
-            View header = binding.navView.getHeaderView(0);
-            if (header != null && statusBar.top > 0) {
-                header.setPadding(header.getPaddingLeft(), statusBar.top,
-                        header.getPaddingRight(), header.getPaddingBottom());
-            }
-            return insets;
-        });
-
-        binding.navView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.nav_settings) {
+        binding.toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.accion_ajustes) {
                 startActivity(new Intent(this, SettingsActivity.class));
-            } else if (id == R.id.nav_nuevo_pedido) {
-                startActivity(new Intent(this, NuevoPedidoActivity.class));
-            } else if (id == R.id.nav_ver_pedidos) {
-                startActivity(new Intent(this, ListaPedidosActivity.class));
-            } else if (id == R.id.nav_calendario) {
-                startActivity(new Intent(this, CalendarioActivity.class));
-            } else if (id == R.id.nav_clientes) {
-                startActivity(new Intent(this, ListaClientesActivity.class));
-            } else if (id == R.id.nav_reportes) {
-                startActivity(new Intent(this, ReportesActivity.class));
-            } else if (id == R.id.nav_gastos) {
-                startActivity(new Intent(this, ListaGastosActivity.class));
-            } else if (id == R.id.nav_tarjetas) {
-                startActivity(new Intent(this, TarjetasActivity.class));
-            } else if (id == R.id.nav_ayuda) {
-                startActivity(new Intent(this, AyudaActivity.class));
+                return true;
             }
-            binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START);
-            return true;
+            return false;
         });
     }
 
@@ -267,20 +183,14 @@ public class MainActivity extends AppCompatActivity {
         binding.chipNuevoPedido.setOnClickListener(v ->
                 startActivity(new Intent(this, NuevoPedidoActivity.class)));
 
-        binding.chipListaPedidos.setOnClickListener(v ->
-                startActivity(new Intent(this, ListaPedidosActivity.class)));
+        binding.chipNuevoGasto.setOnClickListener(v ->
+                startActivity(new Intent(this, NuevoGastoActivity.class)));
+
+        binding.chipNuevoCliente.setOnClickListener(v ->
+                startActivity(new Intent(this, NuevoClienteActivity.class)));
 
         binding.chipCalendario.setOnClickListener(v ->
                 startActivity(new Intent(this, CalendarioActivity.class)));
-
-        binding.chipClientes.setOnClickListener(v ->
-                startActivity(new Intent(this, ListaClientesActivity.class)));
-
-        binding.chipReportes.setOnClickListener(v ->
-                startActivity(new Intent(this, ReportesActivity.class)));
-
-        binding.chipTarjetas.setOnClickListener(v ->
-                startActivity(new Intent(this, TarjetasActivity.class)));
 
         binding.cardTotalPendiente.setOnClickListener(v -> {
             Intent intent = new Intent(this, ListaPedidosActivity.class);
@@ -370,19 +280,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        updateGoogleUserInfo();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         viewModel.loadDashboardData();
         if (binding.adView != null) {
             binding.adView.resume();
         }
-        updateGoogleUserInfo();
     }
 
     @Override

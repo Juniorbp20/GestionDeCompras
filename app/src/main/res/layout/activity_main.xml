@@ -1,312 +1,375 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.gestiondecompras.views.GestureDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
-    tools:openDrawer="start">
+    android:background="@color/background_light"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.MainActivity">
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <!-- Barra superior: nombre de la app y acceso directo a Ajustes -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        android:elevation="0dp"
+        app:menu="@menu/menu_inicio"
+        app:title="@string/app_name"
+        app:titleCentered="false"
+        app:titleTextAppearance="@style/TextAppearance.ToolbarTitleDark" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollInicio"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_light"
-        tools:context=".activities.MainActivity">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginBottom="136dp"
+        android:fillViewport="true"
+        android:paddingBottom="24dp">
 
-        <!-- Toolbar Transparente -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/transparent"
-            android:elevation="0dp"
-            app:navigationIcon="@drawable/ic_menu"
-            app:title="" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp">
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:layout_marginBottom="60dp"
-            android:fillViewport="true"
-            android:paddingBottom="24dp">
+            <!-- CARD PRINCIPAL: degradado marino con acento dorado -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHero"
+                style="@style/Widget.App.CardView.Hero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardElevation="6dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_hero_navy"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:id="@+id/tvGreeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dashboard_greeting_placeholder"
+                        android:textAppearance="@style/TextAppearance.App.TitleLarge"
+                        android:textColor="@color/hero_text"
+                        tools:text="Hola, Gustavo" />
+
+                    <TextView
+                        android:id="@+id/tvHeroSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/dashboard_subtitle"
+                        android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                        android:textColor="@color/hero_text_secondary"
+                        tools:text="Resumen del día" />
+
+                    <View
+                        android:layout_width="32dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/bg_gold_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/total_pendiente"
+                        android:textAppearance="@style/TextAppearance.App.Overline"
+                        android:textColor="@color/hero_text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvTotalPendiente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="RD$ 0.00"
+                        android:textAppearance="@style/TextAppearance.App.DisplaySmall"
+                        android:textColor="@color/hero_text"
+                        tools:text="RD$ 12,500.00" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTrend"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="@string/dashboard_trend_placeholder"
+                        android:textAppearance="@style/TextAppearance.App.LabelMedium"
+                        android:textColor="@color/gold_300"
+                        app:chipBackgroundColor="@color/hero_chip_bg"
+                        app:chipCornerRadius="50dp"
+                        app:chipIcon="@drawable/ic_trending_up"
+                        app:chipIconTint="@color/gold_300"
+                        app:chipStrokeColor="@android:color/transparent"
+                        tools:text="Subió RD$ 2,100" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECCIÓN DE ESTADÍSTICAS -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="16dp">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <!-- CARD PRINCIPAL: degradado marino con acento dorado -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardHero"
-                    style="@style/Widget.App.CardView.Hero"
-                    android:layout_width="match_parent"
+                    android:id="@+id/cardTotalPendiente"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    app:cardElevation="6dp">
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_hero_navy"
                         android:orientation="vertical"
-                        android:padding="24dp">
+                        android:padding="16dp">
 
-                        <TextView
-                            android:id="@+id/tvGreeting"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dashboard_greeting_placeholder"
-                            android:textAppearance="@style/TextAppearance.App.TitleLarge"
-                            android:textColor="@color/hero_text"
-                            tools:text="Hola, Gustavo" />
-
-                        <TextView
-                            android:id="@+id/tvHeroSubtitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="@string/dashboard_subtitle"
-                            android:textAppearance="@style/TextAppearance.App.BodyMedium"
-                            android:textColor="@color/hero_text_secondary"
-                            tools:text="Resumen del día" />
-
-                        <View
-                            android:layout_width="32dp"
-                            android:layout_height="3dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/bg_gold_line" />
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_badge_blue"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_list"
+                            android:tint="@color/primary_color" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="12dp"
                             android:text="@string/total_pendiente"
-                            android:textAppearance="@style/TextAppearance.App.Overline"
-                            android:textColor="@color/hero_text_secondary" />
+                            android:textAppearance="@style/TextAppearance.App.Overline" />
 
                         <TextView
-                            android:id="@+id/tvTotalPendiente"
+                            android:id="@+id/tvTotalPendienteCard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="RD$ 0.00"
+                            android:textColor="@color/gray_dark"
+                            android:textAppearance="@style/TextAppearance.App.Amount"
+                            android:textSize="18sp"
+                            tools:text="RD$ 12,500.00" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTotalPagado"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_badge_green"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_credit_card"
+                            android:tint="@color/success_color" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="Total pagado"
+                            android:textAppearance="@style/TextAppearance.App.Overline" />
+
+                        <TextView
+                            android:id="@+id/tvTotalPagado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="RD$ 0.00"
+                            android:textColor="@color/gray_dark"
+                            android:textAppearance="@style/TextAppearance.App.Amount"
+                            android:textSize="18sp"
+                            tools:text="RD$ 5,900.00" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardPedidosAtrasados"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_badge_red"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_trending_down"
+                            android:tint="@color/error_color" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/pedidos_atrasados"
+                            android:textAppearance="@style/TextAppearance.App.Overline" />
+
+                        <TextView
+                            android:id="@+id/tvPedidosAtrasados"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="0"
+                            android:textColor="@color/gray_dark"
+                            android:textAppearance="@style/TextAppearance.App.Amount"
+                            android:textSize="18sp"
+                            tools:text="2" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardGananciaEsperada"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_badge_green"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_trending_up"
+                            android:tint="@color/dashboard_card_income" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/ganancia_esperada"
+                            android:textAppearance="@style/TextAppearance.App.Overline" />
+
+                        <TextView
+                            android:id="@+id/tvGananciaEsperadaCard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="RD$ 0.00"
+                            android:textColor="@color/gray_dark"
+                            android:textAppearance="@style/TextAppearance.App.Amount"
+                            android:textSize="18sp"
+                            tools:text="RD$ 5,900.00" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- GASTOS DEL MES -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardGastosMes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/bg_icon_badge_red"
+                        android:padding="9dp"
+                        android:src="@drawable/ic_wallet"
+                        android:tint="@color/dashboard_card_overdue" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/gastos_dashboard_title"
+                            android:textAppearance="@style/TextAppearance.App.Overline" />
+
+                        <TextView
+                            android:id="@+id/tvGastosMes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="RD$ 0.00"
-                            android:textAppearance="@style/TextAppearance.App.DisplaySmall"
-                            android:textColor="@color/hero_text"
-                            tools:text="RD$ 12,500.00" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTrend"
-                            style="@style/Widget.Material3.Chip.Assist"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="14dp"
-                            android:text="@string/dashboard_trend_placeholder"
-                            android:textAppearance="@style/TextAppearance.App.LabelMedium"
-                            android:textColor="@color/gold_300"
-                            app:chipBackgroundColor="@color/hero_chip_bg"
-                            app:chipCornerRadius="50dp"
-                            app:chipIcon="@drawable/ic_trending_up"
-                            app:chipIconTint="@color/gold_300"
-                            app:chipStrokeColor="@android:color/transparent"
-                            tools:text="Subió RD$ 2,100" />
+                            android:textColor="@color/error_color"
+                            android:textAppearance="@style/TextAppearance.App.Amount"
+                            android:textSize="18sp"
+                            tools:text="RD$ 5,900.00" />
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- SECCIÓN DE ESTADÍSTICAS -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardTotalPendiente"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:foreground="?attr/selectableItemBackground">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="@drawable/bg_icon_badge_blue"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_list"
-                                android:tint="@color/primary_color" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="@string/total_pendiente"
-                                android:textAppearance="@style/TextAppearance.App.Overline" />
-
-                            <TextView
-                                android:id="@+id/tvTotalPendienteCard"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="RD$ 0.00"
-                                android:textColor="@color/gray_dark"
-                                android:textAppearance="@style/TextAppearance.App.Amount"
-                                android:textSize="18sp"
-                                tools:text="RD$ 12,500.00" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardTotalPagado"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:foreground="?attr/selectableItemBackground">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="@drawable/bg_icon_badge_green"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_credit_card"
-                                android:tint="@color/success_color" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="Total pagado"
-                                android:textAppearance="@style/TextAppearance.App.Overline" />
-
-                            <TextView
-                                android:id="@+id/tvTotalPagado"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="RD$ 0.00"
-                                android:textColor="@color/gray_dark"
-                                android:textAppearance="@style/TextAppearance.App.Amount"
-                                android:textSize="18sp"
-                                tools:text="RD$ 5,900.00" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+            <!-- ACCIONES RÁPIDAS: crear y consultar lo más frecuente (2×2, todo visible) -->
+            <TextView
+                android:id="@+id/tvAccionesRapidas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/acciones_rapidas"
+                android:textAppearance="@style/TextAppearance.App.SectionTitle" />
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardPedidosAtrasados"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:foreground="?attr/selectableItemBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="@drawable/bg_icon_badge_red"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_trending_down"
-                                android:tint="@color/error_color" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="@string/pedidos_atrasados"
-                                android:textAppearance="@style/TextAppearance.App.Overline" />
-
-                            <TextView
-                                android:id="@+id/tvPedidosAtrasados"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="0"
-                                android:textColor="@color/gray_dark"
-                                android:textAppearance="@style/TextAppearance.App.Amount"
-                                android:textSize="18sp"
-                                tools:text="2" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardGananciaEsperada"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:foreground="?attr/selectableItemBackground">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="@drawable/bg_icon_badge_green"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_trending_up"
-                                android:tint="@color/dashboard_card_income" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="@string/ganancia_esperada"
-                                android:textAppearance="@style/TextAppearance.App.Overline" />
-
-                            <TextView
-                                android:id="@+id/tvGananciaEsperadaCard"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:text="RD$ 0.00"
-                                android:textColor="@color/gray_dark"
-                                android:textAppearance="@style/TextAppearance.App.Amount"
-                                android:textSize="18sp"
-                                tools:text="RD$ 5,900.00" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-
-                <!-- GASTOS DEL MES -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardGastosMes"
-                    android:layout_width="match_parent"
+                    android:id="@+id/chipNuevoPedido"
+                    style="@style/Widget.App.CardView.Tile"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
                     android:foreground="?attr/selectableItemBackground">
 
                     <LinearLayout
@@ -314,360 +377,220 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:padding="14dp">
 
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:background="@drawable/bg_icon_badge_red"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_icon_tile"
                             android:padding="9dp"
-                            android:src="@drawable/ic_wallet"
-                            android:tint="@color/dashboard_card_overdue" />
+                            android:src="@drawable/ic_add_circle"
+                            android:tint="@color/accent_gold" />
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/gastos_dashboard_title"
-                                android:textAppearance="@style/TextAppearance.App.Overline" />
-
-                            <TextView
-                                android:id="@+id/tvGastosMes"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="RD$ 0.00"
-                                android:textColor="@color/error_color"
-                                android:textAppearance="@style/TextAppearance.App.Amount"
-                                android:textSize="18sp"
-                                tools:text="RD$ 5,900.00" />
-                        </LinearLayout>
+                            android:maxLines="2"
+                            android:text="@string/accion_rapida_nuevo_pedido"
+                            android:textAppearance="@style/TextAppearance.App.TitleSmall"
+                            android:textColor="@color/gray_dark" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- ACCIONES RÁPIDAS -->
-                <TextView
-                    android:id="@+id/tvAccionesRapidas"
-                    android:layout_width="match_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/chipNuevoGasto"
+                    style="@style/Widget.App.CardView.Tile"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/acciones_rapidas"
-                    android:textAppearance="@style/TextAppearance.App.SectionTitle" />
-
-                <HorizontalScrollView
-                    android:id="@+id/chipGroupActions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:overScrollMode="never"
-                    android:scrollbars="none">
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingEnd="8dp">
+                        android:padding="14dp">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/chipNuevoPedido"
-                            style="@style/Widget.App.CardView.Tile"
-                            android:layout_width="100dp"
-                            android:layout_height="110dp"
-                            android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_icon_tile"
+                            android:padding="9dp"
+                            android:src="@drawable/ic_wallet"
+                            android:tint="@color/accent_gold" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="10dp">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_tile"
-                                    android:padding="12dp"
-                                    android:src="@drawable/ic_add_circle"
-                                    android:tint="@color/accent_gold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center"
-                                    android:text="@string/nuevo_pedido"
-                                    android:textColor="@color/gray_dark"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/chipListaPedidos"
-                            style="@style/Widget.App.CardView.Tile"
-                            android:layout_width="100dp"
-                            android:layout_height="110dp"
-                            android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="10dp">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_tile"
-                                    android:padding="12dp"
-                                    android:src="@drawable/ic_list"
-                                    android:tint="@color/accent_gold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center"
-                                    android:text="@string/ver_pedidos"
-                                    android:textColor="@color/gray_dark"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/chipCalendario"
-                            style="@style/Widget.App.CardView.Tile"
-                            android:layout_width="100dp"
-                            android:layout_height="110dp"
-                            android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="10dp">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_tile"
-                                    android:padding="12dp"
-                                    android:src="@drawable/ic_calendar"
-                                    android:tint="@color/accent_gold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center"
-                                    android:text="@string/calendario"
-                                    android:textColor="@color/gray_dark"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/chipClientes"
-                            style="@style/Widget.App.CardView.Tile"
-                            android:layout_width="100dp"
-                            android:layout_height="110dp"
-                            android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="10dp">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_tile"
-                                    android:padding="12dp"
-                                    android:src="@drawable/ic_people"
-                                    android:tint="@color/accent_gold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center"
-                                    android:text="@string/clientes"
-                                    android:textColor="@color/gray_dark"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/chipReportes"
-                            style="@style/Widget.App.CardView.Tile"
-                            android:layout_width="100dp"
-                            android:layout_height="110dp"
-                            android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="10dp">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_tile"
-                                    android:padding="12dp"
-                                    android:src="@drawable/ic_trending_up"
-                                    android:tint="@color/accent_gold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center"
-                                    android:text="@string/dashboard_reports"
-                                    android:textColor="@color/gray_dark"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/chipTarjetas"
-                            style="@style/Widget.App.CardView.Tile"
-                            android:layout_width="100dp"
-                            android:layout_height="110dp"
-                            android:foreground="?attr/selectableItemBackground">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:padding="10dp">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_tile"
-                                    android:padding="12dp"
-                                    android:src="@drawable/ic_credit_card"
-                                    android:tint="@color/accent_gold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center"
-                                    android:text="@string/tarjeta"
-                                    android:textColor="@color/gray_dark"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:maxLines="2"
+                            android:text="@string/accion_rapida_nuevo_gasto"
+                            android:textAppearance="@style/TextAppearance.App.TitleSmall"
+                            android:textColor="@color/gray_dark" />
                     </LinearLayout>
-                </HorizontalScrollView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <!-- LISTA DE PRÓXIMOS PEDIDOS -->
-                <TextView
-                    android:id="@+id/tvProximosTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/proximos_pedidos"
-                    android:textAppearance="@style/TextAppearance.App.SectionTitle" />
-
-                <TextView
-                    android:id="@+id/tvProximosSubtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dashboard_next_orders_subtitle"
-                    android:textAppearance="@style/TextAppearance.App.BodyMedium"
-                    android:textColor="@color/gray" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvProximosPedidos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:minHeight="240dp"
-                    android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never" />
-
-                <LinearLayout
-                    android:id="@+id/emptyState"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="24dp"
-                    android:visibility="gone"
-                    tools:visibility="visible">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:src="@drawable/ic_list"
-                        android:tint="@color/gray_light" />
-
-                    <TextView
-                        android:id="@+id/tvNoPedidos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/no_hay_pedidos_proximos"
-                        android:textColor="@color/gray"
-                        android:textSize="14sp" />
-                </LinearLayout>
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
 
-        <!-- BANNER ADS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/chipNuevoCliente"
+                    style="@style/Widget.App.CardView.Tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_icon_tile"
+                            android:padding="9dp"
+                            android:src="@drawable/ic_person_add"
+                            android:tint="@color/accent_gold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:maxLines="2"
+                            android:text="@string/accion_rapida_nuevo_cliente"
+                            android:textAppearance="@style/TextAppearance.App.TitleSmall"
+                            android:textColor="@color/gray_dark" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/chipCalendario"
+                    style="@style/Widget.App.CardView.Tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_icon_tile"
+                            android:padding="9dp"
+                            android:src="@drawable/ic_calendar"
+                            android:tint="@color/accent_gold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:maxLines="2"
+                            android:text="@string/accion_rapida_calendario"
+                            android:textAppearance="@style/TextAppearance.App.TitleSmall"
+                            android:textColor="@color/gray_dark" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- LISTA DE PRÓXIMOS PEDIDOS -->
+            <TextView
+                android:id="@+id/tvProximosTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/proximos_pedidos"
+                android:textAppearance="@style/TextAppearance.App.SectionTitle" />
+
+            <TextView
+                android:id="@+id/tvProximosSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dashboard_next_orders_subtitle"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProximosPedidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="240dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
+            <LinearLayout
+                android:id="@+id/emptyState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_list"
+                    android:tint="@color/gray_light" />
+
+                <TextView
+                    android:id="@+id/tvNoPedidos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/no_hay_pedidos_proximos"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Banner y barra de navegación inferior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             app:adSize="BANNER"
             app:adUnitId="ca-app-pub-652719909237109/2366402012" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_nav" />
+    </LinearLayout>
 
-    <!-- NAVIGATION DRAWER -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="false"
-        android:background="@color/background_card"
-        app:headerLayout="@layout/nav_header_main"
-        app:itemHorizontalPadding="20dp"
-        app:itemIconPadding="16dp"
-        app:itemIconTint="@color/nav_item_icon"
-        app:itemShapeFillColor="@color/nav_item_shape"
-        app:itemTextAppearance="@style/TextAppearance.NavItem"
-        app:itemTextColor="@color/nav_item_text"
-        app:itemVerticalPadding="8dp"
-        app:menu="@menu/activity_main_drawer"
-        app:subheaderColor="@color/gray"
-        app:subheaderTextAppearance="@style/TextAppearance.NavSubheader" />
-
-</com.example.gestiondecompras.views.GestureDrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.gestiondecompras.R;
+import com.example.gestiondecompras.utils.HojaAcciones;
 
 import com.example.gestiondecompras.adapters.TarjetasAdapter;
 import com.example.gestiondecompras.databinding.ActivityTarjetasBinding;
@@ -94,25 +95,14 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
     }
 
     private void mostrarOpcionesTarjeta(Tarjeta tarjeta) {
-        CharSequence[] opciones = {
-                getString(R.string.accion_editar_tarjeta),
-                getString(R.string.dialog_pago_tarjeta_title),
-                getString(R.string.dialog_delete_tarjeta_title)
-        };
-
-        new AlertDialog.Builder(this)
-                .setTitle(tarjeta.alias != null && !tarjeta.alias.isEmpty() ? tarjeta.alias : tarjeta.banco)
-                .setItems(opciones, (dialog, which) -> {
-                    if (which == 0) {
-                        editarTarjeta(tarjeta);
-                    } else if (which == 1) {
-                        mostrarDialogoPago(tarjeta);
-                    } else if (which == 2) {
-                        confirmarEliminarTarjeta(tarjeta);
-                    }
-                })
-                .setNegativeButton(R.string.accion_cancelar, null)
-                .show();
+        String titulo = tarjeta.alias != null && !tarjeta.alias.isEmpty() ? tarjeta.alias : tarjeta.banco;
+        double disponible = Math.max(0, tarjeta.getLimiteCredito() - tarjeta.getDeudaActual());
+        HojaAcciones.de(this, titulo)
+                .subtitulo(getString(R.string.tarjeta_disponible_format, disponible))
+                .accion(R.drawable.ic_edit, R.string.accion_editar, () -> editarTarjeta(tarjeta))
+                .accion(R.drawable.ic_payments, R.string.accion_registrar_pago, () -> mostrarDialogoPago(tarjeta))
+                .peligrosa(R.drawable.ic_delete, R.string.accion_eliminar, () -> confirmarEliminarTarjeta(tarjeta))
+                .mostrar();
     }
 
     private void mostrarDialogoPago(Tarjeta tarjeta) {

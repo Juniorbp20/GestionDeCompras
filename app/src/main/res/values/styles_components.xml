@@ -120,6 +120,40 @@
         <item name="titleCentered">true</item>
     </style>
 
+    <!-- ===================== Barra inferior ===================== -->
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">@color/background_card</item>
+        <item name="itemIconTint">@color/bottom_nav_item</item>
+        <item name="itemTextColor">@color/bottom_nav_item</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.App.BottomNavigationView.Indicator</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.App.LabelMedium</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.App.LabelMedium</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="elevation">8dp</item>
+    </style>
+
+    <style name="Widget.App.BottomNavigationView.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/accent_gold_container</item>
+    </style>
+
+    <!-- ===================== Hoja de acciones ===================== -->
+    <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.App.BottomSheet</item>
+    </style>
+
+    <style name="Widget.App.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/background_card</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SheetTop</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SheetTop" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">28dp</item>
+        <item name="cornerSizeTopRight">28dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
     <!-- ===================== Diálogos ===================== -->
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.ExtraLarge</item>

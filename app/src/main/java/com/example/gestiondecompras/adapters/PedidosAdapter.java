@@ -101,6 +101,18 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
             });
 
             // Click en estado (cambio rÃƒÂ¡pido de estado)
+            // Botón ⋮: mismas acciones que la pulsación larga (oculto si no hay acciones)
+            View btnMas = itemView.findViewById(R.id.btnMas);
+            if (btnMas != null) {
+                btnMas.setVisibility(listener != null ? View.VISIBLE : View.GONE);
+                btnMas.setOnClickListener(v -> {
+                    int pos = getBindingAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onPedidoLongClick(pedidos.get(pos));
+                    }
+                });
+            }
+
             chipEstado.setOnClickListener(v -> {
                 int pos = getBindingAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION && listener != null) {

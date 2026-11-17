@@ -173,7 +173,8 @@ public class CalendarioActivity extends AppCompatActivity implements PedidosAdap
 
     @Override
     public void onPedidoLongClick(com.example.gestiondecompras.models.Pedido pedido) {
-        // No action required or show simple toast
+        // En el calendario solo se consulta: el botón ⋮ y la pulsación larga abren el detalle
+        onPedidoClick(pedido);
     }
 }
 
