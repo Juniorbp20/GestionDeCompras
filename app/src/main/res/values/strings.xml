@@ -484,7 +484,6 @@
     <string name="resumen_titulo">*Resumen del pedido*</string>
     <string name="resumen_total">Total</string>
     <string name="resumen_estado">Estado</string>
-    <string name="accion_cerrar">Cerrar</string>
 
     <!-- ===== Textos antes escritos en el código ===== -->
     <string name="pedido_editar_titulo">Editar pedido #%1$d</string>
@@ -527,4 +526,23 @@
         <item quantity="one">%d pedido</item>
         <item quantity="other">%d pedidos</item>
     </plurals>
+
+    <!-- ===== Importar contactos ===== -->
+    <string name="contacto_duplicado_titulo">Cliente ya registrado</string>
+    <string name="contacto_duplicado_mensaje">Ya tienes un cliente con estos datos: %1$s %2$s. ¿Quieres importarlo de todos modos?</string>
+    <string name="contacto_importar_igual">Importar igualmente</string>
+
+    <!-- ===== Copia automática ===== -->
+    <string name="respaldo_auto_titulo">Copia automática diaria</string>
+    <string name="respaldo_auto_nunca">Aún no se ha hecho ninguna copia automática</string>
+    <string name="respaldo_auto_ultima">Última copia: %1$s</string>
+    <string name="respaldo_auto_requiere_cuenta">Inicia sesión con Google para activar la copia automática</string>
+    <string name="respaldo_auto_activada">Se hará una copia en Drive cada día con conexión a internet</string>
+
+    <!-- ===== Recordatorio de cobro por WhatsApp ===== -->
+    <string name="recordatorio_whatsapp">Recordar pago por WhatsApp</string>
+    <string name="recordatorio_enviar_varios">Enviar recordatorios</string>
+    <string name="recordatorio_tu_compra">tu compra</string>
+    <string name="recordatorio_mensaje">Hola %1$s, te recordamos que tienes un saldo pendiente de %2$s por tu pedido de %3$s. ¡Muchas gracias!</string>
+    <string name="recordatorio_sin_telefono">El cliente no tiene un teléfono válido registrado</string>
 </resources>
