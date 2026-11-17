@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo de tarjeta de crédito: degradado marino con círculos decorativos -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="330"
+                android:startColor="@color/hero_gradient_start"
+                android:endColor="@color/hero_gradient_end" />
+            <corners android:radius="22dp" />
+        </shape>
+    </item>
+    <item android:gravity="top|end" android:width="200dp" android:height="200dp"
+        android:top="-90dp" android:right="-70dp">
+        <shape android:shape="oval">
+            <solid android:color="#14FFFFFF" />
+        </shape>
+    </item>
+    <item android:gravity="bottom|end" android:width="140dp" android:height="140dp"
+        android:bottom="-70dp" android:right="40dp">
+        <shape android:shape="oval">
+            <solid android:color="#1AE2C26A" />
+        </shape>
+    </item>
+</layer-list>

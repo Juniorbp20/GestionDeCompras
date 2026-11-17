@@ -34,11 +34,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
-                app:strokeColor="@color/primary_light"
-                app:strokeWidth="1dp">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,7 +68,7 @@
                         tools:text="(3 pedidos)" />
 
                                 <com.google.android.material.textfield.TextInputLayout
-                                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                                    style="@style/Widget.App.TextInputLayout.Dense"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="12dp"

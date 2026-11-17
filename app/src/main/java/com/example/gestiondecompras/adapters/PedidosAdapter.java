@@ -69,6 +69,7 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
         TextView tvCliente, tvTienda, tvTotal, tvFechaEntrega, tvGanancia, tvMontoCompra, tvAbonadoSaldo;
         Chip chipEstado;
         MaterialCardView card;
+        View viewAccentEstado;
         private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
         PedidoViewHolder(@NonNull View itemView) {
@@ -82,6 +83,7 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
             tvMontoCompra = itemView.findViewById(R.id.tvMontoCompra);
             tvAbonadoSaldo = itemView.findViewById(R.id.tvAbonadoSaldo);
             chipEstado = itemView.findViewById(R.id.tvEstado);
+            viewAccentEstado = itemView.findViewById(R.id.viewAccentEstado);
 
             // Click SIEMPRE toma el item por posiciÃƒÂ³n actual:
             itemView.setOnClickListener(v -> {
@@ -129,12 +131,36 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
                         String.format(Locale.getDefault(), "RD$ %,.2f", p.getSaldo())));
             }
 
-            chipEstado.setText(p.getEstado());
-            chipEstado.setChipBackgroundColor(ColorStateList.valueOf(
-                    ContextCompat.getColor(context, obtenerColorEstado(p.getEstado()))
-            ));
-            chipEstado.setTextColor(ContextCompat.getColor(context, R.color.white));
-            card.setStrokeColor(ContextCompat.getColor(context, obtenerColorEstado(p.getEstado())));
+            // Estado en estilo tonal: fondo suave y texto del color del estado
+            int colorEstado = ContextCompat.getColor(context, obtenerColorEstado(p.getEstado()));
+            int fondoEstado = ContextCompat.getColor(context, obtenerFondoEstado(p.getEstado()));
+            chipEstado.setText(formatearEstado(p.getEstado()));
+            chipEstado.setChipBackgroundColor(ColorStateList.valueOf(fondoEstado));
+            chipEstado.setTextColor(colorEstado);
+            if (viewAccentEstado != null) {
+                viewAccentEstado.setBackgroundTintList(ColorStateList.valueOf(colorEstado));
+            }
+        }
+
+        private String formatearEstado(String estado) {
+            if (estado == null || estado.isEmpty()) {
+                return "";
+            }
+            return estado.substring(0, 1).toUpperCase(Locale.getDefault())
+                    + estado.substring(1).toLowerCase(Locale.getDefault());
+        }
+
+        private int obtenerFondoEstado(String estado) {
+            if (Pedido.ESTADO_PAGADO.equalsIgnoreCase(estado)) {
+                return R.color.status_paid_bg;
+            }
+            if (Pedido.ESTADO_ENTREGADO.equalsIgnoreCase(estado)) {
+                return R.color.status_delivered_bg;
+            }
+            if (Pedido.ESTADO_CANCELADO.equalsIgnoreCase(estado)) {
+                return R.color.status_cancelled_bg;
+            }
+            return R.color.status_pending_bg;
         }
 
         private int obtenerColorEstado(String estado) {

@@ -37,12 +37,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="@color/background_card"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/card_stroke"
-                app:strokeWidth="1dp">
+                android:layout_marginBottom="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -128,12 +123,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="@color/background_card"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/card_stroke"
-                app:strokeWidth="1dp">
+                android:layout_marginBottom="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -185,12 +175,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="@color/background_card"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/card_stroke"
-                app:strokeWidth="1dp">
+                android:layout_marginBottom="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -320,7 +305,7 @@
                                 android:textSize="14sp" />
 
                             <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                                style="@style/Widget.App.TextInputLayout.Dense"
                                 android:layout_width="88dp"
                                 android:layout_height="wrap_content"
                                 app:endIconMode="clear_text">
@@ -351,7 +336,7 @@
                                 android:textSize="14sp" />
 
                             <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                                style="@style/Widget.App.TextInputLayout.Dense"
                                 android:layout_width="88dp"
                                 android:layout_height="wrap_content"
                                 app:endIconMode="clear_text">
@@ -382,7 +367,7 @@
                                 android:textSize="14sp" />
 
                             <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                                style="@style/Widget.App.TextInputLayout.Dense"
                                 android:layout_width="88dp"
                                 android:layout_height="wrap_content"
                                 app:endIconMode="clear_text">
@@ -421,7 +406,6 @@
                                 android:text="09:00"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                app:cornerRadius="12dp"
                                 app:icon="@drawable/ic_calendar"
                                 app:iconGravity="textStart" />
                         </LinearLayout>
@@ -436,12 +420,11 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_probar_notificacion"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            style="@style/Widget.App.Button.Outlined"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:text="@string/probar_notificacion"
-                            app:cornerRadius="14dp"
                             app:icon="@drawable/ic_notifications"
                             app:iconGravity="textStart" />
                     </LinearLayout>
@@ -452,12 +435,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="@color/background_card"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/card_stroke"
-                app:strokeWidth="1dp">
+                android:layout_marginBottom="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -506,23 +484,21 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_drive_backup"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/Widget.App.Button.Outlined"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="@string/settings_backup_upload"
-                        app:cornerRadius="14dp"
                         app:icon="@drawable/ic_cloud_upload"
                         app:iconGravity="textStart" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_drive_restore"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/Widget.App.Button.Outlined"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/settings_backup_restore"
-                        app:cornerRadius="14dp"
                         app:icon="@drawable/ic_cloud_download"
                         app:iconGravity="textStart" />
 
@@ -541,12 +517,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="@color/background_card"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/card_stroke"
-                app:strokeWidth="1dp">
+                android:layout_marginBottom="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -594,12 +565,11 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_check_update"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/Widget.App.Button.Outlined"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="@string/buscar_actualizaciones"
-                        app:cornerRadius="14dp"
                         app:icon="@drawable/ic_refresh"
                         app:iconGravity="textStart" />
 
@@ -619,12 +589,11 @@
             <!-- RIESGOSO -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_reset"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.App.Button.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/resetear_app"
                 android:textColor="@color/error_color"
-                app:cornerRadius="14dp"
                 app:icon="@drawable/ic_delete"
                 app:iconGravity="textStart"
                 app:iconTint="@color/error_color"
@@ -636,10 +605,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp"
-                android:text="@string/guardar"
-                app:backgroundTint="@color/primary_color"
-                app:cornerRadius="14dp"
-                android:textColor="@color/white" />
+                android:text="@string/guardar" />
 
         </LinearLayout>
     </ScrollView>

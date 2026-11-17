@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo de la tarjeta principal: degradado marino con un brillo dorado sutil -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="315"
+                android:startColor="@color/hero_gradient_start"
+                android:endColor="@color/hero_gradient_end" />
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+    <item android:gravity="top|end" android:width="180dp" android:height="180dp"
+        android:top="-70dp" android:right="-60dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="90dp"
+                android:startColor="#33E2C26A"
+                android:endColor="#00E2C26A" />
+        </shape>
+    </item>
+</layer-list>

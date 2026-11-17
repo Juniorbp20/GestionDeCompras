@@ -84,6 +84,10 @@ public class TarjetasAdapter extends RecyclerView.Adapter<TarjetasAdapter.Tarjet
                 progress = (int) Math.min(100, Math.round((t.getDeudaActual() / t.getLimiteCredito()) * 100));
             }
             pbUso.setProgress(progress);
+            // Dorado en uso normal; rojo cuando se supera el 80 % del límite
+            int colorUso = progress > 80 ? R.color.card_usage_alert : R.color.gold_300;
+            pbUso.setProgressTintList(android.content.res.ColorStateList.valueOf(
+                    androidx.core.content.ContextCompat.getColor(context, colorUso)));
         }
     }
 }
