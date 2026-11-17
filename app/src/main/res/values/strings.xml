@@ -240,7 +240,8 @@
     <string name="toast_tarjeta_pagada">Tarjeta pagada</string>
     <string name="toast_tarjeta_guardada">Tarjeta guardada</string>
     <string name="dialog_pago_tarjeta_error">Monto inv\u00E1lido</string>
-    <string name="dialog_delete_tarjeta_message">\u00BFEst\u00E1s seguro de que deseas eliminar esta tarjeta?</string>
+    <string name="dialog_delete_tarjeta_message">\u00BFEst\u00E1s seguro de que deseas eliminar esta tarjeta? Los pedidos anteriores se conservar\u00E1n sin tarjeta asociada.</string>
+    <string name="toast_tarjeta_error">No se pudo eliminar la tarjeta. Int\u00E9ntalo de nuevo.</string>
     <string name="accion_editar_tarjeta">Editar tarjeta</string>
     <string name="editar_tarjeta_title">Editar tarjeta</string>
     <string name="guardar_cambios">Guardar cambios</string>

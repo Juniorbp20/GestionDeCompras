@@ -76,6 +76,8 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
                 Toast.makeText(this, R.string.dialog_tarjeta_en_uso, Toast.LENGTH_SHORT).show();
             } else if ("tarjeta_eliminada".equals(mensaje)) {
                 Toast.makeText(this, R.string.toast_tarjeta_eliminada, Toast.LENGTH_SHORT).show();
+            } else if ("tarjeta_error".equals(mensaje)) {
+                Toast.makeText(this, R.string.toast_tarjeta_error, Toast.LENGTH_SHORT).show();
             }
         });
     }

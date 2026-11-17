@@ -1,6 +1,8 @@
 package com.example.gestiondecompras.daos;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -124,5 +126,29 @@ public class TarjetaDaoTest {
 
         assertEquals(1, db.pedidoDao().countPedidosPorTarjeta(id));
         assertEquals(0, db.pedidoDao().countPedidosPorTarjeta(999));
+    }
+
+    @Test
+    public void delete_conPedidosPagados_desvinculaYElimina() {
+        Tarjeta t = nuevaTarjeta("Popular", "Visa", 50000.0, 1000.0);
+        long id = dao.insert(t);
+        t.setId(id);
+
+        Pedido pagado = new Pedido();
+        pagado.clienteId = clienteId;
+        pagado.tarjetaId = id;
+        pagado.estado = Pedido.ESTADO_PAGADO;
+        pagado.totalGeneral = 300.0;
+        long pedidoId = db.pedidoDao().insert(pagado);
+
+        db.runInTransaction(() -> {
+            db.pedidoDao().desvincularTarjeta(id);
+            dao.delete(t);
+        });
+
+        assertTrue(dao.getAllTarjetas().isEmpty());
+        Pedido conservado = db.pedidoDao().getPedidoById(pedidoId);
+        assertNotNull(conservado);
+        assertNull(conservado.tarjetaId);
     }
 }

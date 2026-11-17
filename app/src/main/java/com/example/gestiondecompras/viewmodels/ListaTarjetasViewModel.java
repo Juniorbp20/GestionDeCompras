@@ -42,13 +42,22 @@ public class ListaTarjetasViewModel extends AndroidViewModel {
 
     public void deleteTarjeta(Tarjeta tarjeta) {
         executorService.execute(() -> {
-            int enlaces = db.pedidoDao().countPedidosPorTarjeta(tarjeta.id);
-            if (enlaces > 0) {
-                mensajes.postValue("tarjeta_en_uso");
-            } else {
-                db.tarjetaDao().delete(tarjeta);
+            try {
+                int pendientes = db.pedidoDao().countPedidosPorTarjeta(tarjeta.id);
+                if (pendientes > 0) {
+                    mensajes.postValue("tarjeta_en_uso");
+                    return;
+                }
+                // Los pedidos antiguos (entregados, pagados, cancelados) referencian la tarjeta
+                // mediante una clave foránea: se desvinculan antes de borrarla para no violarla.
+                db.runInTransaction(() -> {
+                    db.pedidoDao().desvincularTarjeta(tarjeta.id);
+                    db.tarjetaDao().delete(tarjeta);
+                });
                 mensajes.postValue("tarjeta_eliminada");
                 loadTarjetas();
+            } catch (Exception e) {
+                mensajes.postValue("tarjeta_error");
             }
         });
     }

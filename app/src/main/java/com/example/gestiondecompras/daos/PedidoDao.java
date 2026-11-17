@@ -114,6 +114,10 @@ public interface PedidoDao {
     @Query("SELECT COUNT(*) FROM pedidos WHERE tarjeta_rel_id = :tarjetaId AND estado = 'pendiente'")
     int countPedidosPorTarjeta(long tarjetaId);
 
+    /** Quita la referencia a la tarjeta en sus pedidos para poder eliminarla conservando el historial. */
+    @Query("UPDATE pedidos SET tarjeta_rel_id = NULL WHERE tarjeta_rel_id = :tarjetaId")
+    int desvincularTarjeta(long tarjetaId);
+
     @Query("SELECT * FROM pedidos WHERE estado != 'pagado' AND estado != 'cancelado' ORDER BY fecha_registro_epoch DESC")
     List<Pedido> getPedidosNoPagados();
 }
