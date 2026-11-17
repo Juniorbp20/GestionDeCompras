@@ -334,7 +334,8 @@
     <string name="ayuda_clientes_desc">
 <b>Crear:</b> Usa el botón (+) para añadir un cliente manualmente o importarlo de tus contactos.\n
 <b>Acciones:</b> Toca un cliente para ver sus pedidos. Usa su botón ⋮ (o mantenlo presionado) para editarlo, llamarlo, escribirle por WhatsApp o eliminarlo.\n
-<b>Búsqueda:</b> Usa la barra superior para buscar por nombre o teléfono.
+<b>Búsqueda:</b> Usa la barra superior para buscar por nombre o teléfono, o la lupa de Inicio para buscar a la vez en clientes, pedidos y gastos.\n
+<b>Duplicados:</b> Si importas un contacto que ya tienes registrado (mismo teléfono), la app te avisa antes de crearlo otra vez.
 </string>
 
     <string name="ayuda_pedidos_title">2. Control de Pedidos</string>
@@ -344,6 +345,8 @@
 <b>Estados:</b> Los pedidos inician como "Por Cobrar". Usa el bot\u00F3n ⋮ del pedido (o mantenlo presionado) y elige "Cambiar estado" para marcarlo como "Entregado", "Pagado" o "Cancelado". Desde ese mismo men\u00FA puedes ver el detalle, editarlo, registrar un abono, enviar el resumen o eliminarlo.\n
 <b>Resumen:</b> Toca un pedido para ver su resumen completo y usa "Enviar resumen al cliente" para compartirlo por WhatsApp, correo u otra app que tengas instalada.\n
 <b>Filtros:</b> En la pesta\u00F1a "Pedidos" puedes buscar por texto y filtrar por estado.\n
+<b>Eliminar:</b> Desliza un pedido hacia la izquierda o usa ⋮ > Eliminar. Tendr\u00E1s unos segundos para pulsar "Deshacer".\n
+<b>Cobros por WhatsApp:</b> En un pedido con saldo, usa ⋮ > "Recordar pago por WhatsApp" para enviar al cliente un mensaje con lo que debe.\n
 <b>Calendario:</b> La secci\u00F3n "Calendario" (en Inicio o en M\u00E1s) muestra los pedidos por d\u00EDa (entregas y registros) y permite buscar un cliente espec\u00EDfico.
 </string>
 
@@ -367,7 +370,8 @@
 <b>Categor\u00EDas:</b> Debajo del resumen aparece el desglose por categor\u00EDa. Toca una categor\u00EDa para filtrar el listado y t\u00F3cala de nuevo para quitar el filtro.\n
 <b>Gastos:</b> Usa el bot\u00F3n (+) para anotar tus gastos personales: elige categor\u00EDa, monto, fecha, descripci\u00F3n y notas opcionales.\n
 <b>Filtros:</b> Busca por descripci\u00F3n, categor\u00EDa o notas, y combina la b\u00FAsqueda con la categor\u00EDa o con un rango de fechas personalizado. Mant\u00E9n presionado un campo de fecha para limpiarlo y usa "Limpiar" para volver al mes actual.\n
-<b>Editar o borrar:</b> Toca un gasto o usa su bot\u00F3n ⋮ para editarlo o eliminarlo.\n
+<b>Editar o borrar:</b> Toca un gasto o usa su bot\u00F3n ⋮ para editarlo o eliminarlo; tambi\u00E9n puedes deslizarlo a la izquierda y pulsar "Deshacer" si te equivocas.\n
+<b>Exportar:</b> El icono de compartir de Finanzas genera un archivo CSV que se abre en Excel o Google Sheets.\n
 <b>Dashboard:</b> La card "Gastos del mes" del inicio muestra el total del mes y abre Finanzas de un toque.
 </string>
 
@@ -375,7 +379,8 @@
     <string name="ayuda_reportes_desc">
 <b>Dashboard:</b> La pantalla principal te resume lo que tienes por cobrar, lo pagado, pedidos atrasados, ganancia esperada y los gastos del mes. Toca cualquier tarjeta para ir directo a la secci\u00F3n correspondiente.\n
 <b>Reportes:</b> En M\u00E1s > Reportes filtra por cliente y rango de fechas. La app separa los pedidos en "Por Cobrar" y "Pagados" y te permite generar un PDF formateado que se abre autom\u00E1ticamente en el visor.\n
-<b>PDF:</b> El PDF incluye tarjetas por pedido con su estado, el detalle de montos y un resumen final con totales.
+<b>PDF:</b> El PDF incluye tarjetas por pedido con su estado, el detalle de montos y un resumen final con totales.\n
+<b>Excel:</b> El bot\u00F3n "Exportar a Excel (CSV)" genera los mismos pedidos en una hoja de c\u00E1lculo.
 </string>
 
     <string name="ayuda_seguridad_title">7. Seguridad, Tema y Datos</string>
@@ -383,7 +388,7 @@
 <b>Tema:</b> Ve a M\u00E1s > Ajustes (o al engranaje de Inicio) y elige "Claro", "Oscuro" o "Seg\u00FAn el sistema". La app guarda tu preferencia en cada reinicio.\n
 <b>Biometr\u00EDa:</b> Activa el interruptor de bloqueo biom\u00E9trico para proteger la app con tu huella o PIN.\n
 <b>Recordatorios:</b> Configura cu\u00E1ntos d\u00EDas antes del corte avisarte y a qu\u00E9 hora.\n
-<b>Google Drive:</b> Inicia sesi\u00F3n en Ajustes para subir tu base de datos a la nube y restaurarla en este u otro dispositivo con la misma cuenta de Google.\n
+<b>Google Drive:</b> Inicia sesi\u00F3n en Ajustes para subir tu base de datos a la nube y restaurarla en este u otro dispositivo con la misma cuenta de Google. Activa "Copia autom\u00E1tica diaria" para que se haga sola cada d\u00EDa.\n
 <b>Restablecer:</b> El bot\u00F3n rojo "Resetear aplicaci\u00F3n" borra todos los datos de forma definitiva.
 </string>
     <string name="creado_por">By Gustavo J. Bonifacio</string>
@@ -450,4 +455,99 @@
     <string name="ajustes_seccion_acerca">Acerca de</string>
     <string name="ajustes_seccion_peligro">Zona de peligro</string>
     <string name="ajustes_peligro_sub">Borra todos los datos de la aplicación. Esta acción no se puede deshacer.</string>
+
+    <!-- ===== Eliminar con deshacer ===== -->
+    <string name="accion_deshacer">Deshacer</string>
+    <string name="pedido_eliminado_deshacer">Pedido de %1$s eliminado</string>
+    <string name="gasto_eliminado_deshacer">Gasto "%1$s" eliminado</string>
+
+    <!-- ===== Estados vacíos ===== -->
+    <string name="vacio_crear_pedido">Crear pedido</string>
+    <string name="vacio_crear_cliente">Añadir cliente</string>
+    <string name="vacio_crear_gasto">Registrar un gasto</string>
+    <string name="vacio_crear_tarjeta">Agregar una tarjeta</string>
+
+    <!-- ===== Búsqueda global ===== -->
+    <string name="busqueda_title">Buscar</string>
+    <string name="busqueda_hint">Cliente, tienda, gasto o nota</string>
+    <string name="busqueda_ayuda">Escribe al menos 2 letras para buscar en clientes, pedidos y gastos.</string>
+    <string name="busqueda_sin_resultados">No se encontró nada para "%1$s".</string>
+    <string name="busqueda_clientes">Clientes</string>
+    <string name="busqueda_pedidos">Pedidos</string>
+    <string name="busqueda_gastos">Gastos</string>
+
+    <!-- ===== Exportar CSV ===== -->
+    <string name="exportar_csv">Exportar a Excel (CSV)</string>
+    <string name="exportar_csv_error">No se pudo generar el archivo CSV</string>
+    <string name="exportar_csv_vacio">No hay datos para exportar</string>
+
+    <!-- ===== Accesibilidad ===== -->
+    <string name="a11y_foto_perfil">Foto de perfil</string>
+
+    <!-- ===== Detalle y resumen de pedido ===== -->
+    <string name="sin_dato">N/D</string>
+    <string name="resumen_titulo">*Resumen del pedido*</string>
+    <string name="resumen_total">Total</string>
+    <string name="resumen_estado">Estado</string>
+
+    <!-- ===== Textos antes escritos en el código ===== -->
+    <string name="pedido_editar_titulo">Editar pedido #%1$d</string>
+    <string name="pedido_actualizar">Actualizar pedido</string>
+    <string name="pedido_faltan_selecciones">Selecciona cliente, tienda y tarjeta.</string>
+    <string name="pedido_faltan_montos">Completa el monto de compra y la ganancia.</string>
+    <string name="pedido_valores_invalidos">Verifica los valores numéricos.</string>
+    <string name="pedido_supera_limite">El monto de la compra supera el límite de la tarjeta.</string>
+    <string name="pedido_actualizado">Pedido actualizado</string>
+    <string name="pedido_guardado">Pedido guardado</string>
+    <string name="contactos_permiso_denegado">Permiso denegado para leer contactos</string>
+    <string name="contacto_importado">Contacto importado: %1$s</string>
+    <string name="contacto_error_importar">Error al importar el contacto</string>
+    <string name="tarjeta_deuda_actual_formato">Deuda actual: RD$ %1$,.2f</string>
+    <string name="notif_permiso_concedido">Permiso de notificaciones concedido</string>
+    <string name="notif_permiso_rechazado">No se podrán mostrar notificaciones de recordatorio</string>
+    <string name="error_autenticacion">Error de autenticación: %1$s</string>
+    <string name="ganancias_por_cliente">Ganancias por cliente</string>
+    <string name="google_login_cancelado">Inicio de sesión cancelado</string>
+    <string name="google_error">Error de Google: %1$d</string>
+    <string name="google_login_fallido">Inicio de sesión cancelado o fallido</string>
+    <string name="version_formato">Versión %1$s</string>
+    <string name="version_desconocida">Versión desconocida</string>
+    <string name="google_sesion_cerrada">Sesión de Google cerrada</string>
+    <string name="google_cerrar_sesion">Cerrar sesión de Google</string>
+    <string name="google_iniciar_sesion">Iniciar sesión</string>
+    <string name="respaldo_sin_archivo">Error: el archivo de datos no existe</string>
+    <string name="respaldo_subiendo">Subiendo a Drive…</string>
+    <string name="respaldo_subido">Copia subida con éxito</string>
+    <string name="respaldo_error_preparar">Error al preparar el respaldo: %1$s</string>
+    <string name="respaldo_descargando">Descargando de Drive…</string>
+    <string name="respaldo_restaurado">Restauración exitosa. Reiniciando…</string>
+    <string name="reset_confirm_titulo">Confirmar reinicio</string>
+    <string name="reset_confirm_pregunta">¿Estás seguro de que deseas borrar todos los datos?</string>
+    <string name="reset_borrar_todo">Borrar todo</string>
+    <string name="reset_datos_borrados">Datos borrados</string>
+    <string name="calendario_hoy">Hoy: %1$s</string>
+    <string name="error_detalle">Error: %1$s</string>
+    <plurals name="clientes_cantidad_pedidos">
+        <item quantity="one">%d pedido</item>
+        <item quantity="other">%d pedidos</item>
+    </plurals>
+
+    <!-- ===== Importar contactos ===== -->
+    <string name="contacto_duplicado_titulo">Cliente ya registrado</string>
+    <string name="contacto_duplicado_mensaje">Ya tienes un cliente con estos datos: %1$s %2$s. ¿Quieres importarlo de todos modos?</string>
+    <string name="contacto_importar_igual">Importar igualmente</string>
+
+    <!-- ===== Copia automática ===== -->
+    <string name="respaldo_auto_titulo">Copia automática diaria</string>
+    <string name="respaldo_auto_nunca">Aún no se ha hecho ninguna copia automática</string>
+    <string name="respaldo_auto_ultima">Última copia: %1$s</string>
+    <string name="respaldo_auto_requiere_cuenta">Inicia sesión con Google para activar la copia automática</string>
+    <string name="respaldo_auto_activada">Se hará una copia en Drive cada día con conexión a internet</string>
+
+    <!-- ===== Recordatorio de cobro por WhatsApp ===== -->
+    <string name="recordatorio_whatsapp">Recordar pago por WhatsApp</string>
+    <string name="recordatorio_enviar_varios">Enviar recordatorios</string>
+    <string name="recordatorio_tu_compra">tu compra</string>
+    <string name="recordatorio_mensaje">Hola %1$s, te recordamos que tienes un saldo pendiente de %2$s por tu pedido de %3$s. ¡Muchas gracias!</string>
+    <string name="recordatorio_sin_telefono">El cliente no tiene un teléfono válido registrado</string>
 </resources>

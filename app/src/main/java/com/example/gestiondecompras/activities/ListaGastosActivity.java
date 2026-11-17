@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.gestiondecompras.R;
+import com.example.gestiondecompras.utils.BorradoConDeshacer;
 import com.example.gestiondecompras.utils.HojaAcciones;
 import com.example.gestiondecompras.utils.NavegacionInferior;
 import com.example.gestiondecompras.adapters.GastosAdapter;
@@ -49,6 +50,7 @@ public class ListaGastosActivity extends AppCompatActivity implements GastosAdap
     private ActivityListaGastosBinding binding;
     private ListaGastosViewModel viewModel;
     private GastosAdapter adapter;
+    private final BorradoConDeshacer borrado = new BorradoConDeshacer();
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private final SimpleDateFormat sdfMes = new SimpleDateFormat("MMMM yyyy", LOCALE_ES);
@@ -93,6 +95,53 @@ public class ListaGastosActivity extends AppCompatActivity implements GastosAdap
         binding.rvGastos.setLayoutManager(new LinearLayoutManager(this));
         adapter = new GastosAdapter(this);
         binding.rvGastos.setAdapter(adapter);
+
+        // Deslizar a la izquierda elimina (con opción de deshacer), igual que en Pedidos
+        new androidx.recyclerview.widget.ItemTouchHelper(new androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback(
+                0, androidx.recyclerview.widget.ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@androidx.annotation.NonNull androidx.recyclerview.widget.RecyclerView rv,
+                                  @androidx.annotation.NonNull androidx.recyclerview.widget.RecyclerView.ViewHolder vh,
+                                  @androidx.annotation.NonNull androidx.recyclerview.widget.RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@androidx.annotation.NonNull androidx.recyclerview.widget.RecyclerView.ViewHolder vh, int direction) {
+                Gasto gasto = adapter.getGastoAt(vh.getBindingAdapterPosition());
+                if (gasto != null) {
+                    eliminarConDeshacer(gasto);
+                } else {
+                    adapter.notifyItemChanged(vh.getBindingAdapterPosition());
+                }
+            }
+        }).attachToRecyclerView(binding.rvGastos);
+    }
+
+    @Override
+    protected void onStop() {
+        borrado.confirmarPendiente();
+        super.onStop();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_finanzas, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@androidx.annotation.NonNull android.view.MenuItem item) {
+        if (item.getItemId() == R.id.accion_exportar_csv) {
+            List<Gasto> visibles = viewModel.getGastos().getValue();
+            if (visibles == null || visibles.isEmpty()) {
+                Toast.makeText(this, R.string.exportar_csv_vacio, Toast.LENGTH_SHORT).show();
+            } else {
+                com.example.gestiondecompras.utils.ExportadorCsv.exportarGastos(this, visibles, "gastos");
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupCategoriasSpinner() {
@@ -115,6 +164,8 @@ public class ListaGastosActivity extends AppCompatActivity implements GastosAdap
 
     private void setupFiltros() {
         binding.fabNuevoGasto.setOnClickListener(v ->
+                startActivity(new Intent(this, NuevoGastoActivity.class)));
+        binding.btnVacioAccion.setOnClickListener(v ->
                 startActivity(new Intent(this, NuevoGastoActivity.class)));
 
         binding.etBuscar.addTextChangedListener(new TextWatcher() {
@@ -477,7 +528,7 @@ public class ListaGastosActivity extends AppCompatActivity implements GastosAdap
         HojaAcciones.de(this, gasto.getDescripcion())
                 .subtitulo(gasto.getCategoria() + " · " + formatoMoneda(gasto.getMonto()))
                 .accion(R.drawable.ic_edit, R.string.accion_editar, () -> editarGasto(gasto))
-                .peligrosa(R.drawable.ic_delete, R.string.accion_eliminar, () -> confirmarEliminar(gasto))
+                .peligrosa(R.drawable.ic_delete, R.string.accion_eliminar, () -> eliminarConDeshacer(gasto))
                 .mostrar();
     }
 
@@ -487,15 +538,15 @@ public class ListaGastosActivity extends AppCompatActivity implements GastosAdap
         startActivity(intent);
     }
 
-    private void confirmarEliminar(Gasto gasto) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.gastos_eliminar_title)
-                .setMessage(R.string.gastos_eliminar_message)
-                .setPositiveButton(R.string.accion_eliminar, (d, w) -> {
-                    viewModel.deleteGasto(gasto);
-                    Toast.makeText(this, R.string.toast_gasto_eliminado, Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton(R.string.accion_cancelar, null)
-                .show();
+    /** Oculta el gasto y lo borra al cerrarse el aviso, salvo que se pulse "Deshacer". */
+    private void eliminarConDeshacer(Gasto gasto) {
+        borrado.eliminar(binding.getRoot(), binding.bottomNav,
+                getString(R.string.gasto_eliminado_deshacer, gasto.getDescripcion()),
+                () -> {
+                    adapter.quitar(gasto);
+                    binding.emptyState.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                },
+                this::cargarGastos,
+                () -> viewModel.deleteGasto(gasto));
     }
 }

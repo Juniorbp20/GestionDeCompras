@@ -71,6 +71,10 @@
         <activity android:name="com.example.gestiondecompras.activities.NuevoGastoActivity"
             android:label="@string/gastos_nuevo"
             android:parentActivityName=".activities.ListaGastosActivity" />
+        <activity android:name="com.example.gestiondecompras.activities.BusquedaActivity"
+            android:label="@string/busqueda_title"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:parentActivityName=".activities.MainActivity" />
         <activity android:name="com.example.gestiondecompras.activities.MasActivity"
             android:label="@string/mas_title"
             android:parentActivityName=".activities.MainActivity" />

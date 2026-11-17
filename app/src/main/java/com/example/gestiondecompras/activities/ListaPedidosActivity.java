@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.activities;
 
+import com.example.gestiondecompras.utils.Dinero;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiondecompras.R;
+import com.example.gestiondecompras.utils.BorradoConDeshacer;
+import com.example.gestiondecompras.utils.DetallePedido;
 import com.example.gestiondecompras.utils.HojaAcciones;
 import com.example.gestiondecompras.utils.NavegacionInferior;
 import com.example.gestiondecompras.adapters.AbonosAdapter;
@@ -36,6 +39,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
     private ActivityListaPedidosBinding binding;
     private ListaPedidosViewModel viewModel;
     private PedidosAdapter adapter;
+    private final BorradoConDeshacer borrado = new BorradoConDeshacer();
     private Integer filtroClienteId = null;
     private String filtroClienteNombre = null;
     private final String[] estados = {"Todos", "Por Cobrar", "Pendientes", "Entregados", "Pagados", "Atrasados"};
@@ -55,8 +59,12 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
 
         if (getIntent() != null) {
             if (getIntent().hasExtra("cliente_id")) {
-                filtroClienteId = getIntent().getIntExtra("cliente_id", -1);
-                if (filtroClienteId <= 0) filtroClienteId = null;
+                // Clientes envía el id como long; se acepta también int por compatibilidad
+                long idCliente = getIntent().getLongExtra("cliente_id", -1L);
+                if (idCliente <= 0) {
+                    idCliente = getIntent().getIntExtra("cliente_id", -1);
+                }
+                filtroClienteId = idCliente > 0 ? (int) idCliente : null;
             }
             if (getIntent().hasExtra("cliente_nombre")) {
                 filtroClienteNombre = getIntent().getStringExtra("cliente_nombre");
@@ -114,7 +122,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
                 int position = viewHolder.getBindingAdapterPosition();
                 Pedido pedido = adapter.getPedidoAt(position);
                 if (direction == ItemTouchHelper.LEFT && pedido != null) {
-                    confirmarEliminarPedido(pedido, position);
+                    eliminarConDeshacer(pedido);
                 }
             }
         };
@@ -159,6 +167,8 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         binding.fabNuevoPedido.setOnClickListener(v -> {
             startActivity(new Intent(this, NuevoPedidoActivity.class));
         });
+        binding.btnVacioAccion.setOnClickListener(v ->
+                startActivity(new Intent(this, NuevoPedidoActivity.class)));
     }
 
     private void observeViewModel() {
@@ -182,13 +192,6 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_detalle_pedido, null);
         
-        android.widget.TextView tvProducto = view.findViewById(R.id.tv_detalle_producto);
-        android.widget.TextView tvTienda = view.findViewById(R.id.tv_detalle_tienda);
-        android.widget.TextView tvFechaCompra = view.findViewById(R.id.tv_detalle_fecha_compra);
-        android.widget.TextView tvFechaEntrega = view.findViewById(R.id.tv_detalle_fecha_entrega);
-        android.widget.TextView tvCosto = view.findViewById(R.id.tv_detalle_costo);
-        android.widget.TextView tvVenta = view.findViewById(R.id.tv_detalle_venta);
-        android.widget.TextView tvGanancia = view.findViewById(R.id.tv_detalle_ganancia);
         android.widget.TextView tvAbonado = view.findViewById(R.id.tv_detalle_abonado);
         android.widget.TextView tvSaldo = view.findViewById(R.id.tv_detalle_saldo);
         android.widget.TextView tvEstado = view.findViewById(R.id.tv_detalle_estado);
@@ -196,27 +199,13 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         com.google.android.material.button.MaterialButton btnRegistrarAbono = view.findViewById(R.id.btn_registrar_abono);
         com.google.android.material.button.MaterialButton btnVerAbonos = view.findViewById(R.id.btn_ver_abonos);
 
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault());
-        
-        tvProducto.setText(pedido.getClienteNombre());
-        tvTienda.setText(pedido.getTienda());
-        
-        tvFechaCompra.setText(pedido.getFechaRegistro() != null ? sdf.format(pedido.getFechaRegistro()) : "N/A");
-        tvFechaEntrega.setText(pedido.getFechaEntrega() != null ? sdf.format(pedido.getFechaEntrega()) : "N/A");
-        
-        tvCosto.setText(String.format("RD$ %,.2f", pedido.getMontoCompra()));
-        tvVenta.setText(String.format("RD$ %,.2f", pedido.getTotalGeneral()));
-        tvGanancia.setText(String.format("RD$ %,.2f", pedido.getGanancia()));
-        tvAbonado.setText(moneda(pedido.getTotalAbonado()));
-        tvSaldo.setText(moneda(pedido.getSaldo()));
+        DetallePedido.rellenar(view, pedido);
 
-        aplicarEstado(tvEstado, pedido.getEstado());
-
-        btnEnviar.setOnClickListener(v -> enviarResumenCliente(pedido, sdf));
+        btnEnviar.setOnClickListener(v -> DetallePedido.compartirResumen(this, pedido));
 
         AlertDialog dialog = builder.setView(view)
-               .setPositiveButton("Cerrar", null)
-               .setNeutralButton("Editar", (d, which) -> {
+               .setPositiveButton(R.string.accion_cerrar, null)
+               .setNeutralButton(R.string.accion_editar, (d, which) -> {
                    d.dismiss();
                    Intent i = new Intent(this, NuevoPedidoActivity.class);
                    i.putExtra("pedido_id", pedido.getId());
@@ -238,7 +227,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
             Snackbar.make(binding.rvPedidos, R.string.abono_pedido_cancelado, Snackbar.LENGTH_SHORT).show();
             return;
         }
-        if (pedido.getSaldo() <= 0.001) {
+        if (!Dinero.esPositivo(pedido.getSaldo())) {
             Snackbar.make(binding.rvPedidos, R.string.abono_pedido_pagado, Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -263,16 +252,16 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
             String montoTexto = etMonto.getText() != null ? etMonto.getText().toString().trim() : "";
             double monto;
             try {
-                monto = Double.parseDouble(montoTexto);
+                monto = Dinero.redondear(Double.parseDouble(montoTexto));
             } catch (NumberFormatException ex) {
                 etMonto.setError(getString(R.string.abono_monto_invalido));
                 return;
             }
-            if (monto <= 0) {
+            if (!Dinero.esPositivo(monto)) {
                 etMonto.setError(getString(R.string.abono_monto_invalido));
                 return;
             }
-            if (monto > pedido.getSaldo() + 0.001) {
+            if (Dinero.mayorQue(monto, pedido.getSaldo())) {
                 etMonto.setError(getString(R.string.abono_excede_saldo));
                 return;
             }
@@ -356,40 +345,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
     }
 
     private void aplicarEstado(android.widget.TextView tvEstado, String estado) {
-        int colorRes;
-        if (Pedido.ESTADO_PAGADO.equalsIgnoreCase(estado)) {
-            colorRes = R.color.status_paid;
-        } else if (Pedido.ESTADO_ENTREGADO.equalsIgnoreCase(estado)) {
-            colorRes = R.color.status_delivered;
-        } else if (Pedido.ESTADO_CANCELADO.equalsIgnoreCase(estado)) {
-            colorRes = R.color.status_cancelled;
-        } else {
-            colorRes = R.color.status_pending;
-        }
-        tvEstado.setText(estado);
-        tvEstado.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, colorRes)));
-        tvEstado.setTextColor(ContextCompat.getColor(this, R.color.white));
-    }
-
-    private void enviarResumenCliente(Pedido pedido, java.text.SimpleDateFormat sdf) {
-        String fechaRegistro = pedido.getFechaRegistro() != null ? sdf.format(pedido.getFechaRegistro()) : "N/A";
-        String fechaEntrega = pedido.getFechaEntrega() != null ? sdf.format(pedido.getFechaEntrega()) : "N/A";
-
-        String mensaje = "*Resumen del Pedido*\n\n"
-                + getString(R.string.pedido_detalle_cliente) + ": " + pedido.getClienteNombre() + "\n"
-                + getString(R.string.pedido_detalle_tienda) + ": " + pedido.getTienda() + "\n"
-                + getString(R.string.pedido_detalle_fecha_compra) + ": " + fechaRegistro + "\n"
-                + getString(R.string.pedido_detalle_fecha_entrega) + ": " + fechaEntrega + "\n"
-                + getString(R.string.pedido_detalle_costo) + ": RD$ " + String.format(java.util.Locale.getDefault(), "%,.2f", pedido.getMontoCompra()) + "\n"
-                + getString(R.string.pedido_detalle_venta) + ": RD$ " + String.format(java.util.Locale.getDefault(), "%,.2f", pedido.getTotalGeneral()) + "\n"
-                + getString(R.string.pedido_detalle_ganancia) + ": RD$ " + String.format(java.util.Locale.getDefault(), "%,.2f", pedido.getGanancia()) + "\n"
-                + "Estado: " + pedido.getEstado();
-
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pedido_share_subject, pedido.getClienteNombre()));
-        intent.putExtra(Intent.EXTRA_TEXT, mensaje);
-        startActivity(Intent.createChooser(intent, getString(R.string.pedido_enviar_resumen)));
+        DetallePedido.aplicarEstado(tvEstado, estado);
     }
 
     @Override
@@ -401,7 +357,6 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
 
     /** Hoja inferior con todas las acciones del pedido, en el orden común de la app. */
     private void mostrarAccionesPedido(Pedido pedido) {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault());
         String subtitulo = (pedido.getTienda() != null && !pedido.getTienda().isEmpty()
                 ? pedido.getTienda() + " · " : "") + moneda(pedido.getTotalGeneral());
 
@@ -414,20 +369,15 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
                     startActivity(i);
                 })
                 .accion(R.drawable.ic_swap, R.string.accion_cambiar_estado, () -> mostrarDialogoEstado(pedido));
-        if (!Pedido.ESTADO_CANCELADO.equalsIgnoreCase(pedido.getEstado()) && pedido.getSaldo() > 0.001) {
+        if (!Pedido.ESTADO_CANCELADO.equalsIgnoreCase(pedido.getEstado()) && Dinero.esPositivo(pedido.getSaldo())) {
             hoja.accion(R.drawable.ic_payments, R.string.abono_registrar,
                     () -> mostrarDialogoAbono(pedido, null, null, null));
+            hoja.accion(R.drawable.ic_chat, R.string.recordatorio_whatsapp, () -> recordarPago(pedido));
         }
-        hoja.accion(R.drawable.ic_share, R.string.pedido_enviar_resumen, () -> enviarResumenCliente(pedido, sdf))
+        hoja.accion(R.drawable.ic_share, R.string.pedido_enviar_resumen, () -> DetallePedido.compartirResumen(this, pedido))
                 .peligrosa(R.drawable.ic_delete, R.string.accion_eliminar,
-                        () -> confirmarEliminarPedido(pedido, RecyclerView.NO_POSITION))
+                        () -> eliminarConDeshacer(pedido))
                 .mostrar();
-    }
-
-    private void restaurarFila(int position) {
-        if (position != RecyclerView.NO_POSITION) {
-            adapter.notifyItemChanged(position);
-        }
     }
 
     private void actualizarTitulo() {
@@ -438,17 +388,33 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         }
     }
 
-    private void confirmarEliminarPedido(Pedido pedido, int position) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.dialog_delete_pedido_title)
-                .setMessage(R.string.dialog_delete_pedido_message)
-                .setPositiveButton(R.string.accion_eliminar, (dialog, which) -> {
-                    viewModel.deletePedido(pedido);
-                    Snackbar.make(binding.rvPedidos, R.string.snackbar_pedido_eliminado, Snackbar.LENGTH_SHORT).show();
-                })
-                .setNegativeButton(R.string.accion_cancelar, (dialog, which) -> restaurarFila(position))
-                .setOnCancelListener(dialog -> restaurarFila(position))
-                .show();
+    /** Abre WhatsApp con el recordatorio de pago para el cliente del pedido. */
+    private void recordarPago(Pedido pedido) {
+        androidx.lifecycle.MutableLiveData<String> telefono = new androidx.lifecycle.MutableLiveData<>();
+        telefono.observe(this, tel -> {
+            if (tel != null) {
+                DetallePedido.recordarPagoPorWhatsApp(this, pedido, tel);
+            }
+        });
+        viewModel.obtenerTelefonoCliente(pedido.clienteId, telefono);
+    }
+
+    /** Oculta el pedido y lo borra al cerrarse el aviso, salvo que se pulse "Deshacer". */
+    private void eliminarConDeshacer(Pedido pedido) {
+        borrado.eliminar(binding.getRoot(), binding.bottomNav,
+                getString(R.string.pedido_eliminado_deshacer, pedido.getClienteNombre()),
+                () -> {
+                    adapter.quitar(pedido);
+                    binding.emptyState.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                },
+                this::cargarPedidos,
+                () -> viewModel.deletePedido(pedido));
+    }
+
+    @Override
+    protected void onStop() {
+        borrado.confirmarPendiente();
+        super.onStop();
     }
 
     private void mostrarDialogoEstado(Pedido pedido) {
@@ -473,13 +439,13 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
                     String nuevoEstado = valores[which];
                     if (!Pedido.ESTADO_PAGADO.equals(nuevoEstado)
                             && !Pedido.ESTADO_CANCELADO.equals(nuevoEstado)
-                            && pedido.getSaldo() <= 0.001) {
+                            && !Dinero.esPositivo(pedido.getSaldo())) {
                         Snackbar.make(binding.rvPedidos, R.string.abono_pedido_pagado,
                                 Snackbar.LENGTH_SHORT).show();
                         dialog.dismiss();
                         return;
                     }
-                    if (Pedido.ESTADO_PAGADO.equals(nuevoEstado) && pedido.getSaldo() > 0.001) {
+                    if (Pedido.ESTADO_PAGADO.equals(nuevoEstado) && Dinero.esPositivo(pedido.getSaldo())) {
                         MutableLiveData<Boolean> resultado = new MutableLiveData<>();
                         resultado.observe(this, ok -> {
                             if (Boolean.TRUE.equals(ok)) {

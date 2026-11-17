@@ -426,7 +426,8 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:src="@drawable/ic_wallet"
-                android:tint="@color/gray_light" />
+                android:tint="@color/gray_light"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:id="@+id/tvVacio"
@@ -437,6 +438,17 @@
                 android:text="@string/finanzas_sin_gastos"
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVacioAccion"
+                style="@style/Widget.App.Button.Gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="24dp"
+                android:text="@string/vacio_crear_gasto"
+                app:icon="@drawable/ic_wallet"
+                app:iconGravity="textStart" />
         </LinearLayout>
 
     </LinearLayout>

@@ -1,5 +1,7 @@
 package com.example.gestiondecompras.viewmodels;
 
+import com.example.gestiondecompras.servicios.PedidosServicio;
+import com.example.gestiondecompras.utils.Dinero;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -76,39 +78,8 @@ public class NuevoPedidoViewModel extends AndroidViewModel {
     }
 
     public void savePedido(Pedido pedido, Tarjeta tarjeta, double abonoInicial, String metodoAbono) {
-        executorService.execute(() -> db.runInTransaction(() -> {
-            if (pedido.getId() > 0) {
-                // Obtener el pedido anterior para comparar el monto
-                Pedido oldPedido = db.pedidoDao().getPedidoById(pedido.getId());
-                if (oldPedido != null) {
-                    double diff = pedido.getMontoCompra() - oldPedido.getMontoCompra();
-
-                    // Solo actualizar la deuda si hay una diferencia en el monto numérico
-                    if (diff != 0 && tarjeta != null && pedido.tarjetaId == tarjeta.id) {
-                        tarjeta.setDeudaActual(tarjeta.getDeudaActual() + diff);
-                        db.tarjetaDao().update(tarjeta);
-                    }
-                }
-                db.pedidoDao().update(pedido);
-            } else {
-                long pedidoId = db.pedidoDao().insert(pedido);
-                pedido.id = pedidoId;
-
-                if (tarjeta != null) {
-                    tarjeta.setDeudaActual(tarjeta.getDeudaActual() + pedido.getMontoCompra());
-                    db.tarjetaDao().update(tarjeta);
-                }
-
-                if (abonoInicial > 0) {
-                    Abono abono = new Abono();
-                    abono.pedidoId = pedidoId;
-                    abono.monto = abonoInicial;
-                    abono.fechaEpoch = System.currentTimeMillis();
-                    abono.metodo = metodoAbono != null ? metodoAbono : Abono.METODO_EFECTIVO;
-                    db.abonoDao().insert(abono);
-                }
-            }
-        }));
+        // La deuda de la tarjeta se recalcula dentro del servicio a partir de la base de datos
+        executorService.execute(() -> new PedidosServicio(db).guardarPedido(pedido, abonoInicial, metodoAbono));
     }
 
     public LiveData<Pedido> getPedido(long id) {

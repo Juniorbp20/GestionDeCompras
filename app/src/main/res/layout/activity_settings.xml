@@ -67,7 +67,8 @@
                             android:background="@drawable/bg_icon_badge_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_settings"
-                            android:tint="@color/primary_color" />
+                            android:tint="@color/primary_color"
+                            android:importantForAccessibility="no" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -148,7 +149,8 @@
                         android:background="@drawable/bg_icon_badge_blue"
                         android:padding="8dp"
                         android:src="@drawable/ic_lock"
-                        android:tint="@color/primary_color" />
+                        android:tint="@color/primary_color"
+                        android:importantForAccessibility="no" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -214,7 +216,8 @@
                             android:background="@drawable/bg_icon_badge_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_notifications"
-                            android:tint="@color/primary_color" />
+                            android:tint="@color/primary_color"
+                            android:importantForAccessibility="no" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -483,7 +486,8 @@
                             android:background="@drawable/bg_icon_badge_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_cloud_upload"
-                            android:tint="@color/primary_color" />
+                            android:tint="@color/primary_color"
+                            android:importantForAccessibility="no" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -508,6 +512,44 @@
                                 android:textColor="@color/gray"
                                 android:textSize="12sp" />
                         </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Copia automática diaria -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/respaldo_auto_titulo"
+                                android:textAppearance="@style/TextAppearance.App.TitleSmall"
+                                android:textColor="@color/gray_dark" />
+
+                            <TextView
+                                android:id="@+id/tv_respaldo_ultimo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/respaldo_auto_nunca"
+                                android:textAppearance="@style/TextAppearance.App.BodySmall"
+                                android:textColor="@color/gray" />
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/sw_respaldo_auto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/respaldo_auto_titulo" />
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton

@@ -70,6 +70,15 @@ public class ReportesActivity extends AppCompatActivity {
         setupFilters();
         observeViewModel();
         binding.btnExportPagados.setOnClickListener(v -> exportReporteCompleto());
+        binding.btnExportCsv.setOnClickListener(v -> {
+            java.util.List<Pedido> todos = new java.util.ArrayList<>(porCobrarActual);
+            todos.addAll(pagadosActual);
+            if (todos.isEmpty()) {
+                Toast.makeText(this, R.string.exportar_csv_vacio, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            com.example.gestiondecompras.utils.ExportadorCsv.exportarPedidos(this, todos, "reporte_pedidos");
+        });
     }
 
     @Override

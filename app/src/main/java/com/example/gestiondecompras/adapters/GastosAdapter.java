@@ -46,6 +46,20 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
+    /** Quita un gasto de la lista visible (sin tocar la base de datos). */
+    public void quitar(Gasto gasto) {
+        int pos = gastos.indexOf(gasto);
+        if (pos >= 0) {
+            gastos.remove(pos);
+            notifyItemRemoved(pos);
+        }
+    }
+
+    /** Gasto en la posición indicada, o null. */
+    public Gasto getGastoAt(int position) {
+        return position >= 0 && position < gastos.size() ? gastos.get(position) : null;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

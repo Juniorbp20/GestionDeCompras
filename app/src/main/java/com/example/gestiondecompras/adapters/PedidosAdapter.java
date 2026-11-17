@@ -37,7 +37,7 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
     }
 
     @Override public long getItemId(int position) {
-        // AsegÃƒÂºrate que getId() sea ÃƒÂºnico y > 0; si puede ser 0, usa -position
+        // Asegúrate que getId() sea único y > 0; si puede ser 0, usa -position
         return pedidos.get(position).getId();
     }
 
@@ -58,6 +58,17 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
     public void actualizarLista(List<Pedido> nuevos) {
         this.pedidos = nuevos;
         notifyDataSetChanged();
+    }
+
+    /** Quita un pedido de la lista visible (sin tocar la base de datos). */
+    public void quitar(Pedido pedido) {
+        if (pedidos == null || pedido == null) return;
+        int pos = pedidos.indexOf(pedido);
+        if (pos >= 0) {
+            pedidos = new java.util.ArrayList<>(pedidos);
+            pedidos.remove(pos);
+            notifyItemRemoved(pos);
+        }
     }
 
     public Pedido getPedidoAt(int position) {
@@ -85,7 +96,7 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
             chipEstado = itemView.findViewById(R.id.tvEstado);
             viewAccentEstado = itemView.findViewById(R.id.viewAccentEstado);
 
-            // Click SIEMPRE toma el item por posiciÃƒÂ³n actual:
+            // Click SIEMPRE toma el item por posición actual:
             itemView.setOnClickListener(v -> {
                 int pos = getBindingAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION && listener != null) {
@@ -100,7 +111,7 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
                 return true;
             });
 
-            // Click en estado (cambio rÃƒÂ¡pido de estado)
+            // Click en estado (cambio rápido de estado)
             // Botón ⋮: mismas acciones que la pulsación larga (oculto si no hay acciones)
             View btnMas = itemView.findViewById(R.id.btnMas);
             if (btnMas != null) {

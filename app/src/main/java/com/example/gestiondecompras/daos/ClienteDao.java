@@ -32,4 +32,12 @@ public interface ClienteDao {
            "(SELECT COALESCE(SUM(total_general), 0) FROM pedidos p WHERE p.cliente_id = c.id) as totalCompras " +
            "FROM clientes c")
     List<com.example.gestiondecompras.models.ClienteWithMetrics> getAllClientesWithMetrics();
+
+    @Query("SELECT c.*, " +
+           "(SELECT COUNT(*) FROM pedidos p WHERE p.cliente_id = c.id) as cantidadPedidos, " +
+           "(SELECT COALESCE(SUM(total_general), 0) FROM pedidos p WHERE p.cliente_id = c.id) as totalCompras " +
+           "FROM clientes c WHERE c.nombre LIKE '%' || :texto || '%' " +
+           "OR c.apellido LIKE '%' || :texto || '%' OR c.telefono LIKE '%' || :texto || '%' " +
+           "OR c.email LIKE '%' || :texto || '%' ORDER BY c.nombre LIMIT :limite")
+    List<com.example.gestiondecompras.models.ClienteWithMetrics> buscarClientes(String texto, int limite);
 }

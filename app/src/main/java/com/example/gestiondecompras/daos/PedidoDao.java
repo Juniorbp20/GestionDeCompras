@@ -80,12 +80,12 @@ public interface PedidoDao {
     int countEntregasEnRango(long desde, long hasta);
 
     @Query("SELECT COUNT(*) FROM pedidos p WHERE p.estado != 'pagado' AND p.estado != 'cancelado' " +
-           "AND p.total_general - COALESCE((SELECT SUM(a.monto) FROM abonos a WHERE a.pedido_id = p.id), 0) > 0.001")
+           "AND ROUND(p.total_general - COALESCE((SELECT SUM(a.monto) FROM abonos a WHERE a.pedido_id = p.id), 0), 2) > 0")
     int countPorCobrar();
 
     @Query("SELECT COALESCE(SUM(p.total_general - COALESCE((SELECT SUM(a.monto) FROM abonos a WHERE a.pedido_id = p.id), 0)), 0) " +
            "FROM pedidos p WHERE p.estado != 'pagado' AND p.estado != 'cancelado' " +
-           "AND p.total_general - COALESCE((SELECT SUM(a.monto) FROM abonos a WHERE a.pedido_id = p.id), 0) > 0.001")
+           "AND ROUND(p.total_general - COALESCE((SELECT SUM(a.monto) FROM abonos a WHERE a.pedido_id = p.id), 0), 2) > 0")
     double totalPorCobrarGlobal();
 
     @Query("SELECT * FROM pedidos WHERE estado = 'pendiente' AND fecha_entrega IS NOT NULL AND fecha_entrega < :todayEpoch ORDER BY fecha_entrega ASC")
@@ -110,6 +110,11 @@ public interface PedidoDao {
 
     @Query("SELECT * FROM pedidos WHERE estado = 'pagado' ORDER BY fecha_registro_epoch DESC")
     List<Pedido> getPedidosPagados();
+
+    @Query("SELECT * FROM pedidos WHERE cliente_nombre LIKE '%' || :texto || '%' " +
+           "OR tienda LIKE '%' || :texto || '%' OR notas LIKE '%' || :texto || '%' " +
+           "ORDER BY fecha_registro_epoch DESC LIMIT :limite")
+    List<Pedido> buscarPedidos(String texto, int limite);
 
     @Query("SELECT COUNT(*) FROM pedidos WHERE tarjeta_rel_id = :tarjetaId AND estado = 'pendiente'")
     int countPedidosPorTarjeta(long tarjetaId);

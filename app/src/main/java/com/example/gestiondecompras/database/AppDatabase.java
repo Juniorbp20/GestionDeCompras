@@ -31,7 +31,7 @@ import com.example.gestiondecompras.models.Tienda;
                 Abono.class
         },
         version = 6,
-        exportSchema = false
+        exportSchema = true
 )
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -83,7 +83,11 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "GestionCompras.db")
                             .addMigrations(MIGRATION_4_5, MIGRATION_5_6)
-                            .fallbackToDestructiveMigration()
+                            // Solo las versiones 1-3 (anteriores a Room, sin migración posible) se
+                            // recrean desde cero. Para cualquier versión nueva es obligatorio añadir
+                            // su Migration: si falta, la app falla en pruebas en lugar de borrar en
+                            // silencio los datos del usuario.
+                            .fallbackToDestructiveMigrationFrom(1, 2, 3)
                             .setJournalMode(JournalMode.TRUNCATE) // Asegura que todo esté en el archivo .db
                             .addCallback(PREPOPULATE_CALLBACK)
                             .build();

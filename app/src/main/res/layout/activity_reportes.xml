@@ -314,11 +314,21 @@
                 style="@style/Widget.App.Button.Gold"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="4dp"
                 android:text="@string/reportes_export_pdf"
                 app:icon="@drawable/ic_export"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnExportCsv"
+                style="@style/Widget.App.Button.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/exportar_csv"
+                app:icon="@drawable/ic_share"
+                app:iconGravity="textStart" />
         </LinearLayout>
     </ScrollView>
 

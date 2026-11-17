@@ -97,6 +97,8 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
 
     private void setupFab() {
         binding.fabNuevo.setOnClickListener(this::showFabMenu);
+        binding.btnVacioAccion.setOnClickListener(v ->
+                startActivity(new Intent(this, NuevoClienteActivity.class)));
     }
 
     private void showFabMenu(View v) {
@@ -215,7 +217,7 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
                 if (isGranted) {
                     pickContact();
                 } else {
-                    Toast.makeText(this, "Permiso denegado para leer contactos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.contactos_permiso_denegado, Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -227,6 +229,26 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
             });
 
     // Old menu code removed
+
+    /** Importa el contacto; si ya existe un cliente con el mismo teléfono, pregunta antes. */
+    private void importarSinDuplicar(Cliente nuevo) {
+        androidx.lifecycle.MutableLiveData<Cliente> duplicado = new androidx.lifecycle.MutableLiveData<>();
+        duplicado.observe(this, existente -> {
+            if (existente == null) return;
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.contacto_duplicado_titulo)
+                    .setMessage(getString(R.string.contacto_duplicado_mensaje, existente.nombre,
+                            existente.telefono != null ? existente.telefono : ""))
+                    .setPositiveButton(R.string.contacto_importar_igual, (d, w) -> {
+                        viewModel.insertCliente(nuevo);
+                        Toast.makeText(this, getString(R.string.contacto_importado, nuevo.nombre), Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton(R.string.accion_cancelar, null)
+                    .show();
+        });
+        viewModel.importarCliente(nuevo, duplicado, () ->
+                Toast.makeText(this, getString(R.string.contacto_importado, nuevo.nombre), Toast.LENGTH_SHORT).show());
+    }
 
     private void checkPermissionAndPick() {
         if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
@@ -292,12 +314,11 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
                     nuevoCliente.activo = true;
                     // nuevoCliente.fechaRegistro = System.currentTimeMillis(); // Field does not exist
 
-                    viewModel.insertCliente(nuevoCliente);
-                    Toast.makeText(this, "Contacto importado: " + name, Toast.LENGTH_SHORT).show();
+                    importarSinDuplicar(nuevoCliente);
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error al importar contacto", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.contacto_error_importar, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
