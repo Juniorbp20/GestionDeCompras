@@ -28,6 +28,17 @@ public final class RecordatorioUtils {
         return Math.max(HORA_INICIO_PERMITIDA, Math.min(HORA_FIN_PERMITIDA - 1, hora));
     }
 
+    /** Hora a partir de la cual el resumen cubre el día en curso en lugar del anterior. */
+    public static final int HORA_RESUMEN_DIA_ACTUAL = 12;
+
+    /**
+     * Indica si el resumen debe cubrir el día anterior: un resumen programado por la mañana
+     * tendría el día en curso prácticamente vacío.
+     */
+    public static boolean resumirDiaAnterior(int horaResumen) {
+        return horaResumen < HORA_RESUMEN_DIA_ACTUAL;
+    }
+
     public static int normalizarFrecuencia(int frecuenciaHoras) {
         if (frecuenciaHoras == 12 || frecuenciaHoras == 24) {
             return frecuenciaHoras;
@@ -51,7 +62,10 @@ public final class RecordatorioUtils {
         base.set(Calendar.MILLISECOND, 0);
 
         int frecuencia = normalizarFrecuencia(frecuenciaHoras);
-        int iteraciones = 48 / frecuencia + 1;
+        // Se parte de la franja equivalente del día anterior para incluir también las franjas
+        // del ciclo que caen antes de la hora base (p. ej. base 21:00 cada 6 h -> 09:00 y 15:00).
+        base.add(Calendar.DAY_OF_YEAR, -1);
+        int iteraciones = 72 / frecuencia + 1;
         for (int i = 0; i < iteraciones; i++) {
             Calendar candidato = (Calendar) base.clone();
             candidato.add(Calendar.HOUR_OF_DAY, i * frecuencia);
@@ -61,7 +75,7 @@ public final class RecordatorioUtils {
         }
 
         Calendar respaldo = (Calendar) base.clone();
-        respaldo.add(Calendar.DAY_OF_YEAR, 2);
+        respaldo.add(Calendar.DAY_OF_YEAR, 3);
         return respaldo.getTimeInMillis() - ahoraMillis;
     }
 

@@ -143,6 +143,7 @@
     <string name="notif_canal_resumen_nombre">Resumen diario</string>
     <string name="notif_canal_resumen_desc">Estad\u00EDsticas diarias de tus pedidos</string>
     <string name="notif_resumen_title">Resumen del d\u00EDa</string>
+    <string name="notif_resumen_title_ayer">Resumen de ayer</string>
     <string name="notif_cobros_title">Pedidos por cobrar</string>
     <string name="notif_cobros_text">Tienes %1$d pedidos por cobrar (RD$ %2$,.2f).</string>
     <string name="notif_cobros_text_atrasados">Tienes %1$d pedidos por cobrar (RD$ %2$,.2f). %3$d est\u00E1n atrasados.</string>
@@ -162,12 +163,12 @@
     <string name="notif_pago_title">Pago de tarjeta</string>
     <string name="notif_pago_hoy">El pago de %1$s vence hoy.</string>
     <string name="notif_pago_en_dias">El pago de %1$s vence en %2$d d\u00EDas.</string>
-    <string name="notif_resumen_pedidos">Pedidos de hoy: %1$d</string>
+    <string name="notif_resumen_pedidos">Pedidos: %1$d</string>
     <string name="notif_resumen_ventas">Ventas: RD$ %1$,.2f</string>
     <string name="notif_resumen_ganancia">Ganancia: RD$ %1$,.2f</string>
-    <string name="notif_resumen_cobrado">Cobrado hoy: RD$ %1$,.2f</string>
+    <string name="notif_resumen_cobrado">Cobrado: RD$ %1$,.2f</string>
     <string name="notif_resumen_por_cobrar">Por cobrar: RD$ %1$,.2f</string>
-    <string name="notif_resumen_entregas">Entregas hoy: %1$d</string>
+    <string name="notif_resumen_entregas">Entregas: %1$d</string>
     <string name="notif_resumen_atrasados">Pedidos atrasados: %1$d</string>
     <string name="notif_prueba_title">Notificaciones activas</string>
     <string name="notif_prueba_text">Todo listo. Recibir\u00E1s recordatorios de cobros, entregas, tarjetas y un resumen diario.</string>
@@ -187,6 +188,7 @@
     <string name="notif_prueba_enviada">Notificaci\u00F3n de prueba enviada</string>
     <string name="notif_permiso_requerido">Activa el permiso de notificaciones para probar</string>
     <string name="notif_dias_invalidos">Los d\u00EDas deben estar entre 0 y 30</string>
+    <string name="notif_hora_ajustada">La hora del resumen debe estar entre 08:00 y 21:59. Se ajust\u00F3 a %1$s.</string>
     <string name="notif_horario_silencio">Horario de silencio: 10:00 p. m. a 8:00 a. m.</string>
     <string name="notif_guardado">Recordatorios actualizados</string>
     <string name="settings_saved">Configuraci\u00F3n guardada</string>

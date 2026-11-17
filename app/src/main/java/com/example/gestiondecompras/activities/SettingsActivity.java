@@ -27,6 +27,7 @@ import com.example.gestiondecompras.GestionComprasApp;
 import com.example.gestiondecompras.R;
 import com.example.gestiondecompras.databinding.ActivitySettingsBinding;
 import com.example.gestiondecompras.utils.GoogleDriveService;
+import com.example.gestiondecompras.utils.RecordatorioUtils;
 import com.example.gestiondecompras.utils.UpdateChecker;
 import com.example.gestiondecompras.database.AppDatabase;
 import com.example.gestiondecompras.workers.NotificationWorker;
@@ -150,7 +151,7 @@ public class SettingsActivity extends AppCompatActivity {
             binding.chipFrecuencia6.setChecked(true);
         }
 
-        selectedHour = sharedPreferences.getInt("reminder_hour", 9);
+        selectedHour = RecordatorioUtils.normalizarHoraResumen(sharedPreferences.getInt("reminder_hour", 9));
         selectedMinute = sharedPreferences.getInt("reminder_minute", 0);
         updateTimeText();
 
@@ -227,9 +228,14 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void setupListeners() {
         binding.tvReminderClockTime.setOnClickListener(v -> new android.app.TimePickerDialog(this, (view, hourOfDay, minute) -> {
-            selectedHour = hourOfDay;
+            int horaPermitida = RecordatorioUtils.normalizarHoraResumen(hourOfDay);
+            selectedHour = horaPermitida;
             selectedMinute = minute;
             updateTimeText();
+            if (horaPermitida != hourOfDay) {
+                Toast.makeText(this, getString(R.string.notif_hora_ajustada,
+                        binding.tvReminderClockTime.getText()), Toast.LENGTH_LONG).show();
+            }
         }, selectedHour, selectedMinute, true).show());
 
         binding.swNotificaciones.setOnCheckedChangeListener((buttonView, isChecked) ->
@@ -375,12 +381,19 @@ public class SettingsActivity extends AppCompatActivity {
         
         AppCompatDelegate.setDefaultNightMode(theme);
 
+        boolean notificacionesActivas = binding.swNotificaciones.isChecked();
         int diasEntrega = leerDias(binding.etDiasEntrega, 1);
         int diasCorte = leerDias(binding.etDiasCorte, 3);
         int diasPago = leerDias(binding.etDiasPago, 3);
         if (diasEntrega < 0 || diasCorte < 0 || diasPago < 0) {
-            Toast.makeText(this, R.string.notif_dias_invalidos, Toast.LENGTH_SHORT).show();
-            return;
+            if (notificacionesActivas) {
+                Toast.makeText(this, R.string.notif_dias_invalidos, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Con las notificaciones apagadas no se bloquea el guardado: se conservan los valores previos.
+            if (diasEntrega < 0) diasEntrega = sharedPreferences.getInt("dias_entrega", 1);
+            if (diasCorte < 0) diasCorte = sharedPreferences.getInt("dias_corte", 3);
+            if (diasPago < 0) diasPago = sharedPreferences.getInt("dias_pago", 3);
         }
 
         int frecuencia = 6;
@@ -390,10 +403,18 @@ public class SettingsActivity extends AppCompatActivity {
             frecuencia = 24;
         }
 
+        // Solo se reinicia el ciclo del trabajo si cambia algo que afecta a su programación.
+        boolean cambiaProgramacion =
+                sharedPreferences.getBoolean("notif_enabled", true) != notificacionesActivas
+                        || sharedPreferences.getInt("notif_frequency_hours",
+                                RecordatorioUtils.FRECUENCIA_PREDETERMINADA) != frecuencia
+                        || sharedPreferences.getInt("reminder_hour", 9) != selectedHour
+                        || sharedPreferences.getInt("reminder_minute", 0) != selectedMinute;
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("theme", theme);
         editor.putBoolean("biometric_enabled", binding.swBiometric.isChecked());
-        editor.putBoolean("notif_enabled", binding.swNotificaciones.isChecked());
+        editor.putBoolean("notif_enabled", notificacionesActivas);
         editor.putInt("dias_entrega", diasEntrega);
         editor.putInt("dias_corte", diasCorte);
         editor.putInt("dias_pago", diasPago);
@@ -403,7 +424,9 @@ public class SettingsActivity extends AppCompatActivity {
         editor.putInt("reminder_minute", selectedMinute);
         editor.apply();
 
-        GestionComprasApp.reprogramarRecordatorios(this);
+        if (cambiaProgramacion) {
+            GestionComprasApp.reprogramarRecordatorios(this);
+        }
 
         Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_SHORT).show();
         finish();

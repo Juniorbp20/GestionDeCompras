@@ -113,4 +113,37 @@ public class RecordatorioUtilsTest {
                 RecordatorioUtils.claveDedupe("ent", 42, "a", evento));
         assertEquals("20260305", RecordatorioUtils.claveDia(evento));
     }
+
+    @Test
+    public void milisegundosHastaSiguienteFranja_incluyeFranjasAnterioresALaBase() {
+        // Base 21:00 cada 6 h: el ciclo es 03, 09, 15, 21. A las 08:00 toca a las 09:00.
+        Calendar ahora = fecha(2026, 1, 10, 8, 0);
+        long retraso = RecordatorioUtils.milisegundosHastaSiguienteFranja(
+                ahora.getTimeInMillis(), 21, 0, 6);
+
+        Calendar resultado = Calendar.getInstance();
+        resultado.setTimeInMillis(ahora.getTimeInMillis() + retraso);
+        assertEquals(9, resultado.get(Calendar.HOUR_OF_DAY));
+        assertEquals(10, resultado.get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Test
+    public void milisegundosHastaSiguienteFranja_diariaPasadaLaHoraUsaManana() {
+        Calendar ahora = fecha(2026, 1, 10, 10, 0);
+        long retraso = RecordatorioUtils.milisegundosHastaSiguienteFranja(
+                ahora.getTimeInMillis(), 9, 0, 24);
+
+        Calendar resultado = Calendar.getInstance();
+        resultado.setTimeInMillis(ahora.getTimeInMillis() + retraso);
+        assertEquals(9, resultado.get(Calendar.HOUR_OF_DAY));
+        assertEquals(11, resultado.get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Test
+    public void resumirDiaAnterior_soloPorLaManana() {
+        assertTrue(RecordatorioUtils.resumirDiaAnterior(8));
+        assertTrue(RecordatorioUtils.resumirDiaAnterior(11));
+        assertFalse(RecordatorioUtils.resumirDiaAnterior(12));
+        assertFalse(RecordatorioUtils.resumirDiaAnterior(21));
+    }
 }
