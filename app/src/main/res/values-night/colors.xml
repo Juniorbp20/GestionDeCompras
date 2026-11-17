@@ -88,6 +88,10 @@
     <color name="category_entertainment">#B79BDB</color>
     <color name="category_shopping">#6CCBBC</color>
     <color name="category_other">#A3A9B8</color>
+    <color name="category_green">#6CCB94</color>
+    <color name="category_indigo">#9AA8E8</color>
+    <color name="category_pink">#E58BB3</color>
+    <color name="category_cyan">#6CC8DB</color>
 
     <color name="tutorial_card">#141B2D</color>
     <color name="tutorial_title">#E8EAF0</color>

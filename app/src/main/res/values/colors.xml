@@ -107,6 +107,10 @@
     <color name="category_entertainment">#7B5BA6</color>
     <color name="category_shopping">#2A8C7E</color>
     <color name="category_other">#5E6578</color>
+    <color name="category_green">#2E8B57</color>
+    <color name="category_indigo">#4B5BA8</color>
+    <color name="category_pink">#B5487A</color>
+    <color name="category_cyan">#1F8FA6</color>
 
     <!-- Tutorial -->
     <color name="tutorial_card">#FFFFFF</color>

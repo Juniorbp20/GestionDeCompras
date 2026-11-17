@@ -20,6 +20,16 @@ import com.example.gestiondecompras.models.Gasto;
 import com.example.gestiondecompras.models.Pedido;
 import com.example.gestiondecompras.models.Tarjeta;
 import com.example.gestiondecompras.models.Tienda;
+import com.example.gestiondecompras.models.finanzas.CategoriaFin;
+import com.example.gestiondecompras.models.finanzas.Cuenta;
+import com.example.gestiondecompras.models.finanzas.Movimiento;
+import com.example.gestiondecompras.models.finanzas.Presupuesto;
+import com.example.gestiondecompras.models.finanzas.Recurrente;
+import com.example.gestiondecompras.daos.finanzas.CategoriaFinDao;
+import com.example.gestiondecompras.daos.finanzas.CuentaDao;
+import com.example.gestiondecompras.daos.finanzas.MovimientoDao;
+import com.example.gestiondecompras.daos.finanzas.PresupuestoDao;
+import com.example.gestiondecompras.daos.finanzas.RecurrenteDao;
 
 @Database(
         entities = {
@@ -28,9 +38,14 @@ import com.example.gestiondecompras.models.Tienda;
                 Tarjeta.class,
                 Pedido.class,
                 Gasto.class,
-                Abono.class
+                Abono.class,
+                CategoriaFin.class,
+                Cuenta.class,
+                Movimiento.class,
+                Presupuesto.class,
+                Recurrente.class
         },
-        version = 6,
+        version = 7,
         exportSchema = true
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -63,6 +78,90 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     };
 
+    /**
+     * Finanzas completas: categorías personalizables, cuentas, movimientos (ingresos y gastos),
+     * presupuestos y recurrentes. Los gastos existentes se copian como movimientos; la tabla
+     * `gastos` se conserva como respaldo.
+     */
+    static final Migration MIGRATION_6_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
+            crearTablasFinanzas(db);
+            sembrarFinanzas(db);
+            db.execSQL("INSERT INTO `fin_movimientos` (`tipo`, `monto`, `fecha_epoch`, `descripcion`, `notas`, "
+                    + "`categoria_id`, `cuenta_id`, `recurrente_id`) "
+                    + "SELECT 'gasto', g.`monto`, g.`fechaEpoch`, g.`descripcion`, g.`notas`, "
+                    + "COALESCE((SELECT c.`id` FROM `fin_categorias` c WHERE c.`tipo` = 'gasto' AND c.`nombre` = g.`categoria`), "
+                    + "(SELECT c.`id` FROM `fin_categorias` c WHERE c.`tipo` = 'gasto' AND c.`nombre` = 'Otros')), "
+                    + "(SELECT `id` FROM `fin_cuentas` ORDER BY `id` LIMIT 1), NULL FROM `gastos` g");
+        }
+    };
+
+    /** Crea las tablas de Finanzas exactamente como las define Room (versión 7). */
+    static void crearTablasFinanzas(@NonNull SupportSQLiteDatabase db) {
+        db.execSQL("CREATE TABLE IF NOT EXISTS `fin_categorias` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                + "`nombre` TEXT, `tipo` TEXT, `color_key` TEXT, `icono_key` TEXT, "
+                + "`archivada` INTEGER NOT NULL, `orden` INTEGER NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `fin_cuentas` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                + "`nombre` TEXT, `tipo` TEXT, `saldo_inicial` REAL NOT NULL, `archivada` INTEGER NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `fin_movimientos` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                + "`tipo` TEXT, `monto` REAL NOT NULL, `fecha_epoch` INTEGER NOT NULL, `descripcion` TEXT, "
+                + "`notas` TEXT, `categoria_id` INTEGER, `cuenta_id` INTEGER, `recurrente_id` INTEGER, "
+                + "FOREIGN KEY(`categoria_id`) REFERENCES `fin_categorias`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL , "
+                + "FOREIGN KEY(`cuenta_id`) REFERENCES `fin_cuentas`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_fin_movimientos_categoria_id` ON `fin_movimientos` (`categoria_id`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_fin_movimientos_cuenta_id` ON `fin_movimientos` (`cuenta_id`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_fin_movimientos_fecha_epoch` ON `fin_movimientos` (`fecha_epoch`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `fin_presupuestos` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                + "`categoria_id` INTEGER NOT NULL, `monto_mensual` REAL NOT NULL, "
+                + "FOREIGN KEY(`categoria_id`) REFERENCES `fin_categorias`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_fin_presupuestos_categoria_id` ON `fin_presupuestos` (`categoria_id`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `fin_recurrentes` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                + "`tipo` TEXT, `monto` REAL NOT NULL, `descripcion` TEXT, `notas` TEXT, `categoria_id` INTEGER, "
+                + "`cuenta_id` INTEGER, `frecuencia` TEXT, `proxima_fecha_epoch` INTEGER NOT NULL, "
+                + "`dia_ancla` INTEGER NOT NULL, `activo` INTEGER NOT NULL, "
+                + "FOREIGN KEY(`categoria_id`) REFERENCES `fin_categorias`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL , "
+                + "FOREIGN KEY(`cuenta_id`) REFERENCES `fin_cuentas`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_fin_recurrentes_categoria_id` ON `fin_recurrentes` (`categoria_id`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_fin_recurrentes_cuenta_id` ON `fin_recurrentes` (`cuenta_id`)");
+    }
+
+    /** Categorías y cuenta iniciales de Finanzas (solo si aún no hay ninguna). */
+    static void sembrarFinanzas(@NonNull SupportSQLiteDatabase db) {
+        android.database.Cursor c = db.query("SELECT COUNT(*) FROM `fin_categorias`");
+        int existentes = 0;
+        if (c.moveToFirst()) {
+            existentes = c.getInt(0);
+        }
+        c.close();
+        if (existentes > 0) {
+            return;
+        }
+        String[][] gastos = {
+                {"Comida", "naranja", "comida"}, {"Transporte", "azul", "transporte"},
+                {"Hogar", "marron", "hogar"}, {"Servicios", "dorado", "servicios"},
+                {"Salud", "rojo", "salud"}, {"Entretenimiento", "morado", "ocio"},
+                {"Compras", "verde_azulado", "compras"}, {"Otros", "gris", "billetera"}
+        };
+        String[][] ingresos = {
+                {"Sueldo", "verde", "trabajo"}, {"Ventas", "azul", "tendencia"},
+                {"Servicios", "cian", "servicios"}, {"Préstamos recibidos", "indigo", "banco"},
+                {"Regalos", "rosa", "regalo"}, {"Otros ingresos", "gris", "billetera"}
+        };
+        insertarCategorias(db, gastos, "gasto");
+        insertarCategorias(db, ingresos, "ingreso");
+        db.execSQL("INSERT INTO `fin_cuentas` (`nombre`, `tipo`, `saldo_inicial`, `archivada`) "
+                + "VALUES ('Efectivo', 'efectivo', 0, 0)");
+    }
+
+    private static void insertarCategorias(SupportSQLiteDatabase db, String[][] filas, String tipo) {
+        for (int i = 0; i < filas.length; i++) {
+            db.execSQL("INSERT INTO `fin_categorias` (`nombre`, `tipo`, `color_key`, `icono_key`, `archivada`, `orden`) "
+                            + "VALUES (?, ?, ?, ?, 0, ?)",
+                    new Object[]{filas[i][0], tipo, filas[i][1], filas[i][2], i});
+        }
+    }
+
     private static final Callback PREPOPULATE_CALLBACK = new Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -73,6 +172,7 @@ public abstract class AppDatabase extends RoomDatabase {
             db.execSQL("INSERT INTO tiendas (nombre) VALUES ('EBay')");
             db.execSQL("INSERT INTO tiendas (nombre) VALUES ('AliExpress')");
             db.execSQL("INSERT INTO tiendas (nombre) VALUES ('Alibaba')");
+            sembrarFinanzas(db);
         }
     };
 
@@ -82,7 +182,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "GestionCompras.db")
-                            .addMigrations(MIGRATION_4_5, MIGRATION_5_6)
+                            .addMigrations(MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
                             // Solo las versiones 1-3 (anteriores a Room, sin migración posible) se
                             // recrean desde cero. Para cualquier versión nueva es obligatorio añadir
                             // su Migration: si falta, la app falla en pruebas en lugar de borrar en
@@ -104,4 +204,9 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ReporteDao reporteDao();
     public abstract GastoDao gastoDao();
     public abstract AbonoDao abonoDao();
+    public abstract CategoriaFinDao categoriaFinDao();
+    public abstract CuentaDao cuentaDao();
+    public abstract MovimientoDao movimientoDao();
+    public abstract PresupuestoDao presupuestoDao();
+    public abstract RecurrenteDao recurrenteDao();
 }
