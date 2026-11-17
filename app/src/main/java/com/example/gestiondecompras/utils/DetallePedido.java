@@ -49,6 +49,14 @@ public final class DetallePedido {
         ((TextView) vista.findViewById(R.id.tv_detalle_costo)).setText(moneda(pedido.getMontoCompra()));
         ((TextView) vista.findViewById(R.id.tv_detalle_venta)).setText(moneda(pedido.getTotalGeneral()));
         ((TextView) vista.findViewById(R.id.tv_detalle_ganancia)).setText(moneda(pedido.getGanancia()));
+
+        // Notas del pedido: solo se muestran si existen
+        String notas = pedido.getNotas() != null ? pedido.getNotas().trim() : "";
+        View bloqueNotas = vista.findViewById(R.id.layout_detalle_notas);
+        if (bloqueNotas != null) {
+            bloqueNotas.setVisibility(notas.isEmpty() ? View.GONE : View.VISIBLE);
+            ((TextView) vista.findViewById(R.id.tv_detalle_notas)).setText(notas);
+        }
         actualizarPagos(vista, pedido);
     }
 

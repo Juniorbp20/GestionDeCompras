@@ -1,6 +1,8 @@
 package com.example.gestiondecompras.daos;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -38,8 +40,30 @@ public class TiendaDaoTest {
         dao.insert(crearTienda("Shein"));
         List<Tienda> tiendas = dao.getAllTiendas();
         assertEquals(2, tiendas.size());
-        assertEquals(id, tiendas.get(0).getId());
-        assertEquals("Temu", tiendas.get(0).getNombre());
+        // Ordenadas alfabéticamente
+        assertEquals("Shein", tiendas.get(0).getNombre());
+        assertEquals(id, tiendas.get(1).getId());
+        assertEquals("Temu", tiendas.get(1).getNombre());
+    }
+
+    @Test
+    public void getAll_ordenSinDistinguirMayusculas() {
+        dao.insert(crearTienda("temu"));
+        dao.insert(crearTienda("Amazon"));
+        dao.insert(crearTienda("ebay"));
+        List<Tienda> tiendas = dao.getAllTiendas();
+        assertEquals("Amazon", tiendas.get(0).getNombre());
+        assertEquals("ebay", tiendas.get(1).getNombre());
+        assertEquals("temu", tiendas.get(2).getNombre());
+    }
+
+    @Test
+    public void buscarPorNombre_ignoraMayusculasYEspacios() {
+        long id = dao.insert(crearTienda("Amazon"));
+        Tienda encontrada = dao.buscarPorNombre("  aMaZoN ");
+        assertNotNull(encontrada);
+        assertEquals(id, encontrada.getId());
+        assertNull(dao.buscarPorNombre("Temu"));
     }
 
     @Test

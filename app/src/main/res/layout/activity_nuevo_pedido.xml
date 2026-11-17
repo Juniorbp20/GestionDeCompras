@@ -1,371 +1,401 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Nuevo / editar pedido: formulario de una sola columna, sin tarjetas, con total y Guardar fijos abajo -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_light"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".activities.NuevoPedidoActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="12dp"
         android:background="@android:color/transparent"
         android:elevation="0dp"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@color/gray_dark"
         app:title="@string/nuevo_pedido"
         app:titleCentered="true"
-        app:titleTextColor="@color/gray_dark"
-        app:titleTextAppearance="@style/TextAppearance.NuevoPedidoTitle"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:navigationIconTint="@color/gray_dark" />
+        app:titleTextAppearance="@style/TextAppearance.NuevoPedidoTitle" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="24dp">
 
-            <!-- CARD: CLIENTE Y TIENDA -->
-            <com.google.android.material.card.MaterialCardView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/seccion_cliente_tienda"
+                android:textAppearance="@style/TextAppearance.App.Overline" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginTop="0dp"
+                android:gravity="top"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_cliente"
+                    style="@style/Widget.App.TextInputLayout.Dropdown"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_weight="1"
+                    android:hint="@string/cliente">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/seccion_cliente_tienda"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.App.TextInputLayout.Dropdown"
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/spinner_cliente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/cliente">
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/spinner_cliente"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_nuevo_cliente"
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:contentDescription="@string/nuevo_cliente_title"
+                    app:icon="@drawable/ic_add"
+                    app:iconTint="@color/primary_color" />
+            </LinearLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.App.TextInputLayout.Dropdown"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="@string/tienda">
-
-                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/spinner_tienda"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- CARD: DATOS DEL PAGO -->
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginTop="8dp"
+                android:gravity="top"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_tienda"
+                    style="@style/Widget.App.TextInputLayout.Dropdown"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_weight="1"
+                    android:hint="@string/tienda">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/seccion_pago"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/spinner_tienda"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.App.TextInputLayout.Dropdown"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="@string/tarjeta">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/seccion_pago"
+                android:textAppearance="@style/TextAppearance.App.Overline" />
 
-                            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                                android:id="@+id/spinner_tarjeta"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="none" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_nueva_tarjeta"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_gravity="center_vertical"
-                            android:text="@string/nueva_tarjeta"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="@string/monto_compra">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_monto_compra"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <LinearLayout
-                        android:id="@+id/layout_abono_inicial"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="vertical">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/abono_inicial">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_abono_inicial"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberDecimal" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/switch_pagado_completo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/pagado_completo" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_abono_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textColor="@color/gray"
-                        android:textSize="13sp"
-                        android:visibility="gone"
-                        tools:text="Abonado: RD$ 0.00 · Saldo: RD$ 1,000.00"
-                        tools:visibility="visible" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- CARD: GANANCIA -->
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginTop="0dp"
+                android:gravity="top"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_tarjeta"
+                    style="@style/Widget.App.TextInputLayout.Dropdown"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_weight="1"
+                    android:hint="@string/tarjeta">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/seccion_ganancia"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/rg_ganancia"
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/spinner_tarjeta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:singleSelection="true">
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/rb_ganancia_fija"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/ganancia_fija"
-                            android:textAllCaps="false" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_nueva_tarjeta"
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:contentDescription="@string/nueva_tarjeta"
+                    app:icon="@drawable/ic_add"
+                    app:iconTint="@color/primary_color" />
+            </LinearLayout>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/rb_ganancia_porcentaje"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/ganancia_porcentaje"
-                            android:textAllCaps="false" />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="@string/ganancia">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_ganancia"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/tv_total_general"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="end"
-                        android:text="@string/total_general_amount"
-                        android:textColor="@color/primary_color"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        tools:text="Total general: RD$ 12,500.00" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- CARD: FECHAS -->
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginTop="8dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_monto"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:hint="@string/monto_compra"
+                    app:prefixText="RD$ ">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/seccion_fechas"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/btn_fecha_registro"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_monto_compra"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/fecha_registro"
-                        app:endIconMode="custom"
-                        app:endIconDrawable="@drawable/ic_calendar">
+                        android:fontFeatureSettings="tnum"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_fecha_registro"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="true"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:inputType="none" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_ganancia"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:hint="@string/pedido_ganancia">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/btn_fecha_entrega"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_ganancia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="@string/fecha_entrega"
-                        app:endIconMode="custom"
-                        app:endIconDrawable="@drawable/ic_calendar">
+                        android:fontFeatureSettings="tnum"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_fecha_entrega"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="true"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:inputType="none" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- CARD: NOTAS -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- Tipo de ganancia: monto fijo o porcentaje de la compra -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_weight="1"
+                    android:text="@string/pedido_ganancia_en"
+                    android:textAppearance="@style/TextAppearance.App.BodySmall"
+                    android:textColor="@color/gray" />
 
-                    <TextView
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/rg_ganancia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/rb_ganancia_fija"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/seccion_notas"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:layout_height="40dp"
+                        android:minWidth="64dp"
+                        android:text="@string/pedido_ganancia_pesos"
+                        android:textAppearance="@style/TextAppearance.App.LabelLarge" />
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/rb_ganancia_porcentaje"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:minWidth="64dp"
+                        android:text="@string/pedido_ganancia_porciento"
+                        android:textAppearance="@style/TextAppearance.App.LabelLarge" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </LinearLayout>
+
+            <!-- Cobro al cliente (solo al crear) -->
+            <LinearLayout
+                android:id="@+id/layout_abono_inicial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_abono"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/abono_inicial"
+                    app:prefixText="RD$ ">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_abono_inicial"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/notas">
+                        android:fontFeatureSettings="tnum"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_notas"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="top"
-                            android:inputType="textMultiLine"
-                            android:minLines="3" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_pagado_completo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/pedido_pagado"
+                    android:textAppearance="@style/TextAppearance.App.BodyMedium" />
+            </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_guardar"
+            <TextView
+                android:id="@+id/tv_abono_info"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginBottom="16dp"
-                android:text="@string/guardar"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.App.BodySmall"
+                android:textColor="@color/gray"
+                android:visibility="gone"
+                tools:text="Abonado: RD$ 0.00 · Saldo: RD$ 1,000.00"
+                tools:visibility="visible" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/seccion_fechas"
+                android:textAppearance="@style/TextAppearance.App.Overline" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/btn_fecha_registro"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:hint="@string/pedido_fecha_compra_corta"
+                    app:endIconDrawable="@drawable/ic_calendar"
+                    app:endIconMode="custom">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_fecha_registro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/btn_fecha_entrega"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:hint="@string/pedido_fecha_entrega_corta"
+                    app:endIconDrawable="@drawable/ic_calendar"
+                    app:endIconMode="custom">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_fecha_entrega"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/seccion_notas"
+                android:textAppearance="@style/TextAppearance.App.Overline" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pedido_notas_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_notas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLines="5" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </ScrollView>
+
+    <!-- Total y Guardar siempre visibles -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/card_stroke" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_card"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pedido_total"
+                android:textAppearance="@style/TextAppearance.App.Overline" />
+
+            <TextView
+                android:id="@+id/tv_total_general"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:fontFamily="@font/inter_bold"
+                android:fontFeatureSettings="tnum"
+                android:maxLines="1"
+                android:textColor="@color/gray_dark"
+                app:autoSizeMaxTextSize="22sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeTextType="uniform"
+                tools:text="RD$ 1,250.00" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_guardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="140dp"
+            android:text="@string/guardar" />
+    </LinearLayout>
 </LinearLayout>

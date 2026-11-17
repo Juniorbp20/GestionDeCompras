@@ -77,6 +77,32 @@ public class NuevoPedidoViewModel extends AndroidViewModel {
         });
     }
 
+    /** Recarga clientes y tarjetas (al volver de crear uno nuevo). */
+    public void recargarListas() {
+        executorService.execute(() -> {
+            clientes.postValue(db.clienteDao().getAllClientes());
+            tarjetas.postValue(db.tarjetaDao().getAllTarjetas());
+        });
+    }
+
+    /**
+     * Crea una tienda (o reutiliza la existente con el mismo nombre, sin distinguir mayúsculas),
+     * recarga la lista y devuelve la tienda por {@code resultado}.
+     */
+    public void crearTienda(String nombre, MutableLiveData<Tienda> resultado) {
+        executorService.execute(() -> {
+            Tienda existente = db.tiendaDao().buscarPorNombre(nombre);
+            if (existente == null) {
+                Tienda nueva = new Tienda();
+                nueva.setNombre(nombre.trim());
+                nueva.id = db.tiendaDao().insert(nueva);
+                existente = nueva;
+            }
+            tiendas.postValue(db.tiendaDao().getAllTiendas());
+            resultado.postValue(existente);
+        });
+    }
+
     public void savePedido(Pedido pedido, Tarjeta tarjeta, double abonoInicial, String metodoAbono) {
         // La deuda de la tarjeta se recalcula dentro del servicio a partir de la base de datos
         executorService.execute(() -> new PedidosServicio(db).guardarPedido(pedido, abonoInicial, metodoAbono));

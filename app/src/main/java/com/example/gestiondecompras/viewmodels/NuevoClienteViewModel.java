@@ -34,14 +34,15 @@ public class NuevoClienteViewModel extends AndroidViewModel {
         executorService.execute(() -> clienteEdicion.postValue(db.clienteDao().getClienteById(id)));
     }
 
-    /** Inserta un cliente nuevo o actualiza uno existente (id &gt; 0). */
-    public void saveCliente(Cliente cliente) {
+    /** Inserta un cliente nuevo o actualiza uno existente (id &gt; 0) y devuelve su id. */
+    public void saveCliente(Cliente cliente, MutableLiveData<Long> idGuardado) {
         executorService.execute(() -> {
             if (cliente.id > 0) {
                 db.clienteDao().update(cliente);
             } else {
-                db.clienteDao().insert(cliente);
+                cliente.id = db.clienteDao().insert(cliente);
             }
+            idGuardado.postValue(cliente.id);
         });
     }
 
