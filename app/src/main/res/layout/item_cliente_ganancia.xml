@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Nombre del Cliente"
-        android:textColor="@color/white"
+        android:textColor="@color/gray_dark"
         android:textSize="16sp" />
 
     <TextView

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Escala tipográfica basada en Inter -->
+
+    <style name="TextAppearance.App.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <style name="TextAppearance.App.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:letterSpacing">-0.015</item>
+    </style>
+
+    <style name="TextAppearance.App.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="TextAppearance.App.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.App.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.App.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.App.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.App.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:letterSpacing">0.005</item>
+    </style>
+
+    <style name="TextAppearance.App.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="TextAppearance.App.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <style name="TextAppearance.App.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:letterSpacing">0.08</item>
+    </style>
+
+    <!-- Estilos de texto reutilizables para las pantallas rediseñadas -->
+
+    <!-- Etiqueta pequeña en mayúsculas (p. ej. "TOTAL PENDIENTE") -->
+    <style name="TextAppearance.App.Overline" parent="TextAppearance.App.LabelSmall">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <!-- Importe destacado con cifras tabulares -->
+    <style name="TextAppearance.App.Amount" parent="TextAppearance.App.TitleLarge">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+        <item name="android:textColor">@color/gray_dark</item>
+    </style>
+
+    <!-- Título de sección en las pantallas -->
+    <style name="TextAppearance.App.SectionTitle" parent="TextAppearance.App.TitleMedium">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/gray_dark</item>
+    </style>
+</resources>

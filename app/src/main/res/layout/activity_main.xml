@@ -12,7 +12,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_card"
+        android:background="@color/background_light"
         tools:context=".activities.MainActivity">
 
         <!-- Toolbar Transparente -->
@@ -40,21 +40,19 @@
                 android:paddingHorizontal="16dp"
                 android:paddingTop="16dp">
 
-                <!-- CARD PRINCIPAL -->
+                <!-- CARD PRINCIPAL: degradado marino con acento dorado -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardHero"
+                    style="@style/Widget.App.CardView.Hero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardBackgroundColor="@color/background_card"
-                    app:cardCornerRadius="24dp"
-                    app:cardElevation="2dp"
-                    app:strokeColor="@color/card_stroke"
-                    app:strokeWidth="1dp">
+                    android:layout_marginBottom="20dp"
+                    app:cardElevation="6dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/bg_hero_navy"
                         android:orientation="vertical"
                         android:padding="24dp">
 
@@ -63,28 +61,33 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/dashboard_greeting_placeholder"
-                            android:textColor="@color/gray_dark"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
+                            android:textAppearance="@style/TextAppearance.App.TitleLarge"
+                            android:textColor="@color/hero_text"
                             tools:text="Hola, Gustavo" />
 
                         <TextView
                             android:id="@+id/tvHeroSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="2dp"
                             android:text="@string/dashboard_subtitle"
-                            android:textColor="@color/gray"
-                            android:textSize="14sp"
+                            android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                            android:textColor="@color/hero_text_secondary"
                             tools:text="Resumen del día" />
+
+                        <View
+                            android:layout_width="32dp"
+                            android:layout_height="3dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/bg_gold_line" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="16dp"
                             android:text="@string/total_pendiente"
-                            android:textColor="@color/gray"
-                            android:textSize="13sp" />
+                            android:textAppearance="@style/TextAppearance.App.Overline"
+                            android:textColor="@color/hero_text_secondary" />
 
                         <TextView
                             android:id="@+id/tvTotalPendiente"
@@ -92,9 +95,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="RD$ 0.00"
-                            android:textColor="@color/primary_color"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
+                            android:textAppearance="@style/TextAppearance.App.DisplaySmall"
+                            android:textColor="@color/hero_text"
                             tools:text="RD$ 12,500.00" />
 
                         <com.google.android.material.chip.Chip
@@ -102,12 +104,14 @@
                             style="@style/Widget.Material3.Chip.Assist"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="14dp"
                             android:text="@string/dashboard_trend_placeholder"
-                            android:textColor="@color/dashboard_card_income"
-                            app:chipBackgroundColor="@color/dashboard_trend_bg"
+                            android:textAppearance="@style/TextAppearance.App.LabelMedium"
+                            android:textColor="@color/gold_300"
+                            app:chipBackgroundColor="@color/hero_chip_bg"
+                            app:chipCornerRadius="50dp"
                             app:chipIcon="@drawable/ic_trending_up"
-                            app:chipIconTint="@color/dashboard_card_income"
+                            app:chipIconTint="@color/gold_300"
                             app:chipStrokeColor="@android:color/transparent"
                             tools:text="Subió RD$ 2,100" />
                     </LinearLayout>
@@ -126,12 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:foreground="?attr/selectableItemBackground"
-                        app:cardBackgroundColor="@color/background_card"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="1dp"
-                        app:strokeColor="@color/card_stroke"
-                        app:strokeWidth="1dp">
+                        android:foreground="?attr/selectableItemBackground">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -152,8 +151,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
                                 android:text="@string/total_pendiente"
-                                android:textColor="@color/gray"
-                                android:textSize="13sp" />
+                                android:textAppearance="@style/TextAppearance.App.Overline" />
 
                             <TextView
                                 android:id="@+id/tvTotalPendienteCard"
@@ -162,8 +160,8 @@
                                 android:layout_marginTop="6dp"
                                 android:text="RD$ 0.00"
                                 android:textColor="@color/gray_dark"
+                                android:textAppearance="@style/TextAppearance.App.Amount"
                                 android:textSize="18sp"
-                                android:textStyle="bold"
                                 tools:text="RD$ 12,500.00" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
@@ -174,12 +172,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:foreground="?attr/selectableItemBackground"
-                        app:cardBackgroundColor="@color/background_card"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="1dp"
-                        app:strokeColor="@color/card_stroke"
-                        app:strokeWidth="1dp">
+                        android:foreground="?attr/selectableItemBackground">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -200,8 +193,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
                                 android:text="Total pagado"
-                                android:textColor="@color/gray"
-                                android:textSize="13sp" />
+                                android:textAppearance="@style/TextAppearance.App.Overline" />
 
                             <TextView
                                 android:id="@+id/tvTotalPagado"
@@ -210,8 +202,8 @@
                                 android:layout_marginTop="6dp"
                                 android:text="RD$ 0.00"
                                 android:textColor="@color/gray_dark"
+                                android:textAppearance="@style/TextAppearance.App.Amount"
                                 android:textSize="18sp"
-                                android:textStyle="bold"
                                 tools:text="RD$ 5,900.00" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
@@ -230,12 +222,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:foreground="?attr/selectableItemBackground"
-                        app:cardBackgroundColor="@color/background_card"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="1dp"
-                        app:strokeColor="@color/card_stroke"
-                        app:strokeWidth="1dp">
+                        android:foreground="?attr/selectableItemBackground">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -256,8 +243,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
                                 android:text="@string/pedidos_atrasados"
-                                android:textColor="@color/gray"
-                                android:textSize="13sp" />
+                                android:textAppearance="@style/TextAppearance.App.Overline" />
 
                             <TextView
                                 android:id="@+id/tvPedidosAtrasados"
@@ -266,8 +252,8 @@
                                 android:layout_marginTop="6dp"
                                 android:text="0"
                                 android:textColor="@color/gray_dark"
+                                android:textAppearance="@style/TextAppearance.App.Amount"
                                 android:textSize="18sp"
-                                android:textStyle="bold"
                                 tools:text="2" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
@@ -278,12 +264,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:foreground="?attr/selectableItemBackground"
-                        app:cardBackgroundColor="@color/background_card"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="1dp"
-                        app:strokeColor="@color/card_stroke"
-                        app:strokeWidth="1dp">
+                        android:foreground="?attr/selectableItemBackground">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -304,8 +285,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
                                 android:text="@string/ganancia_esperada"
-                                android:textColor="@color/gray"
-                                android:textSize="13sp" />
+                                android:textAppearance="@style/TextAppearance.App.Overline" />
 
                             <TextView
                                 android:id="@+id/tvGananciaEsperadaCard"
@@ -314,8 +294,8 @@
                                 android:layout_marginTop="6dp"
                                 android:text="RD$ 0.00"
                                 android:textColor="@color/gray_dark"
+                                android:textAppearance="@style/TextAppearance.App.Amount"
                                 android:textSize="18sp"
-                                android:textStyle="bold"
                                 tools:text="RD$ 5,900.00" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
@@ -327,12 +307,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardBackgroundColor="@color/background_card"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="1dp"
-                    app:strokeColor="@color/card_stroke"
-                    app:strokeWidth="1dp">
+                    android:foreground="?attr/selectableItemBackground">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -360,8 +335,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/gastos_dashboard_title"
-                                android:textColor="@color/gray"
-                                android:textSize="13sp" />
+                                android:textAppearance="@style/TextAppearance.App.Overline" />
 
                             <TextView
                                 android:id="@+id/tvGastosMes"
@@ -370,8 +344,8 @@
                                 android:layout_marginTop="4dp"
                                 android:text="RD$ 0.00"
                                 android:textColor="@color/error_color"
+                                android:textAppearance="@style/TextAppearance.App.Amount"
                                 android:textSize="18sp"
-                                android:textStyle="bold"
                                 tools:text="RD$ 5,900.00" />
                         </LinearLayout>
                     </LinearLayout>
@@ -384,9 +358,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="@string/acciones_rapidas"
-                    android:textColor="@color/gray_dark"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.App.SectionTitle" />
 
                 <HorizontalScrollView
                     android:id="@+id/chipGroupActions"
@@ -404,15 +376,11 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/chipNuevoPedido"
+                            style="@style/Widget.App.CardView.Tile"
                             android:layout_width="100dp"
                             android:layout_height="110dp"
                             android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground"
-                            app:cardBackgroundColor="@color/background_card"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/card_stroke"
-                            app:strokeWidth="1dp">
+                            android:foreground="?attr/selectableItemBackground">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -424,10 +392,10 @@
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_badge_blue"
+                                    android:background="@drawable/bg_icon_tile"
                                     android:padding="12dp"
                                     android:src="@drawable/ic_add_circle"
-                                    android:tint="@color/primary_color" />
+                                    android:tint="@color/accent_gold" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -443,15 +411,11 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/chipListaPedidos"
+                            style="@style/Widget.App.CardView.Tile"
                             android:layout_width="100dp"
                             android:layout_height="110dp"
                             android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground"
-                            app:cardBackgroundColor="@color/background_card"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/card_stroke"
-                            app:strokeWidth="1dp">
+                            android:foreground="?attr/selectableItemBackground">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -463,10 +427,10 @@
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_badge_blue"
+                                    android:background="@drawable/bg_icon_tile"
                                     android:padding="12dp"
                                     android:src="@drawable/ic_list"
-                                    android:tint="@color/primary_color" />
+                                    android:tint="@color/accent_gold" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -482,15 +446,11 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/chipCalendario"
+                            style="@style/Widget.App.CardView.Tile"
                             android:layout_width="100dp"
                             android:layout_height="110dp"
                             android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground"
-                            app:cardBackgroundColor="@color/background_card"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/card_stroke"
-                            app:strokeWidth="1dp">
+                            android:foreground="?attr/selectableItemBackground">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -502,10 +462,10 @@
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_badge_blue"
+                                    android:background="@drawable/bg_icon_tile"
                                     android:padding="12dp"
                                     android:src="@drawable/ic_calendar"
-                                    android:tint="@color/primary_color" />
+                                    android:tint="@color/accent_gold" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -521,15 +481,11 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/chipClientes"
+                            style="@style/Widget.App.CardView.Tile"
                             android:layout_width="100dp"
                             android:layout_height="110dp"
                             android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground"
-                            app:cardBackgroundColor="@color/background_card"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/card_stroke"
-                            app:strokeWidth="1dp">
+                            android:foreground="?attr/selectableItemBackground">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -541,10 +497,10 @@
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_badge_blue"
+                                    android:background="@drawable/bg_icon_tile"
                                     android:padding="12dp"
                                     android:src="@drawable/ic_people"
-                                    android:tint="@color/primary_color" />
+                                    android:tint="@color/accent_gold" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -560,15 +516,11 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/chipReportes"
+                            style="@style/Widget.App.CardView.Tile"
                             android:layout_width="100dp"
                             android:layout_height="110dp"
                             android:layout_marginEnd="12dp"
-                            android:foreground="?attr/selectableItemBackground"
-                            app:cardBackgroundColor="@color/background_card"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/card_stroke"
-                            app:strokeWidth="1dp">
+                            android:foreground="?attr/selectableItemBackground">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -580,10 +532,10 @@
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_badge_blue"
+                                    android:background="@drawable/bg_icon_tile"
                                     android:padding="12dp"
                                     android:src="@drawable/ic_trending_up"
-                                    android:tint="@color/primary_color" />
+                                    android:tint="@color/accent_gold" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -599,14 +551,10 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/chipTarjetas"
+                            style="@style/Widget.App.CardView.Tile"
                             android:layout_width="100dp"
                             android:layout_height="110dp"
-                            android:foreground="?attr/selectableItemBackground"
-                            app:cardBackgroundColor="@color/background_card"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/card_stroke"
-                            app:strokeWidth="1dp">
+                            android:foreground="?attr/selectableItemBackground">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -618,10 +566,10 @@
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:background="@drawable/bg_icon_badge_blue"
+                                    android:background="@drawable/bg_icon_tile"
                                     android:padding="12dp"
                                     android:src="@drawable/ic_credit_card"
-                                    android:tint="@color/primary_color" />
+                                    android:tint="@color/accent_gold" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -644,17 +592,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="@string/proximos_pedidos"
-                    android:textColor="@color/gray_dark"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.App.SectionTitle" />
 
                 <TextView
                     android:id="@+id/tvProximosSubtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/dashboard_next_orders_subtitle"
-                    android:textColor="@color/gray"
-                    android:textSize="14sp" />
+                    android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                    android:textColor="@color/gray" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvProximosPedidos"

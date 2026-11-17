@@ -1,21 +1,87 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+        Tema base. Los colores se resuelven desde values/colors.xml (claro) y
+        values-night/colors.xml (oscuro), así que el modo nocturno solo redefine
+        lo que cambia en las barras del sistema.
+    -->
     <style name="Base.Theme.GestionDeCompras" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Forzamos el color negro en las barras -->
+        <!-- Roles de color de Material 3 -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/colorOnPrimaryContainer</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainer</item>
+        <item name="colorTertiary">@color/colorTertiary</item>
+        <item name="colorOnTertiary">@color/colorOnTertiary</item>
+        <item name="colorTertiaryContainer">@color/colorTertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/colorOnTertiaryContainer</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <item name="colorErrorContainer">@color/colorErrorContainer</item>
+        <item name="colorOnErrorContainer">@color/colorOnErrorContainer</item>
+        <item name="colorOutline">@color/colorOutline</item>
+        <item name="colorOutlineVariant">@color/colorOutlineVariant</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item>
+        <item name="colorSurfaceContainerLowest">@color/colorSurfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/colorSurfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/colorSurfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/colorSurfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/colorSurfaceContainerHighest</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+
+        <!-- Barras del sistema del color del fondo (sin edge-to-edge) -->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/black</item>
-        <item name="android:navigationBarColor">@android:color/black</item>
-
-        <!-- Forzamos iconos blancos (windowLightStatusBar = false) -->
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
-
-        <!-- Desactivamos EdgeToEdge para que la app no suba -->
+        <item name="android:statusBarColor">@color/system_bar</item>
+        <item name="android:navigationBarColor">@color/system_bar</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
 
-        <!-- Colores primarios para evitar el morado por defecto -->
-        <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorSecondary">@color/dashboard_card_secondary</item>
+        <!-- Tipografía Inter en toda la app -->
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.App.DisplaySmall</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.App.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.App.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.App.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.App.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.App.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.App.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.App.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.App.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.App.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.App.LabelSmall</item>
+
+        <!-- Formas -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.App.Large</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.App.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.App.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.App.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.App.ExtraLarge</item>
+
+        <!-- Estilos por defecto de los componentes -->
+        <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.Outlined</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="chipStyle">@style/Widget.App.Chip</item>
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.App.AlertDialog</item>
     </style>
 
     <style name="Theme.GestionDeCompras" parent="Base.Theme.GestionDeCompras"/>
@@ -24,26 +90,22 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="TextAppearance.NavItem" parent="TextAppearance.Material3.BodyLarge">
+    <style name="TextAppearance.NavItem" parent="TextAppearance.App.BodyLarge">
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="TextAppearance.NavSubheader" parent="TextAppearance.Material3.LabelLarge">
+    <style name="TextAppearance.NavSubheader" parent="TextAppearance.App.LabelSmall">
         <item name="android:textColor">@color/gray</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="TextAppearance.ToolbarTitleDark" parent="TextAppearance.Material3.TitleLarge">
+    <style name="TextAppearance.ToolbarTitleDark" parent="TextAppearance.App.TitleLarge">
         <item name="android:textColor">@color/gray_dark</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextAppearance.NuevoPedidoTitle" parent="TextAppearance.Material3.TitleLarge">
+    <style name="TextAppearance.NuevoPedidoTitle" parent="TextAppearance.App.TitleLarge">
         <item name="android:textColor">@color/gray_dark</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 </resources>

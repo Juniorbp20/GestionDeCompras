@@ -2,21 +2,22 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.App.CardView.Hero"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
+    android:layout_marginHorizontal="4dp"
     android:layout_marginVertical="8dp"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="0dp"
-    app:strokeColor="@color/primary_light"
-    app:strokeWidth="1dp">
+    app:cardCornerRadius="22dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_credit_card"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
+        <!-- Banco, alias y chip -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,54 +34,87 @@
                     android:id="@+id/tvBanco"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray_dark"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                    android:textColor="@color/hero_text"
                     tools:text="Banco Popular" />
 
                 <TextView
                     android:id="@+id/tvAlias"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    android:textSize="13sp"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.App.BodySmall"
+                    android:textColor="@color/hero_text_secondary"
                     tools:text="Visa ****1234" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvDisponible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/success_color"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="Disponible: RD$ 12,500" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_card_chip" />
         </LinearLayout>
+
+        <!-- Disponible destacado -->
+        <TextView
+            android:id="@+id/tvDisponible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:fontFamily="@font/inter_bold"
+            android:fontFeatureSettings="tnum"
+            android:textColor="@color/hero_text"
+            android:textSize="20sp"
+            tools:text="Disponible: RD$ 12,500" />
+
+        <!-- Uso del límite -->
+        <ProgressBar
+            android:id="@+id/pbUso"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_marginTop="12dp"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_uso_tarjeta"
+            android:progressTint="@color/gold_300" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="vertical">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvDeuda"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.App.BodySmall"
+                android:textColor="@color/hero_text_secondary"
+                tools:text="Deuda: RD$ 5,300" />
 
             <TextView
                 android:id="@+id/tvLimite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray_dark"
-                android:textSize="12sp"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.App.BodySmall"
+                android:textColor="@color/hero_text_secondary"
                 tools:text="L&#237;mite: RD$ 20,000" />
-
-            <TextView
-                android:id="@+id/tvDeuda"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="@color/gray_dark"
-                android:textSize="12sp"
-                tools:text="Deuda: RD$ 5,300" />
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="#26FFFFFF" />
+
+        <!-- Fechas -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,7 +126,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/gray"
+                android:fontFamily="@font/inter_medium"
+                android:textColor="@color/gold_300"
                 android:textSize="12sp"
                 tools:text="Corte: 15" />
 
@@ -101,8 +136,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/inter_medium"
                 android:gravity="center"
-                android:textColor="@color/gray"
+                android:textColor="@color/gold_300"
                 android:textSize="12sp"
                 tools:text="Pago: D&#237;a 5" />
 
@@ -111,21 +147,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/inter_medium"
                 android:gravity="end"
-                android:textColor="@color/gray"
+                android:textColor="@color/gold_300"
                 android:textSize="12sp"
                 tools:text="Vence: 28" />
         </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/pbUso"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:max="100"
-            android:progress="0"
-            android:progressTint="@color/primary_color" />
 
     </LinearLayout>
 

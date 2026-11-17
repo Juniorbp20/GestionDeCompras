@@ -1,71 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_color">#1E88E5</color>
-    <color name="primary_dark">#64B5F6</color>
-    <color name="primary_light">#1E3A5F</color>
-    <color name="success_color">#66BB6A</color>
-    <color name="warning_color">#FFB74D</color>
-    <color name="error_color">#EF5350</color>
-    <color name="info_color">#26C6DA</color>
+    <!-- ============================================================
+         Paleta "Azul marino y dorado" - modo oscuro.
+         ============================================================ -->
+
+    <color name="accent_gold">#E2C26A</color>
+    <color name="accent_gold_container">#4A3A0E</color>
+    <color name="on_accent_gold">#2B2104</color>
+    <color name="hero_gradient_start">#16244A</color>
+    <color name="hero_gradient_end">#26407A</color>
+    <color name="hero_text">#FFFFFF</color>
+    <color name="hero_text_secondary">#B8C2DC</color>
+    <color name="hero_chip_bg">#33E2C26A</color>
+
+    <color name="primary_color">#AFC3EE</color>
+    <color name="primary_dark">#D6E1FA</color>
+    <color name="primary_light">#22335C</color>
+
+    <color name="colorPrimary">#AFC3EE</color>
+    <color name="colorOnPrimary">#0B1430</color>
+    <color name="colorPrimaryContainer">#22335C</color>
+    <color name="colorOnPrimaryContainer">#DCE3F5</color>
+    <color name="colorSecondary">#E2C26A</color>
+    <color name="colorOnSecondary">#2B2104</color>
+    <color name="colorSecondaryContainer">#4A3A0E</color>
+    <color name="colorOnSecondaryContainer">#F6EBC8</color>
+    <color name="colorTertiary">#5CC596</color>
+    <color name="colorOnTertiary">#00311D</color>
+    <color name="colorTertiaryContainer">#11402B</color>
+    <color name="colorOnTertiaryContainer">#C8F2DC</color>
+    <color name="colorError">#F07A6E</color>
+    <color name="colorOnError">#4A0D07</color>
+    <color name="colorErrorContainer">#4A1E1A</color>
+    <color name="colorOnErrorContainer">#FFDAD6</color>
+    <color name="colorOutline">#3A4560</color>
+    <color name="colorOutlineVariant">#232C42</color>
+    <color name="colorBackground">#0B1120</color>
+    <color name="colorOnBackground">#E8EAF0</color>
+    <color name="colorSurface">#141B2D</color>
+    <color name="colorOnSurface">#E8EAF0</color>
+    <color name="colorSurfaceVariant">#1C2438</color>
+    <color name="colorOnSurfaceVariant">#A3A9B8</color>
+    <color name="colorSurfaceContainerLowest">#0B1120</color>
+    <color name="colorSurfaceContainerLow">#111828</color>
+    <color name="colorSurfaceContainer">#141B2D</color>
+    <color name="colorSurfaceContainerHigh">#1C2438</color>
+    <color name="colorSurfaceContainerHighest">#252E44</color>
+
+    <color name="success_color">#5CC596</color>
+    <color name="warning_color">#E8B04F</color>
+    <color name="error_color">#F07A6E</color>
+    <color name="info_color">#7FB7D9</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="gray">#B0BEC5</color>
-    <color name="gray_light">#546E7A</color>
-    <color name="gray_dark">#ECEFF1</color>
-    <color name="gray_medium">#90A4AE</color>
-    <color name="background_light">#121212</color>
-    <color name="background_card">#1E1E1E</color>
-    <color name="card_stroke">#2A2A33</color>
+    <color name="gray">#A3A9B8</color>
+    <color name="gray_light">#3A4560</color>
+    <color name="gray_dark">#E8EAF0</color>
+    <color name="gray_medium">#7D8496</color>
+    <color name="background_light">#0B1120</color>
+    <color name="background_card">#141B2D</color>
+    <color name="card_stroke">#232C42</color>
+    <color name="system_bar">#0B1120</color>
 
-    <color name="colorSurface">#1E1E1E</color>
-    <color name="colorOnSurface">#E6E6EA</color>
-    <color name="colorSurfaceVariant">#2A2A33</color>
-    <color name="colorOnSurfaceVariant">#C9CDD4</color>
-    <color name="colorOutline">#8A8F99</color>
-    <color name="colorPrimaryContainer">#1E3A5F</color>
-    <color name="colorOnPrimaryContainer">#D6E9FF</color>
-    <color name="colorSecondaryContainer">#1E3A5F</color>
-    <color name="colorOnSecondaryContainer">#D6E9FF</color>
-    <color name="colorErrorContainer">#3A1E24</color>
-    <color name="colorOnErrorContainer">#FFDAD6</color>
-    <color name="colorTertiaryContainer">#1B3A24</color>
-    <color name="colorOnTertiaryContainer">#C8F5CB</color>
+    <color name="dashboard_badge_blue_bg">#22335C</color>
+    <color name="dashboard_badge_green_bg">#11402B</color>
+    <color name="dashboard_badge_red_bg">#4A1E1A</color>
+    <color name="dashboard_trend_bg">#11402B</color>
+    <color name="drawer_gradient_end">#26407A</color>
 
-    <color name="dashboard_badge_blue_bg">#1E3A5F</color>
-    <color name="dashboard_badge_green_bg">#1B3A24</color>
-    <color name="dashboard_badge_red_bg">#3A1E24</color>
-    <color name="dashboard_trend_bg">#1B3A24</color>
-    <color name="drawer_gradient_end">#0D47A1</color>
-
-    <color name="dashboard_card_income">#81C784</color>
-    <color name="dashboard_card_income_stroke">#4CAF50</color>
-    <color name="dashboard_card_secondary">#1E88E5</color>
-    <color name="dashboard_card_orders">#64B5F6</color>
-    <color name="dashboard_card_clients">#1E88E5</color>
-    <color name="dashboard_accent_positive">#66BB6A</color>
-    <color name="dashboard_accent_negative">#EF5350</color>
+    <color name="dashboard_card_income">#5CC596</color>
+    <color name="dashboard_card_income_stroke">#5CC596</color>
+    <color name="dashboard_card_secondary">#E2C26A</color>
+    <color name="dashboard_card_orders">#AFC3EE</color>
+    <color name="dashboard_card_clients">#AFC3EE</color>
+    <color name="dashboard_accent_positive">#5CC596</color>
+    <color name="dashboard_accent_negative">#F07A6E</color>
 
     <color name="ic_launcher_background">#121212</color>
-    <color name="dashboard_card_overdue">#EF5350</color>
-    <color name="dashboard_card_earnings">#66BB6A</color>
+    <color name="dashboard_card_overdue">#F07A6E</color>
+    <color name="dashboard_card_earnings">#5CC596</color>
 
-    <!-- Colores de categorías de gastos -->
-    <color name="category_food">#FFB74D</color>
-    <color name="category_transport">#64B5F6</color>
-    <color name="category_home">#A1887F</color>
-    <color name="category_services">#FFD54F</color>
-    <color name="category_health">#EF5350</color>
-    <color name="category_entertainment">#BA68C8</color>
-    <color name="category_shopping">#4DB6AC</color>
-    <color name="category_other">#90A4AE</color>
+    <color name="category_food">#E8A06B</color>
+    <color name="category_transport">#7FB7D9</color>
+    <color name="category_home">#B89A85</color>
+    <color name="category_services">#E2C26A</color>
+    <color name="category_health">#F07A6E</color>
+    <color name="category_entertainment">#B79BDB</color>
+    <color name="category_shopping">#6CCBBC</color>
+    <color name="category_other">#A3A9B8</color>
 
-    <color name="status_pending">#FFC107</color>
-    <color name="status_delivered">#64B5F6</color>
-    <color name="status_paid">#66BB6A</color>
-    <color name="status_cancelled">#EF5350</color>
+    <color name="tutorial_card">#141B2D</color>
+    <color name="tutorial_title">#E8EAF0</color>
+    <color name="tutorial_body">#A3A9B8</color>
+    <color name="tutorial_dim">#CC05080F</color>
 
-    <color name="tutorial_card">#1E1E1E</color>
-    <color name="tutorial_title">#F5F5F5</color>
-    <color name="tutorial_body">#BDBDBD</color>
-    <color name="tutorial_dim">#99000000</color>
+    <color name="status_pending">#E8B04F</color>
+    <color name="status_delivered">#7FB7D9</color>
+    <color name="status_paid">#5CC596</color>
+    <color name="status_cancelled">#F07A6E</color>
+
+    <color name="status_pending_bg">#40300F</color>
+    <color name="status_delivered_bg">#18324A</color>
+    <color name="status_paid_bg">#11402B</color>
+    <color name="status_cancelled_bg">#4A1E1A</color>
 </resources>

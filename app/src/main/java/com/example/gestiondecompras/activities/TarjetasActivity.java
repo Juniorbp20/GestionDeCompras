@@ -66,6 +66,7 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
             if (tarjetas != null) {
                 adapter.actualizarLista(tarjetas);
                 binding.emptyState.setVisibility(tarjetas.isEmpty() ? View.VISIBLE : View.GONE);
+                actualizarResumen(tarjetas);
             }
         });
         viewModel.getMensajes().observe(this, mensaje -> {
@@ -158,6 +159,22 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
         });
 
         dialog.show();
+    }
+
+    /** Muestra el disponible, la deuda y el límite sumados de todas las tarjetas. */
+    private void actualizarResumen(java.util.List<Tarjeta> tarjetas) {
+        double limite = 0;
+        double deuda = 0;
+        double disponible = 0;
+        for (Tarjeta t : tarjetas) {
+            limite += t.getLimiteCredito();
+            deuda += t.getDeudaActual();
+            disponible += Math.max(0, t.getLimiteCredito() - t.getDeudaActual());
+        }
+        binding.tvResumenDisponible.setText(String.format(java.util.Locale.getDefault(), "RD$ %,.2f", disponible));
+        binding.tvResumenDetalle.setText(tarjetas.isEmpty()
+                ? getString(R.string.tarjetas_subtitle)
+                : getString(R.string.tarjetas_resumen_detalle, deuda, limite));
     }
 
     private void confirmarEliminarTarjeta(Tarjeta tarjeta) {

@@ -24,12 +24,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/background_card"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,12 +71,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="@color/background_card"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp">
+            android:layout_marginTop="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,12 +131,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="@color/background_card"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp">
+            android:layout_marginTop="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -280,12 +265,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/abono_registrar"
-            app:backgroundTint="@color/success_color"
-            app:cornerRadius="14dp"
+            app:backgroundTint="?attr/colorTertiary"
             app:icon="@drawable/ic_add"
             app:iconGravity="textStart"
-            app:iconTint="@color/white"
-            android:textColor="@color/white" />
+            app:iconTint="?attr/colorOnTertiary"
+            android:textColor="?attr/colorOnTertiary" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ver_abonos"
@@ -300,12 +284,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/pedido_enviar_resumen"
-            app:backgroundTint="@color/primary_color"
-            app:cornerRadius="14dp"
             app:icon="@drawable/ic_share"
-            app:iconGravity="textStart"
-            app:iconTint="@color/white"
-            android:textColor="@color/white" />
+            app:iconGravity="textStart" />
 
     </LinearLayout>
 </ScrollView>

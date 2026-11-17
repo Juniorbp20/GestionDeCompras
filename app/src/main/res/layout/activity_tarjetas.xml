@@ -27,41 +27,54 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Resumen de todas las tarjetas -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/background_card"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="1dp"
-            app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp">
+            android:layout_marginBottom="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/tarjetas_resumen_disponible"
+                    android:textAppearance="@style/TextAppearance.App.Overline" />
+
+                <TextView
+                    android:id="@+id/tvResumenDisponible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="RD$ 0.00"
+                    android:textAppearance="@style/TextAppearance.App.Amount"
+                    android:textSize="26sp"
+                    tools:text="RD$ 32,500.00" />
+
+                <TextView
+                    android:id="@+id/tvResumenDetalle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFeatureSettings="tnum"
                     android:text="@string/tarjetas_subtitle"
-                    android:textColor="@color/gray_dark"
-                    android:textSize="14sp" />
+                    android:textAppearance="@style/TextAppearance.App.BodySmall"
+                    android:textColor="@color/gray"
+                    tools:text="Deuda RD$ 7,500.00 · Límite RD$ 40,000.00" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnNuevaTarjeta"
+                    style="@style/Widget.App.Button.Gold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/tarjetas_nueva"
-                    app:backgroundTint="@color/primary_color"
-                    app:cornerRadius="14dp"
                     app:icon="@drawable/ic_add"
-                    app:iconGravity="textStart"
-                    app:iconTint="@color/white"
-                    android:textColor="@color/white" />
+                    app:iconGravity="textStart" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

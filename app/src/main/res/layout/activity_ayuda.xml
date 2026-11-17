@@ -175,8 +175,6 @@
             android:src="@drawable/ic_add"
             android:layout_marginBottom="16dp"
             app:fabSize="mini"
-            app:backgroundTint="@color/primary_color"
-            app:tint="@color/white"
             android:contentDescription="Zoom In" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -185,8 +183,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_remove"
             app:fabSize="mini"
-            app:backgroundTint="@color/primary_color"
-            app:tint="@color/white"
             android:contentDescription="Zoom Out" />
     </LinearLayout>
 

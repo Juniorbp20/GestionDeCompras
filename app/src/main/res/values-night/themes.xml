@@ -1,18 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.GestionDeCompras" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Forzamos el color negro en las barras -->
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/black</item>
-        <item name="android:navigationBarColor">@android:color/black</item>
-
-        <!-- Forzamos iconos blancos -->
+    <!--
+        En modo oscuro se reutiliza todo el tema base (los colores llegan de
+        values-night/colors.xml); solo cambian los iconos de las barras del sistema.
+    -->
+    <style name="Theme.GestionDeCompras" parent="Base.Theme.GestionDeCompras">
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
-
-        <!-- Desactivamos EdgeToEdge -->
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
     </style>
-
-    <style name="Theme.GestionDeCompras" parent="Base.Theme.GestionDeCompras"/>
 </resources>

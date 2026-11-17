@@ -218,6 +218,8 @@
     <string name="dashboard_next_orders_subtitle">Los siguientes 5 pedidos a entregar</string>
     <string name="no_hay_pedidos_proximos">No hay pedidos pr\u00F3ximos</string>
     <string name="tarjetas_title">Tarjetas</string>
+    <string name="tarjetas_resumen_disponible">Disponible total</string>
+    <string name="tarjetas_resumen_detalle">Deuda RD$ %1$,.2f \u00B7 L\u00EDmite RD$ %2$,.2f</string>
     <string name="tarjetas_subtitle">Administra tus tarjetas de cr\u00E9dito</string>
     <string name="tarjetas_nueva">Nueva tarjeta</string>
     <string name="tarjetas_empty">No hay tarjetas</string>
