@@ -14,24 +14,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.gestiondecompras.R;
 import com.example.gestiondecompras.adapters.ClientesAdapter;
-import com.example.gestiondecompras.adapters.GastosAdapter;
+import com.example.gestiondecompras.adapters.MovimientosAdapter;
 import com.example.gestiondecompras.adapters.PedidosAdapter;
 import com.example.gestiondecompras.databinding.ActivityBusquedaBinding;
 import com.example.gestiondecompras.models.Cliente;
-import com.example.gestiondecompras.models.Gasto;
+import com.example.gestiondecompras.models.finanzas.Movimiento;
 import com.example.gestiondecompras.models.Pedido;
 import com.example.gestiondecompras.viewmodels.BusquedaViewModel;
 
 import java.util.ArrayList;
 
-/** Búsqueda global: clientes, pedidos y gastos en un solo campo. */
+/** Búsqueda global: clientes, pedidos y movimientos de Finanzas en un solo campo. */
 public class BusquedaActivity extends AppCompatActivity {
 
     private ActivityBusquedaBinding binding;
     private BusquedaViewModel viewModel;
     private ClientesAdapter clientesAdapter;
     private PedidosAdapter pedidosAdapter;
-    private GastosAdapter gastosAdapter;
+    private MovimientosAdapter movimientosAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,23 +86,24 @@ public class BusquedaActivity extends AppCompatActivity {
         binding.rvPedidos.setLayoutManager(new LinearLayoutManager(this));
         binding.rvPedidos.setAdapter(pedidosAdapter);
 
-        gastosAdapter = new GastosAdapter(new GastosAdapter.OnGastoClickListener() {
-            @Override public void onGastoClick(Gasto gasto) { abrirGasto(gasto); }
-            @Override public void onGastoLongClick(Gasto gasto) { abrirGasto(gasto); }
+        movimientosAdapter = new MovimientosAdapter(new MovimientosAdapter.Listener() {
+            @Override public void onMovimientoClick(Movimiento m) { abrirMovimiento(m); }
+            @Override public void onMovimientoAcciones(Movimiento m) { abrirMovimiento(m); }
         });
         binding.rvGastos.setLayoutManager(new LinearLayoutManager(this));
-        binding.rvGastos.setAdapter(gastosAdapter);
+        binding.rvGastos.setAdapter(movimientosAdapter);
     }
 
     private void mostrar(BusquedaViewModel.Resultados r) {
         boolean buscando = r.texto.length() >= 2;
         clientesAdapter.actualizarLista(new ArrayList<Cliente>(r.clientes));
         pedidosAdapter.actualizarLista(new ArrayList<>(r.pedidos));
-        gastosAdapter.actualizarLista(r.gastos);
+        movimientosAdapter.setCatalogos(r.categorias, r.cuentas);
+        movimientosAdapter.setMovimientos(r.movimientos);
 
         mostrarSeccion(binding.tvTituloClientes, binding.rvClientes, !r.clientes.isEmpty());
         mostrarSeccion(binding.tvTituloPedidos, binding.rvPedidos, !r.pedidos.isEmpty());
-        mostrarSeccion(binding.tvTituloGastos, binding.rvGastos, !r.gastos.isEmpty());
+        mostrarSeccion(binding.tvTituloGastos, binding.rvGastos, !r.movimientos.isEmpty());
 
         if (!buscando) {
             binding.tvBusquedaAyuda.setText(R.string.busqueda_ayuda);
@@ -133,9 +134,9 @@ public class BusquedaActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void abrirGasto(Gasto gasto) {
-        Intent intent = new Intent(this, NuevoGastoActivity.class);
-        intent.putExtra(NuevoGastoActivity.EXTRA_GASTO_ID, gasto.getId());
+    private void abrirMovimiento(Movimiento m) {
+        Intent intent = new Intent(this, NuevoMovimientoActivity.class);
+        intent.putExtra(NuevoMovimientoActivity.EXTRA_ID, m.id);
         startActivity(intent);
     }
 }

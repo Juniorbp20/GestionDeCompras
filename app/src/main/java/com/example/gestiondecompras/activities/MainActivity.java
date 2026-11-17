@@ -190,8 +190,12 @@ public class MainActivity extends AppCompatActivity {
         binding.btnVacioAccion.setOnClickListener(v ->
                 startActivity(new Intent(this, NuevoPedidoActivity.class)));
 
-        binding.chipNuevoGasto.setOnClickListener(v ->
-                startActivity(new Intent(this, NuevoGastoActivity.class)));
+        binding.chipNuevoGasto.setOnClickListener(v -> {
+            Intent intent = new Intent(this, NuevoMovimientoActivity.class);
+            intent.putExtra(NuevoMovimientoActivity.EXTRA_TIPO,
+                    com.example.gestiondecompras.models.finanzas.Movimiento.TIPO_GASTO);
+            startActivity(intent);
+        });
 
         binding.chipNuevoCliente.setOnClickListener(v ->
                 startActivity(new Intent(this, NuevoClienteActivity.class)));
@@ -220,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         binding.cardGananciaEsperada.setOnClickListener(v -> showClientEarningsDialog());
 
         binding.cardGastosMes.setOnClickListener(v ->
-                startActivity(new Intent(this, ListaGastosActivity.class)));
+                startActivity(new Intent(this, FinanzasActivity.class)));
     }
 
     @SuppressLint("DefaultLocale")

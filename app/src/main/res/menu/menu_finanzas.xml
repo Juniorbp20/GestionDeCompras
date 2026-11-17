@@ -7,4 +7,24 @@
         android:title="@string/exportar_csv"
         app:iconTint="@color/gray_dark"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/accion_categorias"
+        android:icon="@drawable/ic_category"
+        android:title="@string/fin_categorias"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/accion_cuentas"
+        android:icon="@drawable/ic_account_balance"
+        android:title="@string/fin_cuentas"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/accion_presupuestos"
+        android:icon="@drawable/ic_pie_chart"
+        android:title="@string/fin_presupuestos"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/accion_recurrentes"
+        android:icon="@drawable/ic_repeat"
+        android:title="@string/fin_recurrentes"
+        app:showAsAction="never" />
 </menu>

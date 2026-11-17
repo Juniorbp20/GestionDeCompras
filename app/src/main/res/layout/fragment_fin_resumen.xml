@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Finanzas > Resumen: panel con indicadores y gráficos del periodo -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollResumen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingBottom="88dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp">
+
+        <!-- Selector de periodo -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/grupoPeriodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipMes"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/fin_periodo_mes" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTrimestre"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fin_periodo_trimestre" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipAnio"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fin_periodo_anio" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- Tarjeta principal -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.App.CardView.Hero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_hero_navy"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnAnterior"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/fin_periodo_anterior"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_chevron_left"
+                        app:tint="@color/hero_text" />
+
+                    <TextView
+                        android:id="@+id/tvPeriodo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                        android:textColor="@color/hero_text"
+                        tools:text="Noviembre 2026" />
+
+                    <ImageButton
+                        android:id="@+id/btnSiguiente"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/fin_periodo_siguiente"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/hero_text" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/fin_balance"
+                    android:textAppearance="@style/TextAppearance.App.Overline"
+                    android:textColor="@color/hero_text_secondary" />
+
+                <TextView
+                    android:id="@+id/tvBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.App.DisplaySmall"
+                    android:textColor="@color/hero_text"
+                    tools:text="RD$ 12,500.00" />
+
+                <View
+                    android:layout_width="32dp"
+                    android:layout_height="3dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_gold_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="14dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="4dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fin_ingresos"
+                                android:textAppearance="@style/TextAppearance.App.Overline"
+                                android:textColor="@color/hero_text_secondary"
+                                android:textSize="10sp"
+                                app:drawableStartCompat="@drawable/ic_arrow_upward"
+                                app:drawableTint="@color/hero_positive" />
+
+                            <TextView
+                                android:id="@+id/tvIngresos"
+                                android:layout_width="match_parent"
+                                android:layout_height="22dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="6dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:fontFeatureSettings="tnum"
+                                android:maxLines="1"
+                                android:textColor="@color/hero_positive"
+                                app:autoSizeMaxTextSize="16sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="4dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fin_gastos"
+                                android:textAppearance="@style/TextAppearance.App.Overline"
+                                android:textColor="@color/hero_text_secondary"
+                                android:textSize="10sp"
+                                app:drawableStartCompat="@drawable/ic_arrow_downward"
+                                app:drawableTint="@color/hero_negative" />
+
+                            <TextView
+                                android:id="@+id/tvGastos"
+                                android:layout_width="match_parent"
+                                android:layout_height="22dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="6dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:fontFeatureSettings="tnum"
+                                android:maxLines="1"
+                                android:textColor="@color/hero_negative"
+                                app:autoSizeMaxTextSize="16sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="4dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/fin_ahorro"
+                                android:textAppearance="@style/TextAppearance.App.Overline"
+                                android:textColor="@color/hero_text_secondary"
+                                android:textSize="10sp"
+                                app:drawableStartCompat="@drawable/ic_savings"
+                                app:drawableTint="@color/gold_300" />
+
+                            <TextView
+                                android:id="@+id/tvAhorro"
+                                android:layout_width="match_parent"
+                                android:layout_height="22dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="6dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:fontFeatureSettings="tnum"
+                                android:maxLines="1"
+                                android:textColor="@color/gold_300"
+                                app:autoSizeMaxTextSize="16sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvVariacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:textAppearance="@style/TextAppearance.App.BodySmall"
+                    android:textColor="@color/hero_text_secondary"
+                    tools:text="12% menos gastos que el periodo anterior" />
+
+                <TextView
+                    android:id="@+id/tvPromedio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFeatureSettings="tnum"
+                    android:textAppearance="@style/TextAppearance.App.BodySmall"
+                    android:textColor="@color/hero_text_secondary"
+                    tools:text="Promedio diario de gastos: RD$ 450.00" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTituloCategorias"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/fin_gastos_por_categoria"
+                            android:textAppearance="@style/TextAppearance.App.SectionTitle" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAlternarTipo"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="40dp"
+                            android:text="@string/fin_ver_ingresos"
+                            android:textColor="@color/accent_gold" />
+                    </LinearLayout>
+
+                    <com.example.gestiondecompras.views.GraficoAnilloView
+                        android:id="@+id/graficoAnillo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvSinCategorias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/fin_sin_datos_periodo"
+                        android:textAppearance="@style/TextAppearance.App.BodySmall"
+                        android:textColor="@color/gray"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutLeyenda"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTituloEvolucion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/fin_evolucion"
+                            android:textAppearance="@style/TextAppearance.App.SectionTitle" />
+                    </LinearLayout>
+
+                    <com.example.gestiondecompras.views.GraficoBarrasView
+                        android:id="@+id/graficoBarras"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bg_dot"
+                            android:backgroundTint="@color/success_color" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginEnd="16dp"
+                            android:text="@string/fin_ingresos"
+                            android:textAppearance="@style/TextAppearance.App.BodySmall"
+                            android:textColor="@color/gray" />
+
+                        <View
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bg_dot"
+                            android:backgroundTint="@color/error_color" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="@string/fin_gastos"
+                            android:textAppearance="@style/TextAppearance.App.BodySmall"
+                            android:textColor="@color/gray" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTituloPresupuestos"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/fin_presupuestos"
+                            android:textAppearance="@style/TextAppearance.App.SectionTitle" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnConfigPresupuestos"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="40dp"
+                            android:text="@string/fin_configurar"
+                            android:textColor="@color/accent_gold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvSinPresupuestos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/fin_sin_presupuestos"
+                        android:textAppearance="@style/TextAppearance.App.BodySmall"
+                        android:textColor="@color/gray"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutPresupuestos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTituloCuentas"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/fin_cuentas"
+                            android:textAppearance="@style/TextAppearance.App.SectionTitle" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnConfigCuentas"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="40dp"
+                            android:text="@string/fin_configurar"
+                            android:textColor="@color/accent_gold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutCuentas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTituloProximos"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/fin_proximos"
+                            android:textAppearance="@style/TextAppearance.App.SectionTitle" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnConfigRecurrentes"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="40dp"
+                            android:text="@string/fin_configurar"
+                            android:textColor="@color/accent_gold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvSinProximos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/fin_sin_proximos"
+                        android:textAppearance="@style/TextAppearance.App.BodySmall"
+                        android:textColor="@color/gray"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutProximos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTituloRecientes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/fin_recientes"
+                            android:textAppearance="@style/TextAppearance.App.SectionTitle" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnVerTodos"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="40dp"
+                            android:text="@string/fin_ver_todos"
+                            android:textColor="@color/accent_gold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvSinRecientes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/fin_sin_movimientos"
+                        android:textAppearance="@style/TextAppearance.App.BodySmall"
+                        android:textColor="@color/gray"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutRecientes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -9,7 +9,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.gestiondecompras.database.AppDatabase;
 import com.example.gestiondecompras.models.ClienteWithMetrics;
-import com.example.gestiondecompras.models.Gasto;
+import com.example.gestiondecompras.models.finanzas.CategoriaFin;
+import com.example.gestiondecompras.models.finanzas.Cuenta;
+import com.example.gestiondecompras.models.finanzas.Movimiento;
+import com.example.gestiondecompras.servicios.FinanzasServicio;
 import com.example.gestiondecompras.models.Pedido;
 
 import java.util.Collections;
@@ -17,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/** Búsqueda global en clientes, pedidos y gastos. */
+/** Búsqueda global en clientes, pedidos y movimientos de Finanzas. */
 public class BusquedaViewModel extends AndroidViewModel {
 
     private static final int LIMITE = 20;
@@ -27,17 +30,19 @@ public class BusquedaViewModel extends AndroidViewModel {
         public final String texto;
         public final List<ClienteWithMetrics> clientes;
         public final List<Pedido> pedidos;
-        public final List<Gasto> gastos;
+        public final List<Movimiento> movimientos;
+        public java.util.Map<Long, CategoriaFin> categorias = java.util.Collections.emptyMap();
+        public java.util.Map<Long, Cuenta> cuentas = java.util.Collections.emptyMap();
 
-        Resultados(String texto, List<ClienteWithMetrics> clientes, List<Pedido> pedidos, List<Gasto> gastos) {
+        Resultados(String texto, List<ClienteWithMetrics> clientes, List<Pedido> pedidos, List<Movimiento> movimientos) {
             this.texto = texto;
             this.clientes = clientes;
             this.pedidos = pedidos;
-            this.gastos = gastos;
+            this.movimientos = movimientos;
         }
 
         public boolean vacio() {
-            return clientes.isEmpty() && pedidos.isEmpty() && gastos.isEmpty();
+            return clientes.isEmpty() && pedidos.isEmpty() && movimientos.isEmpty();
         }
     }
 
@@ -69,10 +74,14 @@ public class BusquedaViewModel extends AndroidViewModel {
             for (Pedido pedido : pedidos) {
                 pedido.totalAbonado = db.abonoDao().getTotalAbonado(pedido.getId());
             }
-            List<Gasto> gastos = db.gastoDao().buscarGastos(limpio, LIMITE);
+            List<Movimiento> movimientos = db.movimientoDao().buscarTexto(limpio, LIMITE);
             // Si el usuario siguió escribiendo, se descartan resultados de un texto anterior
             if (limpio.equals(ultimoTexto)) {
-                resultados.postValue(new Resultados(limpio, clientes, pedidos, gastos));
+                Resultados r = new Resultados(limpio, clientes, pedidos, movimientos);
+                FinanzasServicio servicio = new FinanzasServicio(db);
+                r.categorias = servicio.mapaCategorias();
+                r.cuentas = servicio.mapaCuentas();
+                resultados.postValue(r);
             }
         });
     }
