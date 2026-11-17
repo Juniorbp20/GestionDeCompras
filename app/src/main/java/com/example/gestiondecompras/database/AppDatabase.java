@@ -9,7 +9,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.gestiondecompras.daos.AbonoDao;
 import com.example.gestiondecompras.daos.ClienteDao;
-import com.example.gestiondecompras.daos.GastoDao;
 import com.example.gestiondecompras.daos.PedidoDao;
 import com.example.gestiondecompras.daos.ReporteDao;
 import com.example.gestiondecompras.daos.TarjetaDao;
@@ -202,7 +201,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TarjetaDao tarjetaDao();
     public abstract PedidoDao pedidoDao();
     public abstract ReporteDao reporteDao();
-    public abstract GastoDao gastoDao();
     public abstract AbonoDao abonoDao();
     public abstract CategoriaFinDao categoriaFinDao();
     public abstract CuentaDao cuentaDao();

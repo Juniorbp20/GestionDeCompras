@@ -40,6 +40,9 @@ public class NotificationWorker extends Worker {
     public static final String CANAL_ENTREGAS = "recordatorios_entregas";
     public static final String CANAL_TARJETAS = "recordatorios_tarjetas";
     public static final String CANAL_RESUMEN = "resumen_diario";
+    public static final String CANAL_FINANZAS = "finanzas_presupuestos";
+    private static final String PREF_AVISOS_PRESUPUESTO = "avisos_presupuesto_mes";
+    private static final int BASE_PRESUPUESTO = 4 * 1_000_000;
 
     private static final String PREF_DEDUPE = "notif_dedupe";
     private static final String PREF_ULTIMO_RESUMEN = "ultimo_resumen_dia";
@@ -84,6 +87,7 @@ public class NotificationWorker extends Worker {
             enviarRecordatorioCobros(context, prefs, db, ahora);
             enviarRecordatoriosEntregas(context, prefs, db, ahora);
             enviarRecordatoriosTarjetas(context, prefs, db, ahora);
+            enviarAvisosPresupuesto(context, prefs, db, ahora);
             purgarDedupe(prefs, ahora);
             return Result.success();
         } catch (Exception e) {
@@ -475,6 +479,59 @@ public class NotificationWorker extends Worker {
                 context.getString(R.string.notif_canal_resumen_nombre),
                 context.getString(R.string.notif_canal_resumen_desc),
                 NotificationManager.IMPORTANCE_DEFAULT);
+        crearCanal(manager, CANAL_FINANZAS,
+                context.getString(R.string.notif_canal_finanzas_nombre),
+                context.getString(R.string.notif_canal_finanzas_desc),
+                NotificationManager.IMPORTANCE_DEFAULT);
+    }
+
+    /**
+     * Avisa cuando un presupuesto llega al 80 % y cuando se supera. Cada aviso se envía una sola
+     * vez por categoría y mes (el registro se reinicia al cambiar de mes).
+     */
+    private void enviarAvisosPresupuesto(Context context, SharedPreferences prefs, AppDatabase db, Calendar ahora) {
+        String mes = String.format(Locale.US, "%04d%02d", ahora.get(Calendar.YEAR), ahora.get(Calendar.MONTH) + 1);
+        Set<String> enviados = new HashSet<>(prefs.getStringSet(PREF_AVISOS_PRESUPUESTO, Collections.emptySet()));
+        // Descarta avisos de meses anteriores
+        enviados.removeIf(clave -> !clave.startsWith(mes + "_"));
+
+        boolean cambio = false;
+        for (com.example.gestiondecompras.servicios.FinanzasServicio.EstadoPresupuesto e :
+                new com.example.gestiondecompras.servicios.FinanzasServicio(db).presupuestos(ahora.getTimeInMillis())) {
+            if (e.estado == com.example.gestiondecompras.utils.finanzas.CalculosFinancieros.EstadoPresupuesto.NORMAL) {
+                continue;
+            }
+            boolean excedido = e.estado == com.example.gestiondecompras.utils.finanzas.CalculosFinancieros.EstadoPresupuesto.EXCEDIDO;
+            String clave = mes + "_" + e.categoria.id + (excedido ? "_x" : "_a");
+            if (enviados.contains(clave)) {
+                continue;
+            }
+            String moneda = "RD$ %,.2f";
+            String titulo = context.getString(excedido ? R.string.notif_presupuesto_excedido_title
+                    : R.string.notif_presupuesto_alerta_title);
+            String texto = excedido
+                    ? context.getString(R.string.notif_presupuesto_excedido_text, e.categoria.nombre,
+                    String.format(Locale.getDefault(), moneda, e.gastado), String.format(Locale.getDefault(), moneda, e.limite))
+                    : context.getString(R.string.notif_presupuesto_alerta_text,
+                    String.valueOf(Math.round(e.porcentaje)), e.categoria.nombre);
+
+            Intent intent = new Intent(context, com.example.gestiondecompras.activities.PresupuestosActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent pi = PendingIntent.getActivity(context, 105, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            NotificationCompat.Builder builder = base(context, CANAL_FINANZAS)
+                    .setContentTitle(titulo)
+                    .setContentText(texto)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(texto))
+                    .setContentIntent(pi)
+                    .setCategory(NotificationCompat.CATEGORY_REMINDER);
+            notificar(context, BASE_PRESUPUESTO + (int) (e.categoria.id % RANGO_IDS), builder);
+            enviados.add(clave);
+            cambio = true;
+        }
+        if (cambio || !enviados.equals(prefs.getStringSet(PREF_AVISOS_PRESUPUESTO, Collections.emptySet()))) {
+            prefs.edit().putStringSet(PREF_AVISOS_PRESUPUESTO, enviados).apply();
+        }
     }
 
     private static void crearCanal(NotificationManager manager, String id, String nombre,

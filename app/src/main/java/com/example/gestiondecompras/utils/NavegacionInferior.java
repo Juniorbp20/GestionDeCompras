@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.gestiondecompras.R;
 import com.example.gestiondecompras.activities.ListaClientesActivity;
-import com.example.gestiondecompras.activities.ListaGastosActivity;
+import com.example.gestiondecompras.activities.FinanzasActivity;
 import com.example.gestiondecompras.activities.ListaPedidosActivity;
 import com.example.gestiondecompras.activities.MainActivity;
 import com.example.gestiondecompras.activities.MasActivity;
@@ -96,7 +96,7 @@ public final class NavegacionInferior {
         if (pestana == R.id.tab_inicio) return MainActivity.class;
         if (pestana == R.id.tab_pedidos) return ListaPedidosActivity.class;
         if (pestana == R.id.tab_clientes) return ListaClientesActivity.class;
-        if (pestana == R.id.tab_finanzas) return ListaGastosActivity.class;
+        if (pestana == R.id.tab_finanzas) return FinanzasActivity.class;
         if (pestana == R.id.tab_mas) return MasActivity.class;
         return null;
     }

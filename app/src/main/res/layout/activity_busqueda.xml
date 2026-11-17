@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone"
-                tools:listitem="@layout/item_gasto"
+                tools:listitem="@layout/item_movimiento"
                 tools:visibility="visible" />
 
         </LinearLayout>

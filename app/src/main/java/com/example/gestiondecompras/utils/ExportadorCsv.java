@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.core.content.FileProvider;
 
 import com.example.gestiondecompras.R;
-import com.example.gestiondecompras.models.Gasto;
 import com.example.gestiondecompras.models.Pedido;
 
 import java.io.File;
@@ -53,17 +52,27 @@ public final class ExportadorCsv {
         guardarYCompartir(context, CsvUtils.documento(encabezado, filas), nombreBase);
     }
 
-    public static void exportarGastos(Context context, List<Gasto> gastos, String nombreBase) {
+    public static void exportarMovimientos(Context context, List<com.example.gestiondecompras.models.finanzas.Movimiento> movimientos,
+                                           java.util.Map<Long, com.example.gestiondecompras.models.finanzas.CategoriaFin> categorias,
+                                           java.util.Map<Long, com.example.gestiondecompras.models.finanzas.Cuenta> cuentas,
+                                           String nombreBase) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        String[] encabezado = {"Fecha", "Descripción", "Categoría", "Monto", "Notas"};
+        String[] encabezado = {"Fecha", "Tipo", "Descripción", "Categoría", "Cuenta", "Monto", "Notas"};
         List<String[]> filas = new ArrayList<>();
-        for (Gasto g : gastos) {
+        for (com.example.gestiondecompras.models.finanzas.Movimiento m : movimientos) {
+            com.example.gestiondecompras.models.finanzas.CategoriaFin c =
+                    m.categoriaId != null && categorias != null ? categorias.get(m.categoriaId) : null;
+            com.example.gestiondecompras.models.finanzas.Cuenta cu =
+                    m.cuentaId != null && cuentas != null ? cuentas.get(m.cuentaId) : null;
             filas.add(new String[]{
-                    sdf.format(new Date(g.getFechaEpoch())),
-                    g.getDescripcion(),
-                    g.getCategoria(),
-                    CsvUtils.importe(g.getMonto()),
-                    g.getNotas()
+                    sdf.format(new Date(m.fechaEpoch)),
+                    m.esIngreso() ? "Ingreso" : "Gasto",
+                    m.descripcion,
+                    c != null ? c.nombre : "",
+                    cu != null ? cu.nombre : "",
+                    // Gastos en negativo para poder sumar la columna directamente
+                    CsvUtils.importe(m.montoConSigno()),
+                    m.notas
             });
         }
         guardarYCompartir(context, CsvUtils.documento(encabezado, filas), nombreBase);

@@ -70,8 +70,9 @@ public class DashboardViewModel extends AndroidViewModel {
             }
             upcomingOrders.postValue(proximos != null ? proximos : Collections.emptyList());
 
-            long[] mes = ListaGastosViewModel.inicioYFinDelMes();
-            double gastos = db.gastoDao().getTotalRango(mes[0], mes[1]);
+            long[] mes = com.example.gestiondecompras.servicios.FinanzasServicio.rangoMes(System.currentTimeMillis(), 0);
+            double gastos = db.movimientoDao().total(
+                    com.example.gestiondecompras.models.finanzas.Movimiento.TIPO_GASTO, mes[0], mes[1]);
             double ingresos = db.abonoDao().getTotalRango(mes[0], mes[1]);
             monthExpenses.postValue(gastos);
             monthIncome.postValue(ingresos);

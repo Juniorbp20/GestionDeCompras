@@ -75,6 +75,30 @@ public class FinanzasServicio {
         public double gastos;
     }
 
+    /** Totales de una cuenta en un rango. */
+    public static class TotalCuenta {
+        public Cuenta cuenta; // null = sin cuenta
+        public double ingresos;
+        public double gastos;
+        public double neto;
+    }
+
+    /** Reporte financiero completo de un rango de fechas. */
+    public static class Reporte {
+        public long desde;
+        public long hasta;
+        public double ingresos;
+        public double gastos;
+        public double balance;
+        public double tasaAhorro;
+        public int cantidad;
+        public List<TotalCategoria> gastosPorCategoria = new ArrayList<>();
+        public List<TotalCategoria> ingresosPorCategoria = new ArrayList<>();
+        public List<TotalCuenta> porCuenta = new ArrayList<>();
+        public List<PuntoMes> porMes = new ArrayList<>();
+        public List<Movimiento> mayoresGastos = new ArrayList<>();
+    }
+
     private final AppDatabase db;
 
     public FinanzasServicio(@NonNull AppDatabase db) {
@@ -92,6 +116,31 @@ public class FinanzasServicio {
         }
         m.id = db.movimientoDao().insert(m);
         return m.id;
+    }
+
+    /**
+     * Guarda un movimiento nuevo y crea su recurrente: este movimiento es la primera ocurrencia y
+     * la siguiente se registrará sola en la fecha que corresponda según la frecuencia.
+     */
+    public long guardarConRecurrencia(@NonNull Movimiento m, @NonNull String frecuencia) {
+        return db.runInTransaction(() -> {
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(m.fechaEpoch);
+            Recurrente r = new Recurrente();
+            r.tipo = m.tipo;
+            r.monto = Dinero.redondear(Math.abs(m.monto));
+            r.descripcion = m.descripcion;
+            r.notas = m.notas;
+            r.categoriaId = m.categoriaId;
+            r.cuentaId = m.cuentaId;
+            r.frecuencia = frecuencia;
+            r.diaAncla = c.get(Calendar.DAY_OF_MONTH);
+            r.proximaFechaEpoch = RecurrenciaUtils.siguienteFecha(m.fechaEpoch, frecuencia, r.diaAncla);
+            r.activo = true;
+            r.id = db.recurrenteDao().insert(r);
+            m.recurrenteId = r.id;
+            return guardarMovimiento(m);
+        });
     }
 
     public void eliminarMovimiento(@NonNull Movimiento m) {
@@ -193,6 +242,50 @@ public class FinanzasServicio {
             }
         }
         return orden;
+    }
+
+    // ===== Reportes =====
+
+    public Reporte reporte(long desde, long hasta) {
+        Reporte r = new Reporte();
+        r.desde = desde;
+        r.hasta = hasta;
+        r.ingresos = Dinero.redondear(db.movimientoDao().total(Movimiento.TIPO_INGRESO, desde, hasta));
+        r.gastos = Dinero.redondear(db.movimientoDao().total(Movimiento.TIPO_GASTO, desde, hasta));
+        r.balance = Dinero.restar(r.ingresos, r.gastos);
+        r.tasaAhorro = CalculosFinancieros.tasaAhorro(r.ingresos, r.gastos);
+        r.cantidad = db.movimientoDao().cantidad(desde, hasta);
+        r.gastosPorCategoria = totalesPorCategoria(Movimiento.TIPO_GASTO, desde, hasta, r.gastos);
+        r.ingresosPorCategoria = totalesPorCategoria(Movimiento.TIPO_INGRESO, desde, hasta, r.ingresos);
+
+        Map<Long, Cuenta> cuentas = mapaCuentas();
+        Map<String, TotalCuenta> porCuenta = new java.util.LinkedHashMap<>();
+        for (TotalPorGrupo g : db.movimientoDao().totalesPorCuenta(desde, hasta)) {
+            String clave = String.valueOf(g.grupoId);
+            TotalCuenta t = porCuenta.get(clave);
+            if (t == null) {
+                t = new TotalCuenta();
+                t.cuenta = g.grupoId != null ? cuentas.get(g.grupoId) : null;
+                porCuenta.put(clave, t);
+            }
+            if (Movimiento.TIPO_INGRESO.equals(g.tipo)) t.ingresos = Dinero.redondear(g.total);
+            else t.gastos = Dinero.redondear(g.total);
+            t.neto = Dinero.restar(t.ingresos, t.gastos);
+        }
+        r.porCuenta = new ArrayList<>(porCuenta.values());
+
+        // Evolución mensual dentro del rango
+        Calendar inicio = Calendar.getInstance();
+        inicio.setTimeInMillis(desde);
+        Calendar fin = Calendar.getInstance();
+        fin.setTimeInMillis(hasta);
+        int meses = (fin.get(Calendar.YEAR) - inicio.get(Calendar.YEAR)) * 12
+                + fin.get(Calendar.MONTH) - inicio.get(Calendar.MONTH) + 1;
+        if (meses >= 1 && meses <= 36) {
+            r.porMes = evolucionMensual(meses, hasta);
+        }
+        r.mayoresGastos = db.movimientoDao().mayores(Movimiento.TIPO_GASTO, desde, hasta, 10);
+        return r;
     }
 
     // ===== Recurrentes =====

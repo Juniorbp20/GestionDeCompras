@@ -35,6 +35,7 @@ public class GestionComprasApp extends Application {
         NotificationWorker.crearCanales(this);
         programarRecordatorios(this);
         com.example.gestiondecompras.workers.RespaldoWorker.programar(this);
+        com.example.gestiondecompras.workers.RecurrentesWorker.programar(this);
 
         // Inicializar el SDK de anuncios de Google
         new Thread(() -> MobileAds.initialize(this, initializationStatus -> {})).start();

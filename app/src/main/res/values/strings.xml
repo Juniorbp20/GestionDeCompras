@@ -366,13 +366,12 @@
 
     <string name="ayuda_gastos_title">5. Finanzas</string>
     <string name="ayuda_gastos_desc">
-<b>Resumen:</b> La secci\u00F3n "Finanzas" te muestra los ingresos del periodo (abonos cobrados), los gastos y el balance resultante. Usa las flechas para moverte entre meses; ver\u00E1s tambi\u00E9n la variaci\u00F3n contra el periodo anterior y el promedio diario.\n
-<b>Categor\u00EDas:</b> Debajo del resumen aparece el desglose por categor\u00EDa. Toca una categor\u00EDa para filtrar el listado y t\u00F3cala de nuevo para quitar el filtro.\n
-<b>Gastos:</b> Usa el bot\u00F3n (+) para anotar tus gastos personales: elige categor\u00EDa, monto, fecha, descripci\u00F3n y notas opcionales.\n
-<b>Filtros:</b> Busca por descripci\u00F3n, categor\u00EDa o notas, y combina la b\u00FAsqueda con la categor\u00EDa o con un rango de fechas personalizado. Mant\u00E9n presionado un campo de fecha para limpiarlo y usa "Limpiar" para volver al mes actual.\n
-<b>Editar o borrar:</b> Toca un gasto o usa su bot\u00F3n ⋮ para editarlo o eliminarlo; tambi\u00E9n puedes deslizarlo a la izquierda y pulsar "Deshacer" si te equivocas.\n
-<b>Exportar:</b> El icono de compartir de Finanzas genera un archivo CSV que se abre en Excel o Google Sheets.\n
-<b>Dashboard:</b> La card "Gastos del mes" del inicio muestra el total del mes y abre Finanzas de un toque.
+<b>Resumen:</b> La pesta\u00F1a Finanzas muestra el balance, los ingresos, los gastos y la tasa de ahorro del mes, trimestre o a\u00F1o, comparados con el periodo anterior, con gr\u00E1ficos por categor\u00EDa y de los \u00FAltimos 6 meses. Toca una categor\u00EDa del gr\u00E1fico para ver sus movimientos.\n
+<b>Movimientos:</b> Registra ingresos y gastos con el bot\u00F3n "Nuevo movimiento": monto, descripci\u00F3n, categor\u00EDa, cuenta, fecha y notas. Busca por texto y usa los filtros (tipo, categor\u00EDa, cuenta, fechas y montos). Desliza un movimiento para eliminarlo y pulsa "Deshacer" si te equivocas.\n
+<b>Categor\u00EDas y cuentas:</b> Desde el men\u00FA de Finanzas crea tus propias categor\u00EDas (con color e icono) y tus cuentas (efectivo, banco, tarjeta) con su saldo inicial; la app calcula el saldo actual de cada una.\n
+<b>Presupuestos:</b> Define cu\u00E1nto quieres gastar como m\u00E1ximo al mes en cada categor\u00EDa. Ver\u00E1s el progreso en el resumen y recibir\u00E1s un aviso al llegar al 80 por ciento y al superarlo.\n
+<b>Recurrentes:</b> Activa "Repetir autom\u00E1ticamente" al registrar un movimiento (alquiler, sueldo, servicios) y se anotar\u00E1 solo cada semana, quincena, mes o a\u00F1o.\n
+<b>Reportes:</b> En la pesta\u00F1a Reportes elige el rango y obt\u00E9n el detalle por categor\u00EDa, por cuenta, por mes y los mayores gastos; exp\u00F3rtalo en PDF o en Excel (CSV).
 </string>
 
     <string name="ayuda_reportes_title">6. Reportes y Ganancias</string>
@@ -474,7 +473,7 @@
     <string name="busqueda_sin_resultados">No se encontró nada para "%1$s".</string>
     <string name="busqueda_clientes">Clientes</string>
     <string name="busqueda_pedidos">Pedidos</string>
-    <string name="busqueda_gastos">Gastos</string>
+    <string name="busqueda_gastos">Ingresos y gastos</string>
 
     <!-- ===== Exportar CSV ===== -->
     <string name="exportar_csv">Exportar a Excel (CSV)</string>
@@ -550,4 +549,152 @@
     <string name="recordatorio_tu_compra">tu compra</string>
     <string name="recordatorio_mensaje">Hola %1$s, te recordamos que tienes un saldo pendiente de %2$s por tu pedido de %3$s. ¡Muchas gracias!</string>
     <string name="recordatorio_sin_telefono">El cliente no tiene un teléfono válido registrado</string>
+
+    <!-- ===== Finanzas completas ===== -->
+    <string name="fin_title">Finanzas</string>
+    <string name="fin_tab_resumen">Resumen</string>
+    <string name="fin_tab_movimientos">Movimientos</string>
+    <string name="fin_tab_reportes">Reportes</string>
+    <string name="fin_periodo_mes">Mes</string>
+    <string name="fin_periodo_trimestre">Trimestre</string>
+    <string name="fin_periodo_anio">Año</string>
+    <string name="fin_periodo_anterior">Periodo anterior</string>
+    <string name="fin_periodo_siguiente">Periodo siguiente</string>
+    <string name="fin_balance">Balance del periodo</string>
+    <string name="fin_ahorro">Ahorro</string>
+    <string name="fin_ingresos">Ingresos</string>
+    <string name="fin_gastos">Gastos</string>
+    <string name="fin_tasa_ahorro">Ahorro: %1$s%%</string>
+    <string name="fin_tasa_ahorro_na">Ahorro: —</string>
+    <string name="fin_variacion_mas">%1$s%% más que el periodo anterior</string>
+    <string name="fin_variacion_menos">%1$s%% menos que el periodo anterior</string>
+    <string name="fin_variacion_igual">Igual que el periodo anterior</string>
+    <string name="fin_variacion_sin_datos">Sin datos del periodo anterior</string>
+    <string name="fin_promedio_diario">Promedio diario de gastos: %1$s</string>
+    <string name="fin_gastos_por_categoria">Gastos por categoría</string>
+    <string name="fin_ingresos_por_categoria">Ingresos por categoría</string>
+    <string name="fin_ver_ingresos">Ver ingresos</string>
+    <string name="fin_ver_gastos">Ver gastos</string>
+    <string name="fin_total">Total</string>
+    <string name="fin_sin_datos_periodo">Aún no hay movimientos en este periodo</string>
+    <string name="fin_evolucion">Ingresos y gastos · últimos 6 meses</string>
+    <string name="fin_presupuestos">Presupuestos del mes</string>
+    <string name="fin_presupuesto_detalle">%1$s de %2$s (%3$s%%)</string>
+    <string name="fin_sin_presupuestos">No has definido presupuestos</string>
+    <string name="fin_configurar">Configurar</string>
+    <string name="fin_cuentas">Saldos por cuenta</string>
+    <string name="fin_proximos">Próximos recurrentes</string>
+    <string name="fin_sin_proximos">Nada programado para los próximos 7 días</string>
+    <string name="fin_recientes">Últimos movimientos</string>
+    <string name="fin_ver_todos">Ver todos</string>
+    <string name="fin_sin_categoria">Sin categoría</string>
+    <string name="fin_sin_cuenta">Sin cuenta</string>
+    <string name="fin_buscar_hint">Buscar descripción, nota o categoría</string>
+    <string name="fin_filtro_todos">Todos</string>
+    <string name="fin_filtros">Filtros</string>
+    <string name="fin_limpiar">Limpiar</string>
+    <string name="fin_resumen_filtro">%1$d movimientos · Ingresos %2$s · Gastos %3$s</string>
+    <string name="fin_sin_movimientos">No hay movimientos</string>
+    <string name="fin_sin_resultados">No hay movimientos con estos filtros</string>
+    <string name="fin_nuevo_movimiento">Nuevo movimiento</string>
+    <string name="fin_crear_movimiento">Registrar movimiento</string>
+    <string name="fin_movimiento_eliminado">Movimiento eliminado</string>
+    <string name="fin_duplicar">Duplicar</string>
+    <string name="fin_filtro_categoria">Categoría</string>
+    <string name="fin_filtro_cuenta">Cuenta</string>
+    <string name="fin_filtro_desde">Desde</string>
+    <string name="fin_filtro_hasta">Hasta</string>
+    <string name="fin_filtro_monto_min">Monto mínimo</string>
+    <string name="fin_filtro_monto_max">Monto máximo</string>
+    <string name="fin_aplicar">Aplicar</string>
+    <string name="fin_cualquiera">Cualquiera</string>
+    <string name="fin_editar_movimiento">Editar movimiento</string>
+    <string name="fin_tipo_ingreso">Ingreso</string>
+    <string name="fin_tipo_gasto">Gasto</string>
+    <string name="fin_monto">Monto</string>
+    <string name="fin_descripcion">Descripción</string>
+    <string name="fin_notas">Notas (opcional)</string>
+    <string name="fin_fecha">Fecha</string>
+    <string name="fin_categoria">Categoría</string>
+    <string name="fin_cuenta">Cuenta</string>
+    <string name="fin_repetir">Repetir automáticamente</string>
+    <string name="fin_frecuencia">Frecuencia</string>
+    <string name="fin_frec_semanal">Semanal</string>
+    <string name="fin_frec_quincenal">Quincenal</string>
+    <string name="fin_frec_mensual">Mensual</string>
+    <string name="fin_frec_anual">Anual</string>
+    <string name="fin_guardar">Guardar</string>
+    <string name="fin_movimiento_guardado">Movimiento guardado</string>
+    <string name="fin_monto_invalido">Escribe un monto mayor que cero</string>
+    <string name="fin_descripcion_requerida">Escribe una descripción</string>
+    <string name="fin_categoria_requerida">Elige una categoría</string>
+    <string name="fin_gestionar_categorias">Gestionar categorías</string>
+    <string name="fin_categorias">Categorías</string>
+    <string name="fin_nueva_categoria">Nueva categoría</string>
+    <string name="fin_editar_categoria">Editar categoría</string>
+    <string name="fin_nombre">Nombre</string>
+    <string name="fin_color">Color</string>
+    <string name="fin_icono">Icono</string>
+    <string name="fin_archivada">Archivada</string>
+    <string name="fin_archivar">Archivar</string>
+    <string name="fin_reactivar">Reactivar</string>
+    <string name="fin_categoria_archivada">La categoría tiene movimientos: se archivó para conservar el historial</string>
+    <string name="fin_categoria_eliminada">Categoría eliminada</string>
+    <string name="fin_nombre_requerido">Escribe un nombre</string>
+    <string name="fin_categorias_ingreso">De ingreso</string>
+    <string name="fin_categorias_gasto">De gasto</string>
+    <string name="fin_nueva_cuenta">Nueva cuenta</string>
+    <string name="fin_editar_cuenta">Editar cuenta</string>
+    <string name="fin_saldo_inicial">Saldo inicial</string>
+    <string name="fin_saldo_actual">Saldo actual: %1$s</string>
+    <string name="fin_tipo_cuenta">Tipo</string>
+    <string name="fin_cuenta_efectivo">Efectivo</string>
+    <string name="fin_cuenta_banco">Banco</string>
+    <string name="fin_cuenta_tarjeta">Tarjeta</string>
+    <string name="fin_cuenta_otro">Otro</string>
+    <string name="fin_cuenta_archivada">La cuenta tiene movimientos: se archivó para conservar el historial</string>
+    <string name="fin_cuenta_eliminada">Cuenta eliminada</string>
+    <string name="fin_presupuesto_mensual">Presupuesto mensual</string>
+    <string name="fin_sin_limite">Sin límite</string>
+    <string name="fin_presupuesto_guardado">Presupuesto guardado</string>
+    <string name="fin_quitar_presupuesto">Quitar presupuesto</string>
+    <string name="fin_presupuesto_ayuda">Toca una categoría para definir cuánto quieres gastar como máximo cada mes.</string>
+    <string name="fin_recurrentes">Movimientos recurrentes</string>
+    <string name="fin_nuevo_recurrente">Nuevo recurrente</string>
+    <string name="fin_proxima">Próximo: %1$s</string>
+    <string name="fin_pausar">Pausar</string>
+    <string name="fin_reanudar">Reanudar</string>
+    <string name="fin_pausado">En pausa</string>
+    <string name="fin_sin_recurrentes">No tienes movimientos recurrentes</string>
+    <string name="fin_recurrente_ayuda">Para crear uno, registra un movimiento y activa "Repetir automáticamente".</string>
+    <string name="fin_recurrente_eliminado">Recurrente eliminado</string>
+    <string name="notif_presupuesto_alerta_title">Presupuesto casi agotado</string>
+    <string name="notif_presupuesto_alerta_text">Llevas %1$s%% del presupuesto de %2$s este mes.</string>
+    <string name="notif_presupuesto_excedido_title">Presupuesto superado</string>
+    <string name="notif_presupuesto_excedido_text">Superaste el presupuesto de %1$s: %2$s de %3$s.</string>
+    <string name="notif_canal_finanzas_nombre">Finanzas</string>
+    <string name="notif_canal_finanzas_desc">Avisos de presupuestos</string>
+    <plurals name="fin_cantidad_movimientos">
+        <item quantity="one">%d movimiento</item>
+        <item quantity="other">%d movimientos</item>
+    </plurals>
+    <string name="fin_rep_este_mes">Este mes</string>
+    <string name="fin_rep_mes_anterior">Mes anterior</string>
+    <string name="fin_rep_trimestre">Trimestre</string>
+    <string name="fin_rep_anio">Este año</string>
+    <string name="fin_rep_personalizado">Personalizado</string>
+    <string name="fin_rep_balance">Balance</string>
+    <string name="fin_rep_pdf">Reporte PDF</string>
+    <string name="fin_rep_csv">Excel (CSV)</string>
+    <string name="fin_rep_por_cuenta">Por cuenta</string>
+    <string name="fin_rep_por_mes">Evolución mensual</string>
+    <string name="fin_rep_mayores_gastos">Mayores gastos</string>
+    <string name="fin_rep_detalle">%1$s · Ahorro %2$s%%</string>
+    <string name="fin_rep_col_ingresos">Ingresos</string>
+    <string name="fin_rep_col_gastos">Gastos</string>
+    <string name="fin_rep_col_neto">Neto</string>
+    <string name="fin_rep_pdf_titulo">Reporte financiero</string>
+    <string name="fin_rep_pdf_error">No se pudo generar el PDF</string>
+    <string name="fin_rep_pdf_generado">Generado el %1$s</string>
+    <string name="fin_rep_rango">%1$s – %2$s</string>
 </resources>
