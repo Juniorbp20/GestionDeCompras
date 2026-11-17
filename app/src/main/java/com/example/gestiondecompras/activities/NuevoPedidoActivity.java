@@ -180,8 +180,8 @@ public class NuevoPedidoActivity extends AppCompatActivity {
     private void loadPedidoData(long id) {
         viewModel.getPedido(id).observe(this, pedido -> {
             if (pedido != null) {
-                Objects.requireNonNull(getSupportActionBar()).setTitle("Editar Pedido #" + pedido.getId());
-                binding.btnGuardar.setText("Actualizar Pedido");
+                Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.pedido_editar_titulo, pedido.getId()));
+                binding.btnGuardar.setText(R.string.pedido_actualizar);
                 
                 originalMonto = pedido.getMontoCompra(); // Guardar para validar cambios
                 totalAbonadoOriginal = pedido.getTotalAbonado();
@@ -244,14 +244,14 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         Tarjeta tarjeta = selectedTarjeta;
 
         if (cliente == null || tienda == null || tarjeta == null) {
-            Toast.makeText(this, "Selecciona cliente, tienda y tarjeta.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.pedido_faltan_selecciones, Toast.LENGTH_SHORT).show();
             return;
         }
 
         String montoTexto = Objects.requireNonNull(binding.etMontoCompra.getText()).toString().trim();
         String gananciaTexto = Objects.requireNonNull(binding.etGanancia.getText()).toString().trim();
         if (montoTexto.isEmpty() || gananciaTexto.isEmpty()) {
-            Toast.makeText(this, "Completa monto de compra y ganancia.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.pedido_faltan_montos, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -261,7 +261,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
             monto = Dinero.redondear(Double.parseDouble(montoTexto));
             ganancia = Double.parseDouble(gananciaTexto);
         } catch (NumberFormatException ex) {
-            Toast.makeText(this, "Verifica los valores numéricos.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.pedido_valores_invalidos, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -269,7 +269,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         double diferencia = (pedidoIdEdicion > 0) ? Dinero.restar(monto, originalMonto) : monto;
         if (tarjeta.getLimiteCredito() > 0
                 && Dinero.mayorQue(Dinero.sumar(tarjeta.getDeudaActual(), diferencia), tarjeta.getLimiteCredito())) {
-            Toast.makeText(this, "El monto de la compra supera el limite de la tarjeta.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.pedido_supera_limite, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -335,7 +335,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         }
 
         viewModel.savePedido(pedido, tarjeta, abonoInicial, Abono.METODO_EFECTIVO);
-        Toast.makeText(this, pedidoIdEdicion > 0 ? "Pedido actualizado" : "Pedido guardado", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, pedidoIdEdicion > 0 ? R.string.pedido_actualizado : R.string.pedido_guardado, Toast.LENGTH_SHORT).show();
         finish();
     }
 }

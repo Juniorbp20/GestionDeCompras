@@ -122,7 +122,7 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
         
         android.widget.TextView tvDeuda = dialog.findViewById(R.id.tvDeudaActual);
         if (tvDeuda != null) {
-            tvDeuda.setText(String.format(java.util.Locale.getDefault(), "Deuda Actual: RD$ %,.2f", tarjeta.getDeudaActual()));
+            tvDeuda.setText(getString(R.string.tarjeta_deuda_actual_formato, tarjeta.getDeudaActual()));
         }
 
 

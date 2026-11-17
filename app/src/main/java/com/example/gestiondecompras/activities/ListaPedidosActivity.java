@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiondecompras.R;
 import com.example.gestiondecompras.utils.BorradoConDeshacer;
+import com.example.gestiondecompras.utils.DetallePedido;
 import com.example.gestiondecompras.utils.HojaAcciones;
 import com.example.gestiondecompras.utils.NavegacionInferior;
 import com.example.gestiondecompras.adapters.AbonosAdapter;
@@ -191,13 +192,6 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_detalle_pedido, null);
         
-        android.widget.TextView tvProducto = view.findViewById(R.id.tv_detalle_producto);
-        android.widget.TextView tvTienda = view.findViewById(R.id.tv_detalle_tienda);
-        android.widget.TextView tvFechaCompra = view.findViewById(R.id.tv_detalle_fecha_compra);
-        android.widget.TextView tvFechaEntrega = view.findViewById(R.id.tv_detalle_fecha_entrega);
-        android.widget.TextView tvCosto = view.findViewById(R.id.tv_detalle_costo);
-        android.widget.TextView tvVenta = view.findViewById(R.id.tv_detalle_venta);
-        android.widget.TextView tvGanancia = view.findViewById(R.id.tv_detalle_ganancia);
         android.widget.TextView tvAbonado = view.findViewById(R.id.tv_detalle_abonado);
         android.widget.TextView tvSaldo = view.findViewById(R.id.tv_detalle_saldo);
         android.widget.TextView tvEstado = view.findViewById(R.id.tv_detalle_estado);
@@ -205,27 +199,13 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         com.google.android.material.button.MaterialButton btnRegistrarAbono = view.findViewById(R.id.btn_registrar_abono);
         com.google.android.material.button.MaterialButton btnVerAbonos = view.findViewById(R.id.btn_ver_abonos);
 
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault());
-        
-        tvProducto.setText(pedido.getClienteNombre());
-        tvTienda.setText(pedido.getTienda());
-        
-        tvFechaCompra.setText(pedido.getFechaRegistro() != null ? sdf.format(pedido.getFechaRegistro()) : "N/A");
-        tvFechaEntrega.setText(pedido.getFechaEntrega() != null ? sdf.format(pedido.getFechaEntrega()) : "N/A");
-        
-        tvCosto.setText(String.format("RD$ %,.2f", pedido.getMontoCompra()));
-        tvVenta.setText(String.format("RD$ %,.2f", pedido.getTotalGeneral()));
-        tvGanancia.setText(String.format("RD$ %,.2f", pedido.getGanancia()));
-        tvAbonado.setText(moneda(pedido.getTotalAbonado()));
-        tvSaldo.setText(moneda(pedido.getSaldo()));
+        DetallePedido.rellenar(view, pedido);
 
-        aplicarEstado(tvEstado, pedido.getEstado());
-
-        btnEnviar.setOnClickListener(v -> enviarResumenCliente(pedido, sdf));
+        btnEnviar.setOnClickListener(v -> DetallePedido.compartirResumen(this, pedido));
 
         AlertDialog dialog = builder.setView(view)
-               .setPositiveButton("Cerrar", null)
-               .setNeutralButton("Editar", (d, which) -> {
+               .setPositiveButton(R.string.accion_cerrar, null)
+               .setNeutralButton(R.string.accion_editar, (d, which) -> {
                    d.dismiss();
                    Intent i = new Intent(this, NuevoPedidoActivity.class);
                    i.putExtra("pedido_id", pedido.getId());
@@ -365,40 +345,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
     }
 
     private void aplicarEstado(android.widget.TextView tvEstado, String estado) {
-        int colorRes;
-        if (Pedido.ESTADO_PAGADO.equalsIgnoreCase(estado)) {
-            colorRes = R.color.status_paid;
-        } else if (Pedido.ESTADO_ENTREGADO.equalsIgnoreCase(estado)) {
-            colorRes = R.color.status_delivered;
-        } else if (Pedido.ESTADO_CANCELADO.equalsIgnoreCase(estado)) {
-            colorRes = R.color.status_cancelled;
-        } else {
-            colorRes = R.color.status_pending;
-        }
-        tvEstado.setText(estado);
-        tvEstado.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, colorRes)));
-        tvEstado.setTextColor(ContextCompat.getColor(this, R.color.white));
-    }
-
-    private void enviarResumenCliente(Pedido pedido, java.text.SimpleDateFormat sdf) {
-        String fechaRegistro = pedido.getFechaRegistro() != null ? sdf.format(pedido.getFechaRegistro()) : "N/A";
-        String fechaEntrega = pedido.getFechaEntrega() != null ? sdf.format(pedido.getFechaEntrega()) : "N/A";
-
-        String mensaje = "*Resumen del Pedido*\n\n"
-                + getString(R.string.pedido_detalle_cliente) + ": " + pedido.getClienteNombre() + "\n"
-                + getString(R.string.pedido_detalle_tienda) + ": " + pedido.getTienda() + "\n"
-                + getString(R.string.pedido_detalle_fecha_compra) + ": " + fechaRegistro + "\n"
-                + getString(R.string.pedido_detalle_fecha_entrega) + ": " + fechaEntrega + "\n"
-                + getString(R.string.pedido_detalle_costo) + ": RD$ " + String.format(java.util.Locale.getDefault(), "%,.2f", pedido.getMontoCompra()) + "\n"
-                + getString(R.string.pedido_detalle_venta) + ": RD$ " + String.format(java.util.Locale.getDefault(), "%,.2f", pedido.getTotalGeneral()) + "\n"
-                + getString(R.string.pedido_detalle_ganancia) + ": RD$ " + String.format(java.util.Locale.getDefault(), "%,.2f", pedido.getGanancia()) + "\n"
-                + "Estado: " + pedido.getEstado();
-
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pedido_share_subject, pedido.getClienteNombre()));
-        intent.putExtra(Intent.EXTRA_TEXT, mensaje);
-        startActivity(Intent.createChooser(intent, getString(R.string.pedido_enviar_resumen)));
+        DetallePedido.aplicarEstado(tvEstado, estado);
     }
 
     @Override
@@ -410,7 +357,6 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
 
     /** Hoja inferior con todas las acciones del pedido, en el orden común de la app. */
     private void mostrarAccionesPedido(Pedido pedido) {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault());
         String subtitulo = (pedido.getTienda() != null && !pedido.getTienda().isEmpty()
                 ? pedido.getTienda() + " · " : "") + moneda(pedido.getTotalGeneral());
 
@@ -427,7 +373,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
             hoja.accion(R.drawable.ic_payments, R.string.abono_registrar,
                     () -> mostrarDialogoAbono(pedido, null, null, null));
         }
-        hoja.accion(R.drawable.ic_share, R.string.pedido_enviar_resumen, () -> enviarResumenCliente(pedido, sdf))
+        hoja.accion(R.drawable.ic_share, R.string.pedido_enviar_resumen, () -> DetallePedido.compartirResumen(this, pedido))
                 .peligrosa(R.drawable.ic_delete, R.string.accion_eliminar,
                         () -> eliminarConDeshacer(pedido))
                 .mostrar();

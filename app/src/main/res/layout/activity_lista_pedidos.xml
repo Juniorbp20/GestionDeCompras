@@ -108,7 +108,8 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:src="@drawable/ic_list"
-                android:tint="@color/gray_light" />
+                android:tint="@color/gray_light"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:id="@+id/tvVacio"

@@ -94,10 +94,12 @@ public class ClientesAdapter extends RecyclerView.Adapter<ClientesAdapter.Client
             
             if (c instanceof com.example.gestiondecompras.models.ClienteWithMetrics) {
                 com.example.gestiondecompras.models.ClienteWithMetrics cm = (com.example.gestiondecompras.models.ClienteWithMetrics) c;
-                tvCantidadPedidos.setText(cm.cantidadPedidos + " pedidos");
+                tvCantidadPedidos.setText(itemView.getResources().getQuantityString(
+                        R.plurals.clientes_cantidad_pedidos, cm.cantidadPedidos, cm.cantidadPedidos));
                 tvTotalCompras.setText(String.format(java.util.Locale.getDefault(), "RD$ %,.2f", cm.totalCompras));
             } else {
-                tvCantidadPedidos.setText("0 pedidos");
+                tvCantidadPedidos.setText(itemView.getResources().getQuantityString(
+                        R.plurals.clientes_cantidad_pedidos, 0, 0));
                 tvTotalCompras.setText("RD$ 0.00");
             }
         }

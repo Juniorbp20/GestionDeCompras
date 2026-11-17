@@ -1,5 +1,6 @@
 package com.example.gestiondecompras.activities;
 
+import com.example.gestiondecompras.utils.DetallePedido;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,7 +47,7 @@ public class CalendarioActivity extends AppCompatActivity implements PedidosAdap
         setupSearch();
         observeViewModel();
 
-        binding.tvFechaSeleccionada.setText("Hoy: " + df.format(new Date()));
+        binding.tvFechaSeleccionada.setText(getString(R.string.calendario_hoy, df.format(new Date())));
         viewModel.loadPedidos(new Date().getTime(), "");
     }
 
@@ -96,79 +97,18 @@ public class CalendarioActivity extends AppCompatActivity implements PedidosAdap
 
     @Override
     public void onPedidoClick(com.example.gestiondecompras.models.Pedido pedido) {
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         android.view.View view = getLayoutInflater().inflate(R.layout.dialog_detalle_pedido, null);
-        
-        android.widget.TextView tvProducto = view.findViewById(R.id.tv_detalle_producto);
-        android.widget.TextView tvTienda = view.findViewById(R.id.tv_detalle_tienda);
-        android.widget.TextView tvFechaCompra = view.findViewById(R.id.tv_detalle_fecha_compra);
-        android.widget.TextView tvFechaEntrega = view.findViewById(R.id.tv_detalle_fecha_entrega);
-        android.widget.TextView tvCosto = view.findViewById(R.id.tv_detalle_costo);
-        android.widget.TextView tvVenta = view.findViewById(R.id.tv_detalle_venta);
-        android.widget.TextView tvGanancia = view.findViewById(R.id.tv_detalle_ganancia);
-        android.widget.TextView tvAbonado = view.findViewById(R.id.tv_detalle_abonado);
-        android.widget.TextView tvSaldo = view.findViewById(R.id.tv_detalle_saldo);
-        android.widget.TextView tvEstado = view.findViewById(R.id.tv_detalle_estado);
-        com.google.android.material.button.MaterialButton btnEnviar = view.findViewById(R.id.btn_enviar_resumen);
+        // En el calendario el detalle es de consulta: sin registrar ni ver abonos
         view.findViewById(R.id.btn_registrar_abono).setVisibility(android.view.View.GONE);
         view.findViewById(R.id.btn_ver_abonos).setVisibility(android.view.View.GONE);
-        
-        tvProducto.setText(pedido.getClienteNombre());
-        tvTienda.setText(pedido.getTienda());
-        
-        tvFechaCompra.setText(pedido.getFechaRegistro() != null ? df.format(pedido.getFechaRegistro()) : "N/A");
-        tvFechaEntrega.setText(pedido.getFechaEntrega() != null ? df.format(pedido.getFechaEntrega()) : "N/A");
-        
-        tvCosto.setText(String.format(Locale.getDefault(), "RD$ %,.2f", pedido.getMontoCompra()));
-        tvVenta.setText(String.format(Locale.getDefault(), "RD$ %,.2f", pedido.getTotalGeneral()));
-        tvGanancia.setText(String.format(Locale.getDefault(), "RD$ %,.2f", pedido.getGanancia()));
-        tvAbonado.setText(String.format(Locale.getDefault(), "RD$ %,.2f", pedido.getTotalAbonado()));
-        tvSaldo.setText(String.format(Locale.getDefault(), "RD$ %,.2f", pedido.getSaldo()));
-        
-        tvEstado.setText(pedido.getEstado());
-        
-        int colorRes;
-        if (com.example.gestiondecompras.models.Pedido.ESTADO_PAGADO.equalsIgnoreCase(pedido.getEstado())) {
-            colorRes = R.color.status_paid;
-        } else if (com.example.gestiondecompras.models.Pedido.ESTADO_ENTREGADO.equalsIgnoreCase(pedido.getEstado())) {
-            colorRes = R.color.status_delivered;
-        } else if (com.example.gestiondecompras.models.Pedido.ESTADO_CANCELADO.equalsIgnoreCase(pedido.getEstado())) {
-            colorRes = R.color.status_cancelled;
-        } else {
-            colorRes = R.color.status_pending;
-        }
-        
-        tvEstado.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
-            androidx.core.content.ContextCompat.getColor(this, colorRes)
-        ));
-        tvEstado.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.white));
-        
-        btnEnviar.setOnClickListener(v -> enviarResumenCliente(pedido));
+        DetallePedido.rellenar(view, pedido);
+        view.findViewById(R.id.btn_enviar_resumen).setOnClickListener(v ->
+                DetallePedido.compartirResumen(this, pedido));
 
-        builder.setView(view)
-               .setPositiveButton("Cerrar", null)
-               .show();
-    }
-
-    private void enviarResumenCliente(com.example.gestiondecompras.models.Pedido pedido) {
-        String fechaRegistro = pedido.getFechaRegistro() != null ? df.format(pedido.getFechaRegistro()) : "N/A";
-        String fechaEntrega = pedido.getFechaEntrega() != null ? df.format(pedido.getFechaEntrega()) : "N/A";
-
-        String mensaje = "*Resumen del Pedido*\n\n"
-                + getString(R.string.pedido_detalle_cliente) + ": " + pedido.getClienteNombre() + "\n"
-                + getString(R.string.pedido_detalle_tienda) + ": " + pedido.getTienda() + "\n"
-                + getString(R.string.pedido_detalle_fecha_compra) + ": " + fechaRegistro + "\n"
-                + getString(R.string.pedido_detalle_fecha_entrega) + ": " + fechaEntrega + "\n"
-                + getString(R.string.pedido_detalle_costo) + ": RD$ " + String.format(Locale.getDefault(), "%,.2f", pedido.getMontoCompra()) + "\n"
-                + getString(R.string.pedido_detalle_venta) + ": RD$ " + String.format(Locale.getDefault(), "%,.2f", pedido.getTotalGeneral()) + "\n"
-                + getString(R.string.pedido_detalle_ganancia) + ": RD$ " + String.format(Locale.getDefault(), "%,.2f", pedido.getGanancia()) + "\n"
-                + "Estado: " + pedido.getEstado();
-
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pedido_share_subject, pedido.getClienteNombre()));
-        intent.putExtra(Intent.EXTRA_TEXT, mensaje);
-        startActivity(Intent.createChooser(intent, getString(R.string.pedido_enviar_resumen)));
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setView(view)
+                .setPositiveButton(R.string.accion_cerrar, null)
+                .show();
     }
 
     @Override

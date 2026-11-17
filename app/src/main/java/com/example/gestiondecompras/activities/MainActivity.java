@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    Toast.makeText(this, "Permiso de notificaciones concedido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.notif_permiso_concedido, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "No se podrán mostrar notificaciones de recordatorio", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.notif_permiso_rechazado, Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         errorCode == androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
                         finishAffinity();
                     } else {
-                         Toast.makeText(MainActivity.this, "Error de autenticación: " + errString, Toast.LENGTH_LONG).show();
+                         Toast.makeText(MainActivity.this, getString(R.string.error_autenticacion, errString), Toast.LENGTH_LONG).show();
                          finishAffinity();
                     }
                 }
@@ -277,9 +277,9 @@ public class MainActivity extends AppCompatActivity {
         int pad = (int) (16 * getResources().getDisplayMetrics().density);
         rv.setPadding(pad, pad, pad, pad);
         
-        builder.setTitle("Ganancias por Cliente");
+        builder.setTitle(R.string.ganancias_por_cliente);
         builder.setView(rv);
-        builder.setPositiveButton("Cerrar", null);
+        builder.setPositiveButton(R.string.accion_cerrar, null);
         
         viewModel.getClientEarnings().observe(this, adapter::actualizarLista);
         

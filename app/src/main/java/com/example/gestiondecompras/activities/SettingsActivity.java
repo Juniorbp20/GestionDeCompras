@@ -78,12 +78,12 @@ public class SettingsActivity extends AppCompatActivity {
                     try {
                         GoogleSignIn.getSignedInAccountFromIntent(result.getData())
                                 .getResult(ApiException.class);
-                        Toast.makeText(this, "Inicio de sesión cancelado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.google_login_cancelado, Toast.LENGTH_SHORT).show();
                     } catch (ApiException e) {
-                        Toast.makeText(this, "Error de Google: " + e.getStatusCode(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.google_error, e.getStatusCode()), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(this, "Inicio de sesión cancelado o fallido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.google_login_fallido, Toast.LENGTH_SHORT).show();
                 }
             }
     );
@@ -160,9 +160,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            binding.tvVersion.setText("Versión " + versionName);
+            binding.tvVersion.setText(getString(R.string.version_formato, versionName));
         } catch (Exception e) {
-            binding.tvVersion.setText("Versión Desconocida");
+            binding.tvVersion.setText(R.string.version_desconocida);
         }
     }
 
@@ -289,7 +289,7 @@ public class SettingsActivity extends AppCompatActivity {
                 pendingAction = null;
             }
         } catch (ApiException e) {
-            Toast.makeText(this, "Error de Google: " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.google_error, e.getStatusCode()), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -297,7 +297,7 @@ public class SettingsActivity extends AppCompatActivity {
         googleSignInClient.signOut().addOnCompleteListener(this, task -> {
             googleDriveService = null;
             updateGoogleLoginStatus();
-            Toast.makeText(SettingsActivity.this, "Sesión de Google cerrada", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingsActivity.this, R.string.google_sesion_cerrada, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -305,10 +305,10 @@ public class SettingsActivity extends AppCompatActivity {
     private void updateGoogleLoginStatus() {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
-            binding.btnGoogleLogout.setText("Cerrar sesión de Google");
+            binding.btnGoogleLogout.setText(R.string.google_cerrar_sesion);
             binding.btnGoogleLogout.setTextColor(getResources().getColor(android.R.color.holo_red_dark, getTheme()));
         } else {
-            binding.btnGoogleLogout.setText("Iniciar sesión");
+            binding.btnGoogleLogout.setText(R.string.google_iniciar_sesion);
             binding.btnGoogleLogout.setTextColor(getResources().getColor(android.R.color.holo_blue_dark, getTheme()));
         }
     }
@@ -326,24 +326,24 @@ public class SettingsActivity extends AppCompatActivity {
             File dbFile = getDatabasePath(DB_NAME);
             
             if (!dbFile.exists()) {
-                Toast.makeText(this, "Error: El archivo de datos no existe", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.respaldo_sin_archivo, Toast.LENGTH_SHORT).show();
                 return;
             }
             
-            Toast.makeText(this, "Subiendo a Drive...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.respaldo_subiendo, Toast.LENGTH_SHORT).show();
             googleDriveService.uploadBackup(dbFile, new GoogleDriveService.DriveCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    runOnUiThread(() -> Toast.makeText(SettingsActivity.this, "Copia subida con éxito", Toast.LENGTH_SHORT).show());
+                    runOnUiThread(() -> Toast.makeText(SettingsActivity.this, R.string.respaldo_subido, Toast.LENGTH_SHORT).show());
                 }
 
                 @Override
                 public void onError(Exception e) {
-                    runOnUiThread(() -> Toast.makeText(SettingsActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                    runOnUiThread(() -> Toast.makeText(SettingsActivity.this, getString(R.string.error_detalle, e.getMessage()), Toast.LENGTH_LONG).show());
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(this, "Error al preparar respaldo: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.respaldo_error_preparar, e.getMessage()), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -357,19 +357,19 @@ public class SettingsActivity extends AppCompatActivity {
         if (walFile.exists()) walFile.delete();
         if (shmFile.exists()) shmFile.delete();
 
-        Toast.makeText(this, "Descargando de Drive...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.respaldo_descargando, Toast.LENGTH_SHORT).show();
         googleDriveService.downloadBackup(dbFile, new GoogleDriveService.DriveCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(SettingsActivity.this, "Restauración exitosa. Reiniciando...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SettingsActivity.this, R.string.respaldo_restaurado, Toast.LENGTH_LONG).show();
                     restartApp();
                 });
             }
 
             @Override
             public void onError(Exception e) {
-                runOnUiThread(() -> Toast.makeText(SettingsActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> Toast.makeText(SettingsActivity.this, getString(R.string.error_detalle, e.getMessage()), Toast.LENGTH_LONG).show());
             }
         });
     }
@@ -443,19 +443,19 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showResetConfirmation() {
         new androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Confirmar reinicio")
-            .setMessage("¿Estás seguro de que deseas borrar todos los datos?")
-            .setPositiveButton("Borrar Todo", (dialog, which) -> {
+            .setTitle(R.string.reset_confirm_titulo)
+            .setMessage(R.string.reset_confirm_pregunta)
+            .setPositiveButton(R.string.reset_borrar_todo, (dialog, which) -> {
                 AppDatabase.getInstance(this).close();
                 File dbFile = getDatabasePath(DB_NAME);
                 new File(dbFile.getPath() + "-wal").delete();
                 new File(dbFile.getPath() + "-shm").delete();
                 if(dbFile.delete()) {
-                    Toast.makeText(this, "Datos borrados", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.reset_datos_borrados, Toast.LENGTH_SHORT).show();
                     finishAffinity();
                 }
             })
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(R.string.accion_cancelar, null)
             .show();
     }
 

@@ -101,7 +101,8 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:src="@drawable/ic_credit_card"
-                android:tint="@color/gray_light" />
+                android:tint="@color/gray_light"
+                android:importantForAccessibility="no" />
 
             <TextView
                 android:id="@+id/tvEmpty"

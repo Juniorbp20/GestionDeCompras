@@ -140,7 +140,8 @@
                             android:background="@drawable/bg_icon_badge_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_list"
-                            android:tint="@color/primary_color" />
+                            android:tint="@color/primary_color"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -182,7 +183,8 @@
                             android:background="@drawable/bg_icon_badge_green"
                             android:padding="8dp"
                             android:src="@drawable/ic_credit_card"
-                            android:tint="@color/success_color" />
+                            android:tint="@color/success_color"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -232,7 +234,8 @@
                             android:background="@drawable/bg_icon_badge_red"
                             android:padding="8dp"
                             android:src="@drawable/ic_trending_down"
-                            android:tint="@color/error_color" />
+                            android:tint="@color/error_color"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -274,7 +277,8 @@
                             android:background="@drawable/bg_icon_badge_green"
                             android:padding="8dp"
                             android:src="@drawable/ic_trending_up"
-                            android:tint="@color/dashboard_card_income" />
+                            android:tint="@color/dashboard_card_income"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -318,7 +322,8 @@
                         android:background="@drawable/bg_icon_badge_red"
                         android:padding="9dp"
                         android:src="@drawable/ic_wallet"
-                        android:tint="@color/dashboard_card_overdue" />
+                        android:tint="@color/dashboard_card_overdue"
+                        android:importantForAccessibility="no" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -385,7 +390,8 @@
                             android:background="@drawable/bg_icon_tile"
                             android:padding="9dp"
                             android:src="@drawable/ic_add_circle"
-                            android:tint="@color/accent_gold" />
+                            android:tint="@color/accent_gold"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -421,7 +427,8 @@
                             android:background="@drawable/bg_icon_tile"
                             android:padding="9dp"
                             android:src="@drawable/ic_wallet"
-                            android:tint="@color/accent_gold" />
+                            android:tint="@color/accent_gold"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -466,7 +473,8 @@
                             android:background="@drawable/bg_icon_tile"
                             android:padding="9dp"
                             android:src="@drawable/ic_person_add"
-                            android:tint="@color/accent_gold" />
+                            android:tint="@color/accent_gold"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -502,7 +510,8 @@
                             android:background="@drawable/bg_icon_tile"
                             android:padding="9dp"
                             android:src="@drawable/ic_calendar"
-                            android:tint="@color/accent_gold" />
+                            android:tint="@color/accent_gold"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -558,7 +567,8 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:src="@drawable/ic_list"
-                    android:tint="@color/gray_light" />
+                    android:tint="@color/gray_light"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:id="@+id/tvNoPedidos"

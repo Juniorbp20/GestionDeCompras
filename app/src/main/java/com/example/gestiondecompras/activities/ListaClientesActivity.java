@@ -217,7 +217,7 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
                 if (isGranted) {
                     pickContact();
                 } else {
-                    Toast.makeText(this, "Permiso denegado para leer contactos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.contactos_permiso_denegado, Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -295,11 +295,11 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
                     // nuevoCliente.fechaRegistro = System.currentTimeMillis(); // Field does not exist
 
                     viewModel.insertCliente(nuevoCliente);
-                    Toast.makeText(this, "Contacto importado: " + name, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.contacto_importado, name), Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error al importar contacto", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.contacto_error_importar, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

@@ -475,4 +475,56 @@
     <string name="exportar_csv">Exportar a Excel (CSV)</string>
     <string name="exportar_csv_error">No se pudo generar el archivo CSV</string>
     <string name="exportar_csv_vacio">No hay datos para exportar</string>
+
+    <!-- ===== Accesibilidad ===== -->
+    <string name="a11y_foto_perfil">Foto de perfil</string>
+
+    <!-- ===== Detalle y resumen de pedido ===== -->
+    <string name="sin_dato">N/D</string>
+    <string name="resumen_titulo">*Resumen del pedido*</string>
+    <string name="resumen_total">Total</string>
+    <string name="resumen_estado">Estado</string>
+    <string name="accion_cerrar">Cerrar</string>
+
+    <!-- ===== Textos antes escritos en el código ===== -->
+    <string name="pedido_editar_titulo">Editar pedido #%1$d</string>
+    <string name="pedido_actualizar">Actualizar pedido</string>
+    <string name="pedido_faltan_selecciones">Selecciona cliente, tienda y tarjeta.</string>
+    <string name="pedido_faltan_montos">Completa el monto de compra y la ganancia.</string>
+    <string name="pedido_valores_invalidos">Verifica los valores numéricos.</string>
+    <string name="pedido_supera_limite">El monto de la compra supera el límite de la tarjeta.</string>
+    <string name="pedido_actualizado">Pedido actualizado</string>
+    <string name="pedido_guardado">Pedido guardado</string>
+    <string name="contactos_permiso_denegado">Permiso denegado para leer contactos</string>
+    <string name="contacto_importado">Contacto importado: %1$s</string>
+    <string name="contacto_error_importar">Error al importar el contacto</string>
+    <string name="tarjeta_deuda_actual_formato">Deuda actual: RD$ %1$,.2f</string>
+    <string name="notif_permiso_concedido">Permiso de notificaciones concedido</string>
+    <string name="notif_permiso_rechazado">No se podrán mostrar notificaciones de recordatorio</string>
+    <string name="error_autenticacion">Error de autenticación: %1$s</string>
+    <string name="ganancias_por_cliente">Ganancias por cliente</string>
+    <string name="google_login_cancelado">Inicio de sesión cancelado</string>
+    <string name="google_error">Error de Google: %1$d</string>
+    <string name="google_login_fallido">Inicio de sesión cancelado o fallido</string>
+    <string name="version_formato">Versión %1$s</string>
+    <string name="version_desconocida">Versión desconocida</string>
+    <string name="google_sesion_cerrada">Sesión de Google cerrada</string>
+    <string name="google_cerrar_sesion">Cerrar sesión de Google</string>
+    <string name="google_iniciar_sesion">Iniciar sesión</string>
+    <string name="respaldo_sin_archivo">Error: el archivo de datos no existe</string>
+    <string name="respaldo_subiendo">Subiendo a Drive…</string>
+    <string name="respaldo_subido">Copia subida con éxito</string>
+    <string name="respaldo_error_preparar">Error al preparar el respaldo: %1$s</string>
+    <string name="respaldo_descargando">Descargando de Drive…</string>
+    <string name="respaldo_restaurado">Restauración exitosa. Reiniciando…</string>
+    <string name="reset_confirm_titulo">Confirmar reinicio</string>
+    <string name="reset_confirm_pregunta">¿Estás seguro de que deseas borrar todos los datos?</string>
+    <string name="reset_borrar_todo">Borrar todo</string>
+    <string name="reset_datos_borrados">Datos borrados</string>
+    <string name="calendario_hoy">Hoy: %1$s</string>
+    <string name="error_detalle">Error: %1$s</string>
+    <plurals name="clientes_cantidad_pedidos">
+        <item quantity="one">%d pedido</item>
+        <item quantity="other">%d pedidos</item>
+    </plurals>
 </resources>

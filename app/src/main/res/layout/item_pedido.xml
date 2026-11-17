@@ -74,7 +74,7 @@
                     android:id="@+id/tvEstado"
                     style="@style/Widget.Material3.Chip.Assist"
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
+                    android:layout_height="wrap_content"
                     android:textAllCaps="false"
                     android:textAppearance="@style/TextAppearance.App.LabelMedium"
                     android:textColor="@color/status_pending"
@@ -82,7 +82,6 @@
                     app:chipCornerRadius="50dp"
                     app:chipMinHeight="28dp"
                     app:chipStrokeColor="@android:color/transparent"
-                    app:ensureMinTouchTargetSize="false"
                     tools:text="Pendiente" />
 
                 <ImageButton
