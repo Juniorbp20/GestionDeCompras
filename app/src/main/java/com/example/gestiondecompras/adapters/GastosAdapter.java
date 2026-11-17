@@ -84,6 +84,15 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.ViewHolder
             }
             return true;
         });
+        View btnMas = holder.itemView.findViewById(R.id.btnMas);
+        if (btnMas != null) {
+            btnMas.setVisibility(listener != null ? View.VISIBLE : View.GONE);
+            btnMas.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onGastoLongClick(gasto);
+                }
+            });
+        }
     }
 
     @Override

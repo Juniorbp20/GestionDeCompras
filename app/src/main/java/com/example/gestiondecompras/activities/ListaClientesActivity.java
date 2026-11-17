@@ -17,6 +17,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.gestiondecompras.R;
+import com.example.gestiondecompras.utils.ContactoUtils;
+import com.example.gestiondecompras.utils.HojaAcciones;
+import com.example.gestiondecompras.utils.NavegacionInferior;
 import com.example.gestiondecompras.models.Cliente;
 import com.example.gestiondecompras.adapters.ClientesAdapter;
 import com.example.gestiondecompras.databinding.ActivityListaClientesBinding;
@@ -48,14 +51,17 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
         viewModel = new ViewModelProvider(this).get(ListaClientesViewModel.class);
 
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        binding.toolbar.setNavigationOnClickListener(v -> finish());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        binding.toolbar.setNavigationIcon(null);
         binding.toolbar.setTitle(R.string.clientes_title);
 
         setupRecyclerView();
         setupFilters();
         setupFab();
         observeViewModel();
+
+        NavegacionInferior.configurar(this, binding.bottomNav, R.id.tab_clientes,
+                () -> binding.rvClientes.smoothScrollToPosition(0));
     }
 
     @Override
@@ -95,14 +101,13 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
 
     private void showFabMenu(View v) {
         androidx.appcompat.widget.PopupMenu popup = new androidx.appcompat.widget.PopupMenu(this, v);
-        popup.getMenu().add(0, 1, 0, getString(R.string.nuevo_cliente_title)); 
-        popup.getMenu().add(0, 2, 1, getString(R.string.action_import_contact));
+        popup.getMenuInflater().inflate(R.menu.menu_fab_clientes, popup.getMenu());
 
         popup.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == 1) {
+            if (item.getItemId() == R.id.accion_nuevo_cliente) {
                 startActivity(new Intent(this, NuevoClienteActivity.class));
                 return true;
-            } else if (item.getItemId() == 2) {
+            } else if (item.getItemId() == R.id.accion_importar_contacto) {
                 checkPermissionAndPick();
                 return true;
             }
@@ -154,22 +159,47 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
 
     @Override
     public void onClienteLongClick(Cliente cliente) {
-        CharSequence[] opciones = {
-                getString(R.string.clientes_ver_pedidos),
-                getString(R.string.accion_eliminar)
-        };
+        String nombreCompleto = cliente.nombre
+                + (cliente.apellido != null && !cliente.apellido.isEmpty() ? " " + cliente.apellido : "");
+        boolean tieneTelefono = cliente.telefono != null && !cliente.telefono.trim().isEmpty();
 
-        new AlertDialog.Builder(this)
-                .setTitle(cliente.nombre)
-                .setItems(opciones, (dialog, which) -> {
-                    if (which == 0) {
-                        onClienteClick(cliente);
-                    } else if (which == 1) {
-                        confirmarEliminarCliente(cliente);
-                    }
-                })
-                .setNegativeButton(R.string.accion_cancelar, null)
-                .show();
+        HojaAcciones hoja = HojaAcciones.de(this, nombreCompleto)
+                .subtitulo(tieneTelefono ? cliente.telefono : cliente.email)
+                .accion(R.drawable.ic_list, R.string.clientes_ver_pedidos, () -> onClienteClick(cliente))
+                .accion(R.drawable.ic_edit, R.string.accion_editar, () -> {
+                    Intent intent = new Intent(this, NuevoClienteActivity.class);
+                    intent.putExtra(NuevoClienteActivity.EXTRA_CLIENTE_ID, cliente.id);
+                    startActivity(intent);
+                });
+        if (tieneTelefono) {
+            hoja.accion(R.drawable.ic_phone, R.string.accion_llamar, () -> llamar(cliente.telefono))
+                .accion(R.drawable.ic_chat, R.string.accion_whatsapp, () -> abrirWhatsApp(cliente.telefono));
+        }
+        hoja.peligrosa(R.drawable.ic_delete, R.string.accion_eliminar, () -> confirmarEliminarCliente(cliente))
+            .mostrar();
+    }
+
+    private void llamar(String telefono) {
+        Intent intent = new Intent(Intent.ACTION_DIAL,
+                android.net.Uri.parse("tel:" + ContactoUtils.numeroParaLlamar(telefono)));
+        abrirSiEsPosible(intent);
+    }
+
+    private void abrirWhatsApp(String telefono) {
+        String numero = ContactoUtils.numeroWhatsApp(telefono);
+        if (numero.isEmpty()) {
+            Toast.makeText(this, R.string.no_app_disponible, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        abrirSiEsPosible(new Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://wa.me/" + numero)));
+    }
+
+    private void abrirSiEsPosible(Intent intent) {
+        try {
+            startActivity(intent);
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.no_app_disponible, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void confirmarEliminarCliente(Cliente cliente) {

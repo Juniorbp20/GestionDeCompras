@@ -63,6 +63,17 @@
             android:textColor="@color/error_color"
             android:textSize="15sp"
             tools:text="RD$ 1,200.00" />
+
+        <ImageButton
+            android:id="@+id/btnMas"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="-8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/acciones_mas_opciones"
+            android:padding="8dp"
+            android:src="@drawable/ic_more_vert"
+            app:tint="@color/gray" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

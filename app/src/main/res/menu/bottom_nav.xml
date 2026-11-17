@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Navegación principal de la app (barra inferior) -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_inicio"
+        android:icon="@drawable/ic_home"
+        android:title="@string/tab_inicio" />
+    <item
+        android:id="@+id/tab_pedidos"
+        android:icon="@drawable/ic_list"
+        android:title="@string/tab_pedidos" />
+    <item
+        android:id="@+id/tab_clientes"
+        android:icon="@drawable/ic_people"
+        android:title="@string/tab_clientes" />
+    <item
+        android:id="@+id/tab_finanzas"
+        android:icon="@drawable/ic_wallet"
+        android:title="@string/tab_finanzas" />
+    <item
+        android:id="@+id/tab_mas"
+        android:icon="@drawable/ic_more_horiz"
+        android:title="@string/tab_mas" />
+</menu>

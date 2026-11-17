@@ -4,6 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.gestiondecompras.database.AppDatabase;
 import com.example.gestiondecompras.models.Cliente;
@@ -15,6 +17,7 @@ public class NuevoClienteViewModel extends AndroidViewModel {
 
     private final AppDatabase db;
     private final ExecutorService executorService;
+    private final MutableLiveData<Cliente> clienteEdicion = new MutableLiveData<>();
 
     public NuevoClienteViewModel(@NonNull Application application) {
         super(application);
@@ -22,9 +25,23 @@ public class NuevoClienteViewModel extends AndroidViewModel {
         executorService = Executors.newSingleThreadExecutor();
     }
 
+    public LiveData<Cliente> getClienteEdicion() {
+        return clienteEdicion;
+    }
+
+    /** Carga el cliente que se va a editar. */
+    public void cargarCliente(long id) {
+        executorService.execute(() -> clienteEdicion.postValue(db.clienteDao().getClienteById(id)));
+    }
+
+    /** Inserta un cliente nuevo o actualiza uno existente (id &gt; 0). */
     public void saveCliente(Cliente cliente) {
         executorService.execute(() -> {
-            db.clienteDao().insert(cliente);
+            if (cliente.id > 0) {
+                db.clienteDao().update(cliente);
+            } else {
+                db.clienteDao().insert(cliente);
+            }
         });
     }
 

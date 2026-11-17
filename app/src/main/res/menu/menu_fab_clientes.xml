@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/accion_nuevo_cliente"
+        android:icon="@drawable/ic_person_add"
+        android:title="@string/nuevo_cliente_title" />
+    <item
+        android:id="@+id/accion_importar_contacto"
+        android:icon="@drawable/ic_contacts"
+        android:title="@string/action_import_contact" />
+</menu>
