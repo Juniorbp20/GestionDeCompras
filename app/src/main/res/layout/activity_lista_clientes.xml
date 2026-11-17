@@ -42,9 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/clientes_filter_title"
-                    android:textColor="@color/primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.App.Overline" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.App.TextInputLayout.Dense"

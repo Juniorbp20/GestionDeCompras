@@ -23,6 +23,9 @@
     <color name="hero_text_secondary">#B8C2DC</color>
     <color name="hero_chip_bg">#33E2C26A</color>
     <color name="card_usage_alert">#FF7A6B</color>
+    <color name="hero_positive">#7FE0B0</color>
+    <color name="hero_negative">#FF8A7A</color>
+    <color name="hero_divider">#26FFFFFF</color>
 
     <!-- Colores base (nombres históricos) -->
     <color name="primary_color">#14213D</color>

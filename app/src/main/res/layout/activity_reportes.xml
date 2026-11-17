@@ -49,9 +49,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/reportes_filter_title"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/TextAppearance.App.Overline" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.App.TextInputLayout.Dense"
@@ -119,182 +117,142 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- RESUMEN -->
-            <LinearLayout
+            <!-- RESUMEN: total de ventas destacado sobre degradado marino -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardIngresos"
+                style="@style/Widget.App.CardView.Hero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                app:cardElevation="6dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardIngresos"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1">
+                    android:background="@drawable/bg_hero_navy"
+                    android:orientation="vertical"
+                    android:padding="22dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reportes_total_ventas"
+                        android:textAppearance="@style/TextAppearance.App.Overline"
+                        android:textColor="@color/hero_text_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvTotalVentas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="@style/TextAppearance.App.DisplaySmall"
+                        android:textColor="@color/hero_text"
+                        tools:text="RD$ 18,900.00" />
+
+                    <View
+                        android:layout_width="32dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_gold_line" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:layout_marginTop="16dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_badge_green"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_credit_card"
-                            android:tint="@color/success_color" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="@string/reportes_total_cobrado"
-                            android:textColor="@color/gray"
-                            android:textSize="13sp" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tvTotalCobrado"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/reportes_total_cobrado"
+                                android:textAppearance="@style/TextAppearance.App.Overline"
+                                android:textColor="@color/hero_text_secondary"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tvTotalCobrado"
+                                android:layout_width="match_parent"
+                                android:layout_height="22dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="6dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:fontFeatureSettings="tnum"
+                                android:maxLines="1"
+                                app:autoSizeMaxTextSize="15sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform"
+                                android:textColor="@color/hero_positive"
+                                tools:text="RD$ 12,500.00" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:textColor="@color/gray_dark"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            tools:text="RD$ 12,500.00" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/reportes_total_pendiente"
+                                android:textAppearance="@style/TextAppearance.App.Overline"
+                                android:textColor="@color/hero_text_secondary"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tvTotalPendiente"
+                                android:layout_width="match_parent"
+                                android:layout_height="22dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="6dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:fontFeatureSettings="tnum"
+                                android:maxLines="1"
+                                app:autoSizeMaxTextSize="15sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform"
+                                android:textColor="@color/gold_300"
+                                tools:text="RD$ 8,300.00" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/reportes_total_ganancia"
+                                android:textAppearance="@style/TextAppearance.App.Overline"
+                                android:textColor="@color/hero_text_secondary"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tvTotalGanancia"
+                                android:layout_width="match_parent"
+                                android:layout_height="22dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="6dp"
+                                android:fontFamily="@font/inter_bold"
+                                android:fontFeatureSettings="tnum"
+                                android:maxLines="1"
+                                app:autoSizeMaxTextSize="15sp"
+                                app:autoSizeMinTextSize="10sp"
+                                app:autoSizeTextType="uniform"
+                                android:textColor="@color/hero_text"
+                                tools:text="RD$ 9,100.00" />
+                        </LinearLayout>
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_badge_blue"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_list"
-                            android:tint="@color/primary_color" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="@string/reportes_total_pendiente"
-                            android:textColor="@color/gray"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:id="@+id/tvTotalPendiente"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:textColor="@color/gray_dark"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            tools:text="RD$ 8,300.00" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_badge_red"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_trending_up"
-                            android:tint="@color/warning_color" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="@string/reportes_total_ventas"
-                            android:textColor="@color/gray"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:id="@+id/tvTotalVentas"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:textColor="@color/gray_dark"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            tools:text="RD$ 18,900.00" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icon_badge_green"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_add_circle"
-                            android:tint="@color/dashboard_card_income" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="@string/reportes_total_ganancia"
-                            android:textColor="@color/gray"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:id="@+id/tvTotalGanancia"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:textColor="@color/gray_dark"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            tools:text="RD$ 9,100.00" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/tvSeccionPedidos"
@@ -302,9 +260,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="@string/reportes_por_pagar_title"
-                android:textColor="@color/gray_dark"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.App.SectionTitle" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvReportePedidos"
@@ -331,9 +287,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="@string/reportes_pagados_title"
-                android:textColor="@color/gray_dark"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.App.SectionTitle" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPagados"
@@ -357,12 +311,11 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnExportPagados"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                style="@style/Widget.App.Button.Gold"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/reportes_export_pdf"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 app:icon="@drawable/ic_export"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp" />

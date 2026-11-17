@@ -8,15 +8,16 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="14dp">
+    app:cardCornerRadius="50dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="8dp">
+        android:paddingStart="8dp"
+        android:paddingEnd="14dp"
+        android:paddingVertical="7dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivCategoriaChip"
@@ -36,9 +37,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
+                android:fontFamily="@font/inter_semibold"
                 android:textColor="@color/gray_dark"
-                android:textSize="11sp"
-                android:textStyle="bold"
+                android:textSize="12sp"
                 tools:text="Comida" />
 
             <TextView
@@ -47,8 +48,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:maxLines="1"
+                android:fontFeatureSettings="tnum"
                 android:textColor="@color/gray"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 tools:text="RD$ 1,250.00" />
         </LinearLayout>
     </LinearLayout>

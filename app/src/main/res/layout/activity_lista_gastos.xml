@@ -30,212 +30,229 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="0dp">
 
+                <!-- Resumen del periodo sobre degradado marino -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageButton
-                        android:id="@+id/btnMesAnterior"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/finanzas_mes_anterior"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_chevron_left"
-                        android:tint="@color/gray_dark" />
-
-                    <TextView
-                        android:id="@+id/tvMesActual"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="Noviembre 2026" />
-
-                    <ImageButton
-                        android:id="@+id/btnMesSiguiente"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/finanzas_mes_siguiente"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/gray_dark" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/finanzas_ingresos"
-                        android:textColor="@color/gray"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/tvIngresosMes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="RD$ 0.00"
-                        android:textColor="@color/success_color"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="RD$ 8,500.00" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/finanzas_gastos"
-                        android:textColor="@color/gray"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/tvTotalMes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="RD$ 0.00"
-                        android:textColor="@color/error_color"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="RD$ 3,200.00" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvVariacionGastos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="end"
-                    android:textColor="@color/gray"
-                    android:textSize="11sp"
-                    android:visibility="gone"
-                    tools:text="12.5% menos que el periodo anterior"
-                    tools:visibility="visible" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/card_stroke" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/finanzas_balance"
-                        android:textColor="@color/gray_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvBalanceMes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="RD$ 0.00"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        tools:text="RD$ 5,300.00" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvCantidadMes"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/gastos_cantidad_placeholder"
-                        android:textColor="@color/gray"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tvPromedioDiario"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gray"
-                        android:textSize="12sp"
-                        android:visibility="gone"
-                        tools:text="Promedio diario: RD$ 450.00"
-                        tools:visibility="visible" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvCategoriasTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="@string/finanzas_categorias_title"
-                    android:textColor="@color/primary_dark"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-                <HorizontalScrollView
-                    android:id="@+id/scrollCategorias"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:overScrollMode="never"
-                    android:scrollbars="none"
-                    android:visibility="gone"
-                    tools:visibility="visible">
+                    android:background="@drawable/bg_hero_navy_flat"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="18dp">
 
                     <LinearLayout
-                        android:id="@+id/layoutCategorias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/btnMesAnterior"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/finanzas_mes_anterior"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_chevron_left"
+                            android:tint="@color/hero_text" />
+
+                        <TextView
+                            android:id="@+id/tvMesActual"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                            android:textColor="@color/hero_text"
+                            tools:text="Noviembre 2026" />
+
+                        <ImageButton
+                            android:id="@+id/btnMesSiguiente"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/finanzas_mes_siguiente"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_chevron_right"
+                            android:tint="@color/hero_text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/finanzas_ingresos"
+                            android:textAppearance="@style/TextAppearance.App.Overline"
+                            android:textColor="@color/hero_text_secondary" />
+
+                        <TextView
+                            android:id="@+id/tvIngresosMes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="RD$ 0.00"
+                            android:textAppearance="@style/TextAppearance.App.Amount"
+                            android:textColor="@color/hero_positive"
+                            android:textSize="16sp"
+                            tools:text="RD$ 8,500.00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/finanzas_gastos"
+                            android:textAppearance="@style/TextAppearance.App.Overline"
+                            android:textColor="@color/hero_text_secondary" />
+
+                        <TextView
+                            android:id="@+id/tvTotalMes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="RD$ 0.00"
+                            android:textAppearance="@style/TextAppearance.App.Amount"
+                            android:textColor="@color/hero_negative"
+                            android:textSize="16sp"
+                            tools:text="RD$ 3,200.00" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvVariacionGastos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="end"
+                        android:textColor="@color/hero_text_secondary"
+                        android:textSize="11sp"
+                        android:visibility="gone"
+                        tools:text="12.5% menos que el periodo anterior"
+                        tools:visibility="visible" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/hero_divider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/finanzas_balance"
+                            android:textAppearance="@style/TextAppearance.App.TitleSmall"
+                            android:textColor="@color/hero_text" />
+
+                        <TextView
+                            android:id="@+id/tvBalanceMes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="RD$ 0.00"
+                            android:textAppearance="@style/TextAppearance.App.Amount"
+                            android:textColor="@color/hero_text"
+                            android:textSize="24sp"
+                            tools:text="RD$ 5,300.00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvCantidadMes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/gastos_cantidad_placeholder"
+                            android:textColor="@color/hero_text_secondary"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tvPromedioDiario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/hero_text_secondary"
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            tools:text="Promedio diario: RD$ 450.00"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingBottom="14dp">
+
+                    <TextView
+                        android:id="@+id/tvCategoriasTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" />
-                </HorizontalScrollView>
+                        android:layout_marginTop="2dp"
+                        android:text="@string/finanzas_categorias_title"
+                        android:textAppearance="@style/TextAppearance.App.Overline"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
-                <TextView
-                    android:id="@+id/tvCategoriasHint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/finanzas_categorias_hint"
-                    android:textColor="@color/gray"
-                    android:textSize="10sp"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
+                    <HorizontalScrollView
+                        android:id="@+id/scrollCategorias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:id="@+id/layoutCategorias"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" />
+                    </HorizontalScrollView>
+
+                    <TextView
+                        android:id="@+id/tvCategoriasHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/finanzas_categorias_hint"
+                        android:textColor="@color/gray"
+                        android:textSize="10sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -261,9 +278,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/gastos_filter_title"
-                        android:textColor="@color/primary_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/TextAppearance.App.Overline" />
 
                     <TextView
                         android:id="@+id/btnLimpiarFiltros"
@@ -272,7 +287,8 @@
                         android:background="?attr/selectableItemBackground"
                         android:padding="6dp"
                         android:text="@string/finanzas_limpiar"
-                        android:textColor="@color/primary_color"
+                        android:textColor="@color/accent_gold"
+                        android:fontFamily="@font/inter_semibold"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -324,7 +340,8 @@
                         android:background="?attr/selectableItemBackground"
                         android:padding="8dp"
                         android:text="@string/finanzas_rango_fechas"
-                        android:textColor="@color/primary_color"
+                        android:textColor="@color/accent_gold"
+                        android:fontFamily="@font/inter_semibold"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
