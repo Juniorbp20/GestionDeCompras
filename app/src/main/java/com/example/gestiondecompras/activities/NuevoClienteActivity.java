@@ -16,6 +16,8 @@ import com.example.gestiondecompras.viewmodels.NuevoClienteViewModel;
 public class NuevoClienteActivity extends AppCompatActivity {
 
     public static final String EXTRA_CLIENTE_ID = "extra_cliente_id";
+    /** Id del cliente guardado, devuelto en el resultado de la pantalla. */
+    public static final String EXTRA_ID_GUARDADO = "extra_cliente_id_guardado";
 
     private ActivityNuevoClienteBinding binding;
     private NuevoClienteViewModel viewModel;
@@ -80,10 +82,16 @@ public class NuevoClienteActivity extends AppCompatActivity {
         cliente.direccion = binding.etDireccion.getText().toString().trim();
         cliente.activo = binding.cbActivo.isChecked();
 
-        viewModel.saveCliente(cliente);
-
-        Toast.makeText(this, clienteEdicion != null ? R.string.cliente_actualizado : R.string.cliente_guardado,
-                Toast.LENGTH_SHORT).show();
-        finish();
+        binding.btnGuardar.setEnabled(false);
+        boolean esEdicion = clienteEdicion != null;
+        androidx.lifecycle.MutableLiveData<Long> idGuardado = new androidx.lifecycle.MutableLiveData<>();
+        idGuardado.observe(this, id -> {
+            // Se devuelve el id para que la pantalla anterior (p. ej. Nuevo pedido) lo seleccione solo
+            setResult(RESULT_OK, new android.content.Intent().putExtra(EXTRA_ID_GUARDADO, id));
+            Toast.makeText(this, esEdicion ? R.string.cliente_actualizado : R.string.cliente_guardado,
+                    Toast.LENGTH_SHORT).show();
+            finish();
+        });
+        viewModel.saveCliente(cliente, idGuardado);
     }
 }

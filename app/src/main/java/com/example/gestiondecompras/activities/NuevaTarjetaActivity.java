@@ -19,6 +19,8 @@ import com.google.android.material.textfield.TextInputEditText;
 public class NuevaTarjetaActivity extends AppCompatActivity {
 
     public static final String EXTRA_TARJETA_ID = "extra_tarjeta_id";
+    /** Id de la tarjeta guardada, devuelto en el resultado de la pantalla. */
+    public static final String EXTRA_ID_GUARDADO = "extra_tarjeta_id_guardado";
     public static final String EXTRA_TARJETA_BANCO = "extra_tarjeta_banco";
     public static final String EXTRA_TARJETA_ALIAS = "extra_tarjeta_alias";
     public static final String EXTRA_TARJETA_LIMITE = "extra_tarjeta_limite";
@@ -203,10 +205,15 @@ public class NuevaTarjetaActivity extends AppCompatActivity {
         tarjeta.setNotas(notas);
         tarjeta.setDeudaActual(deudaOriginal);
 
-        viewModel.saveTarjeta(tarjeta);
-
-        Toast.makeText(this, R.string.toast_tarjeta_guardada, Toast.LENGTH_SHORT).show();
-        finish();
+        binding.btnGuardar.setEnabled(false);
+        androidx.lifecycle.MutableLiveData<Long> idGuardado = new androidx.lifecycle.MutableLiveData<>();
+        idGuardado.observe(this, id -> {
+            // Se devuelve el id para que la pantalla anterior (p. ej. Nuevo pedido) la seleccione sola
+            setResult(RESULT_OK, new android.content.Intent().putExtra(EXTRA_ID_GUARDADO, id));
+            Toast.makeText(this, R.string.toast_tarjeta_guardada, Toast.LENGTH_SHORT).show();
+            finish();
+        });
+        viewModel.saveTarjeta(tarjeta, idGuardado);
     }
     
     private boolean isValidDate(String date) {

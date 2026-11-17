@@ -697,4 +697,38 @@
     <string name="fin_rep_pdf_error">No se pudo generar el PDF</string>
     <string name="fin_rep_pdf_generado">Generado el %1$s</string>
     <string name="fin_rep_rango">%1$s – %2$s</string>
+
+    <!-- ===== Formulario de pedido ===== -->
+    <string name="pedido_ganancia">Ganancia</string>
+    <string name="pedido_ganancia_en">La ganancia es</string>
+    <string name="pedido_ganancia_pesos">RD$</string>
+    <string name="pedido_ganancia_porciento">%</string>
+    <string name="pedido_pagado">Pagado</string>
+    <string name="pedido_fecha_compra_corta">Compra</string>
+    <string name="pedido_fecha_entrega_corta">Entrega</string>
+    <string name="pedido_notas_hint">Notas del pedido (opcional)</string>
+    <string name="pedido_total">Total</string>
+    <string name="pedido_total_monto">RD$ %1$,.2f</string>
+    <string name="pedido_elige_cliente">Elige un cliente</string>
+    <string name="pedido_elige_tienda">Elige una tienda</string>
+    <string name="pedido_elige_tarjeta">Elige una tarjeta</string>
+    <string name="pedido_monto_requerido">Escribe el monto</string>
+    <string name="pedido_ganancia_requerida">Escribe la ganancia</string>
+    <string name="opcion_nuevo_cliente">+ Nuevo cliente</string>
+    <string name="opcion_nueva_tienda">+ Añadir tienda</string>
+    <string name="opcion_nueva_tarjeta">+ Nueva tarjeta</string>
+    <string name="tienda_nueva_titulo">Nueva tienda</string>
+    <string name="tienda_nombre">Nombre de la tienda</string>
+    <string name="tienda_agregada">Tienda "%1$s" añadida</string>
+    <string name="detalle_notas">Notas</string>
+    <string name="cliente_seccion_datos">Datos</string>
+    <string name="cliente_seccion_contacto">Contacto</string>
+    <string name="cliente_activo_largo">Cliente activo</string>
+    <string name="tarjeta_seccion_datos">Tarjeta</string>
+    <string name="tarjeta_seccion_fechas">Fechas de la tarjeta</string>
+    <string name="tarjeta_corte_corto">Corte</string>
+    <string name="tarjeta_pago_corto">Pago</string>
+    <string name="tarjeta_vence_corto">Vence</string>
+    <string name="tarjeta_fechas_ayuda">Corte y pago: día del mes (1-31). Vence: MM/AA.</string>
+    <string name="tarjeta_notas_hint">Notas (opcional)</string>
 </resources>

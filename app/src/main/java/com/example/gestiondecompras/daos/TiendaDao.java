@@ -21,6 +21,9 @@ public interface TiendaDao {
     @Delete
     int delete(Tienda tienda);
 
-    @Query("SELECT * FROM tiendas")
+    @Query("SELECT * FROM tiendas ORDER BY nombre COLLATE NOCASE")
     List<Tienda> getAllTiendas();
+
+    @Query("SELECT * FROM tiendas WHERE TRIM(LOWER(nombre)) = TRIM(LOWER(:nombre)) LIMIT 1")
+    Tienda buscarPorNombre(String nombre);
 }

@@ -1,7 +1,6 @@
 package com.example.gestiondecompras.activities;
 
 import com.example.gestiondecompras.utils.Dinero;
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +8,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gestiondecompras.R;
@@ -24,7 +30,13 @@ import com.example.gestiondecompras.models.Tarjeta;
 import com.example.gestiondecompras.models.Tienda;
 import com.example.gestiondecompras.viewmodels.NuevoPedidoViewModel;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -41,7 +53,38 @@ public class NuevoPedidoActivity extends AppCompatActivity {
     private Cliente selectedCliente;
     private Tienda selectedTienda;
     private Tarjeta selectedTarjeta;
-    
+    private boolean fechaEntregaElegida = false;
+
+    /** Ids que deben seleccionarse en cuanto llegue (o se recargue) la lista correspondiente. */
+    private Long clientePendiente;
+    private Long tiendaPendiente;
+    private Long tarjetaPendiente;
+
+    /** Opción "+ Añadir…" que se muestra al final de cada desplegable. */
+    private static final class OpcionNueva {
+        private final String texto;
+        OpcionNueva(String texto) { this.texto = texto; }
+        @NonNull @Override public String toString() { return texto; }
+    }
+
+    private final ActivityResultLauncher<Intent> lanzadorCliente = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), resultado -> {
+                if (resultado.getResultCode() == RESULT_OK && resultado.getData() != null) {
+                    long id = resultado.getData().getLongExtra(NuevoClienteActivity.EXTRA_ID_GUARDADO, 0);
+                    if (id > 0) clientePendiente = id;
+                }
+                viewModel.recargarListas();
+            });
+
+    private final ActivityResultLauncher<Intent> lanzadorTarjeta = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), resultado -> {
+                if (resultado.getResultCode() == RESULT_OK && resultado.getData() != null) {
+                    long id = resultado.getData().getLongExtra(NuevaTarjetaActivity.EXTRA_ID_GUARDADO, 0);
+                    if (id > 0) tarjetaPendiente = id;
+                }
+                viewModel.recargarListas();
+            });
+
     private final TextWatcher totalWatcher = new TextWatcher() {
         @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -62,12 +105,14 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         setupSaveButton();
         setupInputWatchers();
         updateTotalGeneral();
-        
+
         if (getIntent().hasExtra("pedido_id")) {
-             pedidoIdEdicion = getIntent().getLongExtra("pedido_id", 0);
-             if (pedidoIdEdicion > 0) {
-                 loadPedidoData(pedidoIdEdicion);
-             }
+            pedidoIdEdicion = getIntent().getLongExtra("pedido_id", 0);
+        }
+        if (pedidoIdEdicion > 0) {
+            loadPedidoData(pedidoIdEdicion);
+        } else {
+            binding.etFechaRegistro.setText(formatoFecha(fechaRegistro));
         }
     }
 
@@ -79,49 +124,155 @@ public class NuevoPedidoActivity extends AppCompatActivity {
 
     private void setupSpinners() {
         viewModel.getClientes().observe(this, clientes -> {
-            if (clientes != null) {
-                ArrayAdapter<Cliente> adapter = new ArrayAdapter<>(this, R.layout.item_dropdown, clientes);
-                binding.spinnerCliente.setAdapter(adapter);
+            if (clientes == null) return;
+            asignarLista(binding.spinnerCliente, clientes, getString(R.string.opcion_nuevo_cliente));
+            Long id = clientePendiente != null ? clientePendiente : (selectedCliente != null ? selectedCliente.id : null);
+            clientePendiente = null;
+            selectedCliente = null;
+            for (Cliente c : clientes) {
+                if (id != null && c.id == id) {
+                    selectedCliente = c;
+                    binding.tilCliente.setError(null);
+                }
             }
+            binding.spinnerCliente.setText(selectedCliente != null ? selectedCliente.toString() : "", false);
         });
 
         viewModel.getTiendas().observe(this, tiendas -> {
-            if (tiendas != null) {
-                ArrayAdapter<Tienda> adapter = new ArrayAdapter<>(this, R.layout.item_dropdown, tiendas);
-                binding.spinnerTienda.setAdapter(adapter);
+            if (tiendas == null) return;
+            asignarLista(binding.spinnerTienda, tiendas, getString(R.string.opcion_nueva_tienda));
+            Long id = tiendaPendiente != null ? tiendaPendiente : (selectedTienda != null ? selectedTienda.id : null);
+            tiendaPendiente = null;
+            selectedTienda = null;
+            for (Tienda t : tiendas) {
+                if (id != null && t.id == id) {
+                    selectedTienda = t;
+                    binding.tilTienda.setError(null);
+                }
             }
+            binding.spinnerTienda.setText(selectedTienda != null ? selectedTienda.toString() : "", false);
         });
 
         viewModel.getTarjetas().observe(this, tarjetas -> {
-            if (tarjetas != null) {
-                ArrayAdapter<Tarjeta> adapter = new ArrayAdapter<>(this, R.layout.item_dropdown, tarjetas);
-                binding.spinnerTarjeta.setAdapter(adapter);
+            if (tarjetas == null) return;
+            asignarLista(binding.spinnerTarjeta, tarjetas, getString(R.string.opcion_nueva_tarjeta));
+            Long id = tarjetaPendiente != null ? tarjetaPendiente : (selectedTarjeta != null ? selectedTarjeta.id : null);
+            tarjetaPendiente = null;
+            selectedTarjeta = null;
+            for (Tarjeta t : tarjetas) {
+                if (id != null && t.id == id) {
+                    selectedTarjeta = t;
+                    binding.tilTarjeta.setError(null);
+                }
+            }
+            binding.spinnerTarjeta.setText(selectedTarjeta != null ? selectedTarjeta.toString() : "", false);
+        });
+
+        binding.spinnerCliente.setOnItemClickListener((parent, view, position, id) -> {
+            Object item = parent.getItemAtPosition(position);
+            if (item instanceof OpcionNueva) {
+                binding.spinnerCliente.setText(selectedCliente != null ? selectedCliente.toString() : "", false);
+                abrirNuevoCliente();
+            } else {
+                selectedCliente = (Cliente) item;
+                binding.tilCliente.setError(null);
+            }
+        });
+        binding.spinnerTienda.setOnItemClickListener((parent, view, position, id) -> {
+            Object item = parent.getItemAtPosition(position);
+            if (item instanceof OpcionNueva) {
+                binding.spinnerTienda.setText(selectedTienda != null ? selectedTienda.toString() : "", false);
+                mostrarDialogoNuevaTienda();
+            } else {
+                selectedTienda = (Tienda) item;
+                binding.tilTienda.setError(null);
+            }
+        });
+        binding.spinnerTarjeta.setOnItemClickListener((parent, view, position, id) -> {
+            Object item = parent.getItemAtPosition(position);
+            if (item instanceof OpcionNueva) {
+                binding.spinnerTarjeta.setText(selectedTarjeta != null ? selectedTarjeta.toString() : "", false);
+                abrirNuevaTarjeta();
+            } else {
+                selectedTarjeta = (Tarjeta) item;
+                binding.tilTarjeta.setError(null);
             }
         });
 
-        binding.spinnerCliente.setOnItemClickListener((parent, view, position, id) ->
-                selectedCliente = (Cliente) parent.getItemAtPosition(position));
-        binding.spinnerTienda.setOnItemClickListener((parent, view, position, id) ->
-                selectedTienda = (Tienda) parent.getItemAtPosition(position));
-        binding.spinnerTarjeta.setOnItemClickListener((parent, view, position, id) ->
-                selectedTarjeta = (Tarjeta) parent.getItemAtPosition(position));
+        binding.btnNuevoCliente.setOnClickListener(v -> abrirNuevoCliente());
+        binding.btnNuevaTarjeta.setOnClickListener(v -> abrirNuevaTarjeta());
+    }
+
+    /** Pone la lista en el desplegable con la opción "+ Añadir…" al final. */
+    private void asignarLista(AutoCompleteTextView campo, List<?> elementos, String textoNuevo) {
+        List<Object> items = new ArrayList<>(elementos);
+        items.add(new OpcionNueva(textoNuevo));
+        campo.setAdapter(new ArrayAdapter<>(this, R.layout.item_dropdown, items));
+    }
+
+    private void abrirNuevoCliente() {
+        lanzadorCliente.launch(new Intent(this, NuevoClienteActivity.class));
+    }
+
+    private void abrirNuevaTarjeta() {
+        lanzadorTarjeta.launch(new Intent(this, NuevaTarjetaActivity.class));
+    }
+
+    private void mostrarDialogoNuevaTienda() {
+        View vista = getLayoutInflater().inflate(R.layout.dialog_nueva_tienda, null);
+        TextInputLayout til = vista.findViewById(R.id.til_nombre_tienda);
+        EditText campo = vista.findViewById(R.id.et_nombre_tienda);
+        AlertDialog dialogo = new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.tienda_nueva_titulo)
+                .setView(vista)
+                .setNegativeButton(R.string.accion_cancelar, null)
+                .setPositiveButton(R.string.guardar, null)
+                .create();
+        dialogo.setOnShowListener(d -> {
+            campo.requestFocus();
+            dialogo.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+                String nombre = campo.getText() != null ? campo.getText().toString().trim() : "";
+                if (nombre.isEmpty()) {
+                    til.setError(getString(R.string.tienda_nombre));
+                    return;
+                }
+                MutableLiveData<Tienda> resultado = new MutableLiveData<>();
+                resultado.observe(this, tienda -> {
+                    if (tienda == null) return;
+                    selectedTienda = tienda;
+                    binding.tilTienda.setError(null);
+                    binding.spinnerTienda.setText(tienda.toString(), false);
+                    Toast.makeText(this, getString(R.string.tienda_agregada, tienda.getNombre()), Toast.LENGTH_SHORT).show();
+                });
+                viewModel.crearTienda(nombre, resultado);
+                dialogo.dismiss();
+            });
+        });
+        if (dialogo.getWindow() != null) {
+            dialogo.getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
+        dialogo.show();
     }
 
     private void setupDatePickers() {
-        binding.btnFechaRegistro.setOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro));
-        binding.btnFechaRegistro.setEndIconOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro));
-        binding.etFechaRegistro.setOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro));
-        binding.btnFechaEntrega.setOnClickListener(v -> showDatePickerDialog(fechaEntrega, binding.etFechaEntrega));
-        binding.btnFechaEntrega.setEndIconOnClickListener(v -> showDatePickerDialog(fechaEntrega, binding.etFechaEntrega));
-        binding.etFechaEntrega.setOnClickListener(v -> showDatePickerDialog(fechaEntrega, binding.etFechaEntrega));
-        binding.btnNuevaTarjeta.setOnClickListener(v -> startActivity(new Intent(this, NuevaTarjetaActivity.class)));
+        binding.btnFechaRegistro.setOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro, false));
+        binding.btnFechaRegistro.setEndIconOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro, false));
+        binding.etFechaRegistro.setOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro, false));
+        binding.btnFechaEntrega.setOnClickListener(v -> showDatePickerDialog(fechaEntrega, binding.etFechaEntrega, true));
+        binding.btnFechaEntrega.setEndIconOnClickListener(v -> showDatePickerDialog(fechaEntrega, binding.etFechaEntrega, true));
+        binding.etFechaEntrega.setOnClickListener(v -> showDatePickerDialog(fechaEntrega, binding.etFechaEntrega, true));
     }
 
-    private void showDatePickerDialog(Calendar calendar, androidx.appcompat.widget.AppCompatEditText field) {
-        @SuppressLint("DefaultLocale") DatePickerDialog dialog = new DatePickerDialog(this,
+    private static String formatoFecha(Calendar calendario) {
+        return new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendario.getTime());
+    }
+
+    private void showDatePickerDialog(Calendar calendar, EditText field, boolean esEntrega) {
+        DatePickerDialog dialog = new DatePickerDialog(this,
                 (datePicker, year, month, day) -> {
                     calendar.set(year, month, day);
-                    field.setText(String.format("%d/%d/%d", day, month + 1, year));
+                    field.setText(formatoFecha(calendar));
+                    if (esEntrega) fechaEntregaElegida = true;
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -139,6 +290,11 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         }
         binding.etMontoCompra.addTextChangedListener(totalWatcher);
         binding.etGanancia.addTextChangedListener(totalWatcher);
+        binding.etAbonoInicial.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void afterTextChanged(Editable s) { binding.tilAbono.setError(null); }
+        });
         binding.rgGanancia.addOnButtonCheckedListener((group, checkedId, isChecked) -> updateTotalGeneral());
         binding.switchPagadoCompleto.setOnCheckedChangeListener((buttonView, isChecked) -> {
             binding.etAbonoInicial.setEnabled(!isChecked);
@@ -156,8 +312,10 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         String gananciaTexto = binding.etGanancia.getText() != null
                 ? binding.etGanancia.getText().toString().trim() : "";
 
+        if (!montoTexto.isEmpty()) binding.tilMonto.setError(null);
+        if (!gananciaTexto.isEmpty()) binding.tilGanancia.setError(null);
         if (montoTexto.isEmpty() || gananciaTexto.isEmpty()) {
-            binding.tvTotalGeneral.setText(getString(R.string.total_general_amount, 0.0));
+            binding.tvTotalGeneral.setText(getString(R.string.pedido_total_monto, 0.0));
             return;
         }
 
@@ -167,16 +325,15 @@ public class NuevoPedidoActivity extends AppCompatActivity {
             boolean isGananciaFija = binding.rbGananciaFija.isChecked();
             double totalGanancia = isGananciaFija ? ganancia : monto * (ganancia / 100);
             double totalGeneral = monto + totalGanancia;
-            binding.tvTotalGeneral.setText(getString(R.string.total_general_amount, totalGeneral));
+            binding.tvTotalGeneral.setText(getString(R.string.pedido_total_monto, totalGeneral));
             if (binding.switchPagadoCompleto.isChecked()) {
                 binding.etAbonoInicial.setText(String.format(Locale.getDefault(), "%.2f", totalGeneral));
             }
         } catch (NumberFormatException ex) {
-            binding.tvTotalGeneral.setText(getString(R.string.total_general_amount, 0.0));
+            binding.tvTotalGeneral.setText(getString(R.string.pedido_total_monto, 0.0));
         }
     }
 
-    @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
     private void loadPedidoData(long id) {
         viewModel.getPedido(id).observe(this, pedido -> {
             if (pedido != null) {
@@ -200,13 +357,18 @@ public class NuevoPedidoActivity extends AppCompatActivity {
                 
                 if (pedido.fechaRegistroEpoch != null) {
                     fechaRegistro.setTimeInMillis(pedido.fechaRegistroEpoch);
-                    binding.etFechaRegistro.setText(new java.text.SimpleDateFormat("dd/MM/yyyy").format(fechaRegistro.getTime()));
+                    binding.etFechaRegistro.setText(formatoFecha(fechaRegistro));
                 }
-                 if (pedido.fechaEntregaEpoch != null) {
+                if (pedido.fechaEntregaEpoch != null) {
                     fechaEntrega.setTimeInMillis(pedido.fechaEntregaEpoch);
-                    binding.etFechaEntrega.setText(new java.text.SimpleDateFormat("dd/MM/yyyy").format(fechaEntrega.getTime()));
+                    binding.etFechaEntrega.setText(formatoFecha(fechaEntrega));
+                    fechaEntregaElegida = true;
                 }
-                
+
+                // Si las listas aún no han llegado, se seleccionan al llegar
+                clientePendiente = pedido.clienteId;
+                tiendaPendiente = pedido.tiendaId;
+                tarjetaPendiente = pedido.tarjetaId;
                 selectDropdownItem(binding.spinnerCliente, pedido.clienteId);
                 selectDropdownItem(binding.spinnerTienda, pedido.tiendaId);
                 selectDropdownItem(binding.spinnerTarjeta, pedido.tarjetaId);
@@ -223,16 +385,19 @@ public class NuevoPedidoActivity extends AppCompatActivity {
              if (item instanceof Cliente && ((Cliente)item).id == id) {
                  field.setText(item.toString(), false);
                  selectedCliente = (Cliente) item;
+                 clientePendiente = null;
                  return;
              }
              if (item instanceof Tienda && ((Tienda)item).id == id) {
                  field.setText(item.toString(), false);
                  selectedTienda = (Tienda) item;
+                 tiendaPendiente = null;
                  return;
              }
              if (item instanceof Tarjeta && ((Tarjeta)item).id == id) {
                  field.setText(item.toString(), false);
                  selectedTarjeta = (Tarjeta) item;
+                 tarjetaPendiente = null;
                  return;
              }
         }
@@ -243,15 +408,20 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         Tienda tienda = selectedTienda;
         Tarjeta tarjeta = selectedTarjeta;
 
-        if (cliente == null || tienda == null || tarjeta == null) {
-            Toast.makeText(this, R.string.pedido_faltan_selecciones, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         String montoTexto = Objects.requireNonNull(binding.etMontoCompra.getText()).toString().trim();
         String gananciaTexto = Objects.requireNonNull(binding.etGanancia.getText()).toString().trim();
-        if (montoTexto.isEmpty() || gananciaTexto.isEmpty()) {
-            Toast.makeText(this, R.string.pedido_faltan_montos, Toast.LENGTH_SHORT).show();
+
+        boolean valido = true;
+        binding.tilCliente.setError(cliente == null ? getString(R.string.pedido_elige_cliente) : null);
+        binding.tilTienda.setError(tienda == null ? getString(R.string.pedido_elige_tienda) : null);
+        binding.tilTarjeta.setError(tarjeta == null ? getString(R.string.pedido_elige_tarjeta) : null);
+        binding.tilMonto.setError(montoTexto.isEmpty() ? getString(R.string.pedido_monto_requerido) : null);
+        binding.tilGanancia.setError(gananciaTexto.isEmpty() ? getString(R.string.pedido_ganancia_requerida) : null);
+        if (cliente == null || tienda == null || tarjeta == null || montoTexto.isEmpty() || gananciaTexto.isEmpty()) {
+            valido = false;
+        }
+        if (!valido) {
+            Toast.makeText(this, R.string.pedido_faltan_selecciones, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -261,7 +431,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
             monto = Dinero.redondear(Double.parseDouble(montoTexto));
             ganancia = Double.parseDouble(gananciaTexto);
         } catch (NumberFormatException ex) {
-            Toast.makeText(this, R.string.pedido_valores_invalidos, Toast.LENGTH_SHORT).show();
+            binding.tilMonto.setError(getString(R.string.pedido_valores_invalidos));
             return;
         }
 
@@ -269,7 +439,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         double diferencia = (pedidoIdEdicion > 0) ? Dinero.restar(monto, originalMonto) : monto;
         if (tarjeta.getLimiteCredito() > 0
                 && Dinero.mayorQue(Dinero.sumar(tarjeta.getDeudaActual(), diferencia), tarjeta.getLimiteCredito())) {
-            Toast.makeText(this, R.string.pedido_supera_limite, Toast.LENGTH_SHORT).show();
+            binding.tilTarjeta.setError(getString(R.string.pedido_supera_limite));
             return;
         }
 
@@ -287,13 +457,13 @@ public class NuevoPedidoActivity extends AppCompatActivity {
                     try {
                         abonoInicial = Dinero.redondear(Double.parseDouble(abonoTexto));
                     } catch (NumberFormatException ex) {
-                        Toast.makeText(this, R.string.abono_monto_invalido, Toast.LENGTH_SHORT).show();
+                        binding.tilAbono.setError(getString(R.string.abono_monto_invalido));
                         return;
                     }
                 }
             }
             if (abonoInicial < 0 || Dinero.mayorQue(abonoInicial, totalGeneral)) {
-                Toast.makeText(this, R.string.abono_excede_total, Toast.LENGTH_SHORT).show();
+                binding.tilAbono.setError(getString(R.string.abono_excede_total));
                 return;
             }
         } else if (Dinero.mayorQue(totalAbonadoOriginal, totalGeneral)) {
@@ -315,8 +485,9 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         pedido.ganancia = totalGanancia;
         pedido.totalGeneral = totalGeneral;
         pedido.fechaRegistroEpoch = fechaRegistro.getTimeInMillis();
-        pedido.fechaEntregaEpoch = fechaEntrega.getTimeInMillis();
-        pedido.notas = Objects.requireNonNull(binding.etNotas.getText()).toString();
+        // Sin fecha de entrega elegida se usa la de compra
+        pedido.fechaEntregaEpoch = fechaEntregaElegida ? fechaEntrega.getTimeInMillis() : fechaRegistro.getTimeInMillis();
+        pedido.notas = Objects.requireNonNull(binding.etNotas.getText()).toString().trim();
 
         if (pedidoIdEdicion > 0) {
             boolean estabaPagado = Pedido.ESTADO_PAGADO.equalsIgnoreCase(estadoOriginal);

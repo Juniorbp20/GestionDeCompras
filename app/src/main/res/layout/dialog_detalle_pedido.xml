@@ -1,291 +1,320 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Detalle de un pedido (Pedidos y Calendario): lista limpia sin tarjetas, con notas si las hay -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="@color/background_card"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pedido_resumen_title"
+            android:textAppearance="@style/TextAppearance.App.Overline" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="16dp"
-            android:text="@string/pedido_resumen_title"
-            android:textColor="@color/gray_dark"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pedido_detalle_cliente"
-                    android:textColor="@color/primary_dark"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_detalle_producto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/inter_bold"
                     android:textColor="@color/gray_dark"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/pedido_detalle_tienda"
-                    android:textColor="@color/primary_dark"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp"
+                    tools:text="María Pérez" />
 
                 <TextView
                     android:id="@+id/tv_detalle_tienda"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/gray_dark"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                    android:textColor="@color/gray"
+                    tools:text="Amazon" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
+            <TextView
+                android:id="@+id/tv_detalle_estado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/bg_chip_estado"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.App.LabelSmall"
+                tools:text="Pendiente" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="18dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:padding="16dp">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:text="@string/pedido_detalle_fecha_compra"
+                    android:textAppearance="@style/TextAppearance.App.Overline" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pedido_detalle_fecha_compra"
-                        android:textColor="@color/gray"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_detalle_fecha_compra"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/gray_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tv_detalle_fecha_compra"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pedido_detalle_fecha_entrega"
-                        android:textColor="@color/gray"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_detalle_fecha_entrega"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/gray_dark"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                    android:layout_marginTop="2dp"
+                    android:fontFeatureSettings="tnum"
+                    android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                    android:textColor="@color/gray_dark" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pedido_detalle_fecha_entrega"
+                    android:textAppearance="@style/TextAppearance.App.Overline" />
+
+                <TextView
+                    android:id="@+id/tv_detalle_fecha_entrega"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFeatureSettings="tnum"
+                    android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                    android:textColor="@color/gray_dark" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/pedido_detalle_costo"
-                        android:textColor="@color/gray_dark"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_detalle_costo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gray_dark" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/pedido_detalle_venta"
-                        android:textColor="@color/gray_dark"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_detalle_venta"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gray_dark" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/pedido_detalle_ganancia"
-                        android:textColor="@color/success_color"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_detalle_ganancia"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/success_color"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/pedido_detalle_abonado"
-                        android:textColor="@color/gray_dark"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_detalle_abonado"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/success_color" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/pedido_detalle_saldo"
-                        android:textColor="@color/gray_dark"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_detalle_saldo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/error_color"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/tv_detalle_estado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/bg_chip_estado"
-            android:padding="8dp"
-            android:text="ESTADO"
-            android:textAllCaps="true"
-            android:textStyle="bold" />
+            android:background="@color/card_stroke" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pedido_detalle_costo"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/tv_detalle_costo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray_dark" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pedido_detalle_venta"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/tv_detalle_venta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray_dark" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pedido_detalle_ganancia"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/tv_detalle_ganancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:fontFamily="@font/inter_semibold"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/success_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pedido_detalle_abonado"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/tv_detalle_abonado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/success_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pedido_detalle_saldo"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/tv_detalle_saldo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFeatureSettings="tnum"
+                android:fontFamily="@font/inter_semibold"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/error_color" />
+        </LinearLayout>
+
+        <!-- Notas: solo visibles si el pedido tiene notas -->
+        <LinearLayout
+            android:id="@+id/layout_detalle_notas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/card_stroke" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/detalle_notas"
+                android:textAppearance="@style/TextAppearance.App.Overline" />
+
+            <TextView
+                android:id="@+id/tv_detalle_notas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:lineSpacingMultiplier="1.15"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray_dark"
+                android:textIsSelectable="true"
+                tools:text="Talla M, color azul. Entregar en la tarde." />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/card_stroke" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_registrar_abono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:text="@string/abono_registrar"
-            app:backgroundTint="?attr/colorTertiary"
             app:icon="@drawable/ic_add"
-            app:iconGravity="textStart"
-            app:iconTint="?attr/colorOnTertiary"
-            android:textColor="?attr/colorOnTertiary" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_ver_abonos"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/abono_ver_historial" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_enviar_resumen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/pedido_enviar_resumen"
-            app:icon="@drawable/ic_share"
             app:iconGravity="textStart" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ver_abonos"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/abono_ver_historial" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_enviar_resumen"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pedido_enviar_resumen"
+                app:icon="@drawable/ic_share"
+                app:iconGravity="textStart" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

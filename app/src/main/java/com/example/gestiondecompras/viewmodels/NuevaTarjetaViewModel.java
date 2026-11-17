@@ -22,13 +22,17 @@ public class NuevaTarjetaViewModel extends AndroidViewModel {
         executorService = Executors.newSingleThreadExecutor();
     }
 
-    public void saveTarjeta(Tarjeta tarjeta) {
+    /** Guarda la tarjeta y devuelve su id por {@code idGuardado} (para seleccionarla al volver). */
+    public void saveTarjeta(Tarjeta tarjeta, androidx.lifecycle.MutableLiveData<Long> idGuardado) {
         executorService.execute(() -> {
+            long id;
             if (tarjeta.getId() > 0) {
                 db.tarjetaDao().update(tarjeta);
+                id = tarjeta.getId();
             } else {
-                db.tarjetaDao().insert(tarjeta);
+                id = db.tarjetaDao().insert(tarjeta);
             }
+            idGuardado.postValue(id);
         });
     }
 
