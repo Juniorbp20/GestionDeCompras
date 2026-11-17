@@ -111,6 +111,17 @@
                 android:text="@string/clientes_empty"
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVacioAccion"
+                style="@style/Widget.App.Button.Gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="24dp"
+                android:text="@string/vacio_crear_cliente"
+                app:icon="@drawable/ic_person_add"
+                app:iconGravity="textStart" />
         </LinearLayout>
 
     </LinearLayout>

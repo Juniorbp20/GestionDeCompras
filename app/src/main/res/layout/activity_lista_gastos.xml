@@ -437,6 +437,17 @@
                 android:text="@string/finanzas_sin_gastos"
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVacioAccion"
+                style="@style/Widget.App.Button.Gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="24dp"
+                android:text="@string/vacio_crear_gasto"
+                app:icon="@drawable/ic_wallet"
+                app:iconGravity="textStart" />
         </LinearLayout>
 
     </LinearLayout>

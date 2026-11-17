@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiondecompras.R;
+import com.example.gestiondecompras.utils.BorradoConDeshacer;
 import com.example.gestiondecompras.utils.HojaAcciones;
 import com.example.gestiondecompras.utils.NavegacionInferior;
 import com.example.gestiondecompras.adapters.AbonosAdapter;
@@ -37,6 +38,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
     private ActivityListaPedidosBinding binding;
     private ListaPedidosViewModel viewModel;
     private PedidosAdapter adapter;
+    private final BorradoConDeshacer borrado = new BorradoConDeshacer();
     private Integer filtroClienteId = null;
     private String filtroClienteNombre = null;
     private final String[] estados = {"Todos", "Por Cobrar", "Pendientes", "Entregados", "Pagados", "Atrasados"};
@@ -56,8 +58,12 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
 
         if (getIntent() != null) {
             if (getIntent().hasExtra("cliente_id")) {
-                filtroClienteId = getIntent().getIntExtra("cliente_id", -1);
-                if (filtroClienteId <= 0) filtroClienteId = null;
+                // Clientes envía el id como long; se acepta también int por compatibilidad
+                long idCliente = getIntent().getLongExtra("cliente_id", -1L);
+                if (idCliente <= 0) {
+                    idCliente = getIntent().getIntExtra("cliente_id", -1);
+                }
+                filtroClienteId = idCliente > 0 ? (int) idCliente : null;
             }
             if (getIntent().hasExtra("cliente_nombre")) {
                 filtroClienteNombre = getIntent().getStringExtra("cliente_nombre");
@@ -115,7 +121,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
                 int position = viewHolder.getBindingAdapterPosition();
                 Pedido pedido = adapter.getPedidoAt(position);
                 if (direction == ItemTouchHelper.LEFT && pedido != null) {
-                    confirmarEliminarPedido(pedido, position);
+                    eliminarConDeshacer(pedido);
                 }
             }
         };
@@ -160,6 +166,8 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         binding.fabNuevoPedido.setOnClickListener(v -> {
             startActivity(new Intent(this, NuevoPedidoActivity.class));
         });
+        binding.btnVacioAccion.setOnClickListener(v ->
+                startActivity(new Intent(this, NuevoPedidoActivity.class)));
     }
 
     private void observeViewModel() {
@@ -421,14 +429,8 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         }
         hoja.accion(R.drawable.ic_share, R.string.pedido_enviar_resumen, () -> enviarResumenCliente(pedido, sdf))
                 .peligrosa(R.drawable.ic_delete, R.string.accion_eliminar,
-                        () -> confirmarEliminarPedido(pedido, RecyclerView.NO_POSITION))
+                        () -> eliminarConDeshacer(pedido))
                 .mostrar();
-    }
-
-    private void restaurarFila(int position) {
-        if (position != RecyclerView.NO_POSITION) {
-            adapter.notifyItemChanged(position);
-        }
     }
 
     private void actualizarTitulo() {
@@ -439,17 +441,22 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         }
     }
 
-    private void confirmarEliminarPedido(Pedido pedido, int position) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.dialog_delete_pedido_title)
-                .setMessage(R.string.dialog_delete_pedido_message)
-                .setPositiveButton(R.string.accion_eliminar, (dialog, which) -> {
-                    viewModel.deletePedido(pedido);
-                    Snackbar.make(binding.rvPedidos, R.string.snackbar_pedido_eliminado, Snackbar.LENGTH_SHORT).show();
-                })
-                .setNegativeButton(R.string.accion_cancelar, (dialog, which) -> restaurarFila(position))
-                .setOnCancelListener(dialog -> restaurarFila(position))
-                .show();
+    /** Oculta el pedido y lo borra al cerrarse el aviso, salvo que se pulse "Deshacer". */
+    private void eliminarConDeshacer(Pedido pedido) {
+        borrado.eliminar(binding.getRoot(), binding.bottomNav,
+                getString(R.string.pedido_eliminado_deshacer, pedido.getClienteNombre()),
+                () -> {
+                    adapter.quitar(pedido);
+                    binding.emptyState.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                },
+                this::cargarPedidos,
+                () -> viewModel.deletePedido(pedido));
+    }
+
+    @Override
+    protected void onStop() {
+        borrado.confirmarPendiente();
+        super.onStop();
     }
 
     private void mostrarDialogoEstado(Pedido pedido) {

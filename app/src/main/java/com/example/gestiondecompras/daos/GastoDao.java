@@ -25,6 +25,11 @@ public interface GastoDao {
     @Query("SELECT * FROM gastos ORDER BY fechaEpoch DESC")
     List<Gasto> getAllGastos();
 
+    @Query("SELECT * FROM gastos WHERE descripcion LIKE '%' || :texto || '%' " +
+           "OR categoria LIKE '%' || :texto || '%' OR notas LIKE '%' || :texto || '%' " +
+           "ORDER BY fechaEpoch DESC LIMIT :limite")
+    List<Gasto> buscarGastos(String texto, int limite);
+
     @Query("SELECT * FROM gastos WHERE (:desde IS NULL OR fechaEpoch >= :desde) "
             + "AND (:hasta IS NULL OR fechaEpoch <= :hasta) "
             + "AND (:categoria = '' OR categoria = :categoria) "

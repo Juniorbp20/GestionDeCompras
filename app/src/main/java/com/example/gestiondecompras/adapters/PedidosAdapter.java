@@ -60,6 +60,17 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
         notifyDataSetChanged();
     }
 
+    /** Quita un pedido de la lista visible (sin tocar la base de datos). */
+    public void quitar(Pedido pedido) {
+        if (pedidos == null || pedido == null) return;
+        int pos = pedidos.indexOf(pedido);
+        if (pos >= 0) {
+            pedidos = new java.util.ArrayList<>(pedidos);
+            pedidos.remove(pos);
+            notifyItemRemoved(pos);
+        }
+    }
+
     public Pedido getPedidoAt(int position) {
         if (pedidos == null || position < 0 || position >= pedidos.size()) return null;
         return pedidos.get(position);

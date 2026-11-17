@@ -121,6 +121,17 @@
                 android:textSize="14sp"
                 android:visibility="gone"
                 tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVacioAccion"
+                style="@style/Widget.App.Button.Gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="24dp"
+                android:text="@string/vacio_crear_pedido"
+                app:icon="@drawable/ic_add_circle"
+                app:iconGravity="textStart" />
         </LinearLayout>
 
     </LinearLayout>

@@ -111,6 +111,11 @@ public interface PedidoDao {
     @Query("SELECT * FROM pedidos WHERE estado = 'pagado' ORDER BY fecha_registro_epoch DESC")
     List<Pedido> getPedidosPagados();
 
+    @Query("SELECT * FROM pedidos WHERE cliente_nombre LIKE '%' || :texto || '%' " +
+           "OR tienda LIKE '%' || :texto || '%' OR notas LIKE '%' || :texto || '%' " +
+           "ORDER BY fecha_registro_epoch DESC LIMIT :limite")
+    List<Pedido> buscarPedidos(String texto, int limite);
+
     @Query("SELECT COUNT(*) FROM pedidos WHERE tarjeta_rel_id = :tarjetaId AND estado = 'pendiente'")
     int countPedidosPorTarjeta(long tarjetaId);
 

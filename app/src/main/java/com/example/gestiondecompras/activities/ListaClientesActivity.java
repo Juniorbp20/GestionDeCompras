@@ -97,6 +97,8 @@ public class ListaClientesActivity extends AppCompatActivity implements Clientes
 
     private void setupFab() {
         binding.fabNuevo.setOnClickListener(this::showFabMenu);
+        binding.btnVacioAccion.setOnClickListener(v ->
+                startActivity(new Intent(this, NuevoClienteActivity.class)));
     }
 
     private void showFabMenu(View v) {

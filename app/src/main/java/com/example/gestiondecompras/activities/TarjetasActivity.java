@@ -59,6 +59,7 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
     }
 
     private void setupFab() {
+        binding.btnVacioAccion.setOnClickListener(v -> binding.btnNuevaTarjeta.performClick());
         binding.btnNuevaTarjeta.setOnClickListener(v ->
                 startActivity(new Intent(this, NuevaTarjetaActivity.class)));
     }

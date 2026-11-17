@@ -155,6 +155,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             }
+            if (item.getItemId() == R.id.accion_buscar) {
+                startActivity(new Intent(this, BusquedaActivity.class));
+                return true;
+            }
             return false;
         });
     }
@@ -181,6 +185,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupClickListeners() {
         binding.chipNuevoPedido.setOnClickListener(v ->
+                startActivity(new Intent(this, NuevoPedidoActivity.class)));
+
+        binding.btnVacioAccion.setOnClickListener(v ->
                 startActivity(new Intent(this, NuevoPedidoActivity.class)));
 
         binding.chipNuevoGasto.setOnClickListener(v ->

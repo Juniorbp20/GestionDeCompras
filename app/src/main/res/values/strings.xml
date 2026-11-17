@@ -450,4 +450,29 @@
     <string name="ajustes_seccion_acerca">Acerca de</string>
     <string name="ajustes_seccion_peligro">Zona de peligro</string>
     <string name="ajustes_peligro_sub">Borra todos los datos de la aplicación. Esta acción no se puede deshacer.</string>
+
+    <!-- ===== Eliminar con deshacer ===== -->
+    <string name="accion_deshacer">Deshacer</string>
+    <string name="pedido_eliminado_deshacer">Pedido de %1$s eliminado</string>
+    <string name="gasto_eliminado_deshacer">Gasto "%1$s" eliminado</string>
+
+    <!-- ===== Estados vacíos ===== -->
+    <string name="vacio_crear_pedido">Crear pedido</string>
+    <string name="vacio_crear_cliente">Añadir cliente</string>
+    <string name="vacio_crear_gasto">Registrar un gasto</string>
+    <string name="vacio_crear_tarjeta">Agregar una tarjeta</string>
+
+    <!-- ===== Búsqueda global ===== -->
+    <string name="busqueda_title">Buscar</string>
+    <string name="busqueda_hint">Cliente, tienda, gasto o nota</string>
+    <string name="busqueda_ayuda">Escribe al menos 2 letras para buscar en clientes, pedidos y gastos.</string>
+    <string name="busqueda_sin_resultados">No se encontró nada para "%1$s".</string>
+    <string name="busqueda_clientes">Clientes</string>
+    <string name="busqueda_pedidos">Pedidos</string>
+    <string name="busqueda_gastos">Gastos</string>
+
+    <!-- ===== Exportar CSV ===== -->
+    <string name="exportar_csv">Exportar a Excel (CSV)</string>
+    <string name="exportar_csv_error">No se pudo generar el archivo CSV</string>
+    <string name="exportar_csv_vacio">No hay datos para exportar</string>
 </resources>
