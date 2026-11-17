@@ -57,16 +57,6 @@ jobs:
           reporter: "java-junit"
           fail-on-error: "false"
 
-      - name: Mostrar esquema de la base de datos
-        if: matrix.os == 'ubuntu-latest'
-        shell: bash
-        run: |
-          for f in app/schemas/*/*.json; do
-            echo "=====INICIO_ESQUEMA $f"
-            base64 -w0 "$f"; echo
-            echo "=====FIN_ESQUEMA"
-          done
-
       - name: Subir esquema de la base de datos
         if: always() && matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
