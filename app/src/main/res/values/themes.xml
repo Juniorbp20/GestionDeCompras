@@ -92,16 +92,7 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="TextAppearance.NavItem" parent="TextAppearance.App.BodyLarge">
-        <item name="android:textSize">15sp</item>
-    </style>
 
-    <style name="TextAppearance.NavSubheader" parent="TextAppearance.App.LabelSmall">
-        <item name="android:textColor">@color/gray</item>
-        <item name="android:textSize">11sp</item>
-        <item name="android:letterSpacing">0.12</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
 
     <style name="TextAppearance.ToolbarTitleDark" parent="TextAppearance.App.TitleLarge">
         <item name="android:textColor">@color/gray_dark</item>

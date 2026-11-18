@@ -133,7 +133,7 @@
                         android:contentDescription="@null"
                         android:padding="9dp"
                         android:src="@drawable/ic_credit_card"
-                        android:tint="@color/accent_gold" />
+                        app:tint="@color/accent_gold" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -163,7 +163,65 @@
                         android:layout_height="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/gray_medium" />
+                        app:tint="@color/gray_medium" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="72dp"
+                    android:background="@color/card_stroke" />
+
+                <LinearLayout
+                    android:id="@+id/filaTiendas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:minHeight="68dp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_tile"
+                        android:contentDescription="@null"
+                        android:padding="9dp"
+                        android:src="@drawable/ic_cart"
+                        app:tint="@color/accent_gold" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mas_tiendas"
+                            android:textAppearance="@style/TextAppearance.App.TitleSmall"
+                            android:textColor="@color/gray_dark" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/mas_tiendas_sub"
+                            android:textAppearance="@style/TextAppearance.App.BodySmall"
+                            android:textColor="@color/gray" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/gray_medium" />
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
@@ -191,7 +249,7 @@
                         android:contentDescription="@null"
                         android:padding="9dp"
                         android:src="@drawable/ic_bar_chart"
-                        android:tint="@color/accent_gold" />
+                        app:tint="@color/accent_gold" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -221,7 +279,7 @@
                         android:layout_height="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/gray_medium" />
+                        app:tint="@color/gray_medium" />
                 </LinearLayout>
 
                 </LinearLayout>
@@ -266,7 +324,7 @@
                         android:contentDescription="@null"
                         android:padding="9dp"
                         android:src="@drawable/ic_calendar"
-                        android:tint="@color/accent_gold" />
+                        app:tint="@color/accent_gold" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -296,7 +354,7 @@
                         android:layout_height="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/gray_medium" />
+                        app:tint="@color/gray_medium" />
                 </LinearLayout>
 
                 </LinearLayout>
@@ -341,7 +399,7 @@
                         android:contentDescription="@null"
                         android:padding="9dp"
                         android:src="@drawable/ic_settings"
-                        android:tint="@color/accent_gold" />
+                        app:tint="@color/accent_gold" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -371,7 +429,7 @@
                         android:layout_height="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/gray_medium" />
+                        app:tint="@color/gray_medium" />
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
@@ -399,7 +457,7 @@
                         android:contentDescription="@null"
                         android:padding="9dp"
                         android:src="@drawable/ic_help"
-                        android:tint="@color/accent_gold" />
+                        app:tint="@color/accent_gold" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -429,7 +487,7 @@
                         android:layout_height="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/gray_medium" />
+                        app:tint="@color/gray_medium" />
                 </LinearLayout>
 
                 </LinearLayout>

@@ -6,13 +6,7 @@
          ============================================================ -->
 
     <!-- Marca -->
-    <color name="navy_900">#0B1430</color>
-    <color name="navy_800">#14213D</color>
-    <color name="navy_700">#1E3160</color>
-    <color name="navy_600">#2A4275</color>
-    <color name="gold_500">#B8901F</color>
     <color name="gold_300">#E2C26A</color>
-    <color name="gold_100">#F6EBC8</color>
 
     <color name="accent_gold">#B8901F</color>
     <color name="accent_gold_container">#F6EBC8</color>
@@ -25,12 +19,9 @@
     <color name="card_usage_alert">#FF7A6B</color>
     <color name="hero_positive">#7FE0B0</color>
     <color name="hero_negative">#FF8A7A</color>
-    <color name="hero_divider">#26FFFFFF</color>
 
     <!-- Colores base (nombres históricos) -->
     <color name="primary_color">#14213D</color>
-    <color name="primary_dark">#0B1430</color>
-    <color name="primary_light">#DCE3F5</color>
 
     <!-- Roles de Material 3 -->
     <color name="colorPrimary">#14213D</color>
@@ -67,8 +58,6 @@
     <color name="success_color">#1F8A5B</color>
     <color name="warning_color">#C98A1B</color>
     <color name="error_color">#C0392B</color>
-    <color name="info_color">#2A6F97</color>
-    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#6B7080</color>
     <color name="gray_light">#D9D4C8</color>
@@ -83,20 +72,12 @@
     <color name="dashboard_badge_blue_bg">#E4E9F6</color>
     <color name="dashboard_badge_green_bg">#DFF3E8</color>
     <color name="dashboard_badge_red_bg">#F9E1DD</color>
-    <color name="dashboard_trend_bg">#DFF3E8</color>
-    <color name="drawer_gradient_end">#2A4275</color>
 
     <color name="dashboard_card_income">#1F8A5B</color>
-    <color name="dashboard_card_income_stroke">#1F8A5B</color>
-    <color name="dashboard_card_secondary">#B8901F</color>
-    <color name="dashboard_card_orders">#14213D</color>
-    <color name="dashboard_card_clients">#2A4275</color>
     <color name="dashboard_accent_positive">#1F8A5B</color>
     <color name="dashboard_accent_negative">#C0392B</color>
 
-    <color name="ic_launcher_background">#AC0903</color>
     <color name="dashboard_card_overdue">#C0392B</color>
-    <color name="dashboard_card_earnings">#1F8A5B</color>
 
     <!-- Colores de categorías de gastos (tonos sobrios) -->
     <color name="category_food">#C46A2B</color>
@@ -113,10 +94,6 @@
     <color name="category_cyan">#1F8FA6</color>
 
     <!-- Tutorial -->
-    <color name="tutorial_card">#FFFFFF</color>
-    <color name="tutorial_title">#1A1F2E</color>
-    <color name="tutorial_body">#6B7080</color>
-    <color name="tutorial_dim">#990B1430</color>
 
     <!-- Estados de pedido -->
     <color name="status_pending">#C98A1B</color>
@@ -129,4 +106,8 @@
     <color name="status_delivered_bg">#DDEBF3</color>
     <color name="status_paid_bg">#DFF3E8</color>
     <color name="status_cancelled_bg">#F9E1DD</color>
+
+    <!-- Estado "En camino" -->
+    <color name="status_en_camino">#6B4FA8</color>
+    <color name="status_en_camino_bg">#ECE5F6</color>
 </resources>

@@ -14,8 +14,6 @@
     <color name="hero_chip_bg">#33E2C26A</color>
 
     <color name="primary_color">#AFC3EE</color>
-    <color name="primary_dark">#D6E1FA</color>
-    <color name="primary_light">#22335C</color>
 
     <color name="colorPrimary">#AFC3EE</color>
     <color name="colorOnPrimary">#0B1430</color>
@@ -50,8 +48,6 @@
     <color name="success_color">#5CC596</color>
     <color name="warning_color">#E8B04F</color>
     <color name="error_color">#F07A6E</color>
-    <color name="info_color">#7FB7D9</color>
-    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#A3A9B8</color>
     <color name="gray_light">#3A4560</color>
@@ -65,20 +61,12 @@
     <color name="dashboard_badge_blue_bg">#22335C</color>
     <color name="dashboard_badge_green_bg">#11402B</color>
     <color name="dashboard_badge_red_bg">#4A1E1A</color>
-    <color name="dashboard_trend_bg">#11402B</color>
-    <color name="drawer_gradient_end">#26407A</color>
 
     <color name="dashboard_card_income">#5CC596</color>
-    <color name="dashboard_card_income_stroke">#5CC596</color>
-    <color name="dashboard_card_secondary">#E2C26A</color>
-    <color name="dashboard_card_orders">#AFC3EE</color>
-    <color name="dashboard_card_clients">#AFC3EE</color>
     <color name="dashboard_accent_positive">#5CC596</color>
     <color name="dashboard_accent_negative">#F07A6E</color>
 
-    <color name="ic_launcher_background">#121212</color>
     <color name="dashboard_card_overdue">#F07A6E</color>
-    <color name="dashboard_card_earnings">#5CC596</color>
 
     <color name="category_food">#E8A06B</color>
     <color name="category_transport">#7FB7D9</color>
@@ -93,10 +81,6 @@
     <color name="category_pink">#E58BB3</color>
     <color name="category_cyan">#6CC8DB</color>
 
-    <color name="tutorial_card">#141B2D</color>
-    <color name="tutorial_title">#E8EAF0</color>
-    <color name="tutorial_body">#A3A9B8</color>
-    <color name="tutorial_dim">#CC05080F</color>
 
     <color name="status_pending">#E8B04F</color>
     <color name="status_delivered">#7FB7D9</color>
@@ -107,4 +91,8 @@
     <color name="status_delivered_bg">#18324A</color>
     <color name="status_paid_bg">#11402B</color>
     <color name="status_cancelled_bg">#4A1E1A</color>
+
+    <!-- Estado "En camino" -->
+    <color name="status_en_camino">#B79BDB</color>
+    <color name="status_en_camino_bg">#2E2442</color>
 </resources>

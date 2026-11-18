@@ -13,3 +13,18 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Compilaciones y firmas (nunca al repositorio)
+/app/release/
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# Ajustes locales de Android Studio
+/.idea/deploymentTargetSelector.xml
+/.idea/deviceManager.xml
+/.idea/studiobot.xml
+/.idea/appInsightsSettings.xml
+/.idea/material_theme_project_new.xml
+/.idea/other.xml

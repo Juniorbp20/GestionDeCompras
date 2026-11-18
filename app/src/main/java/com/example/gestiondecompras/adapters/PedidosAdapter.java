@@ -135,7 +135,8 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
         void bind(Pedido p) {
             Context context = itemView.getContext();
             tvCliente.setText(p.getClienteNombre());
-            tvTienda.setText(p.getTienda());
+            // "Amazon · Audífonos" cuando el pedido tiene artículo
+            tvTienda.setText(com.example.gestiondecompras.utils.DetallePedido.tiendaYArticulo(p));
             tvTotal.setText(String.format(Locale.getDefault(), "RD$ %,.2f", p.getTotalGeneral()));
             tvMontoCompra.setText(String.format(Locale.getDefault(), context.getString(R.string.item_pedido_compra_format), p.getMontoCompra()));
             tvGanancia.setText(String.format(Locale.getDefault(), context.getString(R.string.item_pedido_ganancia_format), p.getGanancia()));
@@ -183,6 +184,9 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
             if (Pedido.ESTADO_CANCELADO.equalsIgnoreCase(estado)) {
                 return R.color.status_cancelled_bg;
             }
+            if (Pedido.ESTADO_EN_CAMINO.equalsIgnoreCase(estado)) {
+                return R.color.status_en_camino_bg;
+            }
             return R.color.status_pending_bg;
         }
 
@@ -195,6 +199,9 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
             }
             if (Pedido.ESTADO_CANCELADO.equalsIgnoreCase(estado)) {
                 return R.color.status_cancelled;
+            }
+            if (Pedido.ESTADO_EN_CAMINO.equalsIgnoreCase(estado)) {
+                return R.color.status_en_camino;
             }
             // Pendiente (y cualquier otro)
             return R.color.status_pending;

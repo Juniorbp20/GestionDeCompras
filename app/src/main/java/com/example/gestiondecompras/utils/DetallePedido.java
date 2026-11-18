@@ -34,6 +34,14 @@ public final class DetallePedido {
         return new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     }
 
+    /** "Amazon · Audífonos" (o solo la tienda si el pedido no tiene artículo). */
+    public static String tiendaYArticulo(@NonNull Pedido pedido) {
+        String tienda = pedido.getTienda() != null ? pedido.getTienda() : "";
+        String articulo = pedido.getArticulo() != null ? pedido.getArticulo().trim() : "";
+        if (articulo.isEmpty()) return tienda;
+        return tienda.isEmpty() ? articulo : tienda + " · " + articulo;
+    }
+
     /** Rellena los campos del layout dialog_detalle_pedido con los datos del pedido. */
     public static void rellenar(@NonNull View vista, @NonNull Pedido pedido) {
         Context context = vista.getContext();
@@ -41,7 +49,13 @@ public final class DetallePedido {
         String sinFecha = context.getString(R.string.sin_dato);
 
         ((TextView) vista.findViewById(R.id.tv_detalle_producto)).setText(pedido.getClienteNombre());
-        ((TextView) vista.findViewById(R.id.tv_detalle_tienda)).setText(pedido.getTienda());
+        ((TextView) vista.findViewById(R.id.tv_detalle_tienda)).setText(tiendaYArticulo(pedido));
+        String rastreo = pedido.getRastreo() != null ? pedido.getRastreo().trim() : "";
+        View bloqueRastreo = vista.findViewById(R.id.layout_detalle_rastreo);
+        if (bloqueRastreo != null) {
+            bloqueRastreo.setVisibility(rastreo.isEmpty() ? View.GONE : View.VISIBLE);
+            ((TextView) vista.findViewById(R.id.tv_detalle_rastreo)).setText(rastreo);
+        }
         ((TextView) vista.findViewById(R.id.tv_detalle_fecha_compra)).setText(
                 pedido.getFechaRegistro() != null ? sdf.format(pedido.getFechaRegistro()) : sinFecha);
         ((TextView) vista.findViewById(R.id.tv_detalle_fecha_entrega)).setText(
@@ -83,6 +97,7 @@ public final class DetallePedido {
         if (Pedido.ESTADO_PAGADO.equalsIgnoreCase(estado)) return R.color.status_paid;
         if (Pedido.ESTADO_ENTREGADO.equalsIgnoreCase(estado)) return R.color.status_delivered;
         if (Pedido.ESTADO_CANCELADO.equalsIgnoreCase(estado)) return R.color.status_cancelled;
+        if (Pedido.ESTADO_EN_CAMINO.equalsIgnoreCase(estado)) return R.color.status_en_camino;
         return R.color.status_pending;
     }
 
@@ -111,6 +126,10 @@ public final class DetallePedido {
         }
     }
 
+    private static String lineaOpcional(String etiqueta, String valor) {
+        return valor == null || valor.trim().isEmpty() ? "" : etiqueta + ": " + valor.trim() + "\n";
+    }
+
     /**
      * Comparte con el cliente el resumen del pedido. No incluye el costo ni la ganancia:
      * es información interna del negocio que el cliente no debe ver.
@@ -124,6 +143,8 @@ public final class DetallePedido {
         String mensaje = context.getString(R.string.resumen_titulo) + "\n\n"
                 + context.getString(R.string.pedido_detalle_cliente) + ": " + pedido.getClienteNombre() + "\n"
                 + context.getString(R.string.pedido_detalle_tienda) + ": " + pedido.getTienda() + "\n"
+                + lineaOpcional(context.getString(R.string.detalle_articulo), pedido.getArticulo())
+                + lineaOpcional(context.getString(R.string.detalle_seguimiento), pedido.getRastreo())
                 + context.getString(R.string.pedido_detalle_fecha_compra) + ": " + fechaRegistro + "\n"
                 + context.getString(R.string.pedido_detalle_fecha_entrega) + ": " + fechaEntrega + "\n"
                 + context.getString(R.string.resumen_total) + ": " + moneda(pedido.getTotalGeneral()) + "\n"

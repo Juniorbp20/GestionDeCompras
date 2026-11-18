@@ -44,7 +44,7 @@ import com.example.gestiondecompras.daos.finanzas.RecurrenteDao;
                 Presupuesto.class,
                 Recurrente.class
         },
-        version = 7,
+        version = 9,
         exportSchema = true
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -175,13 +175,32 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     };
 
+    /** Pedidos: compra en dólares, número de rastreo y foto del recibo (columnas opcionales). */
+    static final Migration MIGRATION_7_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
+            db.execSQL("ALTER TABLE `pedidos` ADD COLUMN `monto_usd` REAL");
+            db.execSQL("ALTER TABLE `pedidos` ADD COLUMN `tasa_cambio` REAL");
+            db.execSQL("ALTER TABLE `pedidos` ADD COLUMN `rastreo` TEXT");
+            db.execSQL("ALTER TABLE `pedidos` ADD COLUMN `foto_recibo` TEXT");
+        }
+    };
+
+    /** Pedidos: artículo o descripción de lo comprado (opcional). */
+    static final Migration MIGRATION_8_9 = new Migration(8, 9) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
+            db.execSQL("ALTER TABLE `pedidos` ADD COLUMN `articulo` TEXT");
+        }
+    };
+
     public static AppDatabase getInstance(final android.content.Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "GestionCompras.db")
-                            .addMigrations(MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
+                            .addMigrations(MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9)
                             // Solo las versiones 1-3 (anteriores a Room, sin migración posible) se
                             // recrean desde cero. Para cualquier versión nueva es obligatorio añadir
                             // su Migration: si falta, la app falla en pruebas en lugar de borrar en

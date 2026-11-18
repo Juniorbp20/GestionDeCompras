@@ -32,6 +32,7 @@ public class MasActivity extends AppCompatActivity {
                 () -> binding.scrollMas.smoothScrollTo(0, 0));
 
         binding.filaTarjetas.setOnClickListener(v -> abrir(TarjetasActivity.class));
+        binding.filaTiendas.setOnClickListener(v -> abrir(TiendasActivity.class));
         binding.filaReportes.setOnClickListener(v -> abrir(ReportesActivity.class));
         binding.filaCalendario.setOnClickListener(v -> abrir(CalendarioActivity.class));
         binding.filaAjustes.setOnClickListener(v -> abrir(SettingsActivity.class));

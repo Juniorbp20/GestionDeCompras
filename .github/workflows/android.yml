@@ -57,6 +57,11 @@ jobs:
           reporter: "java-junit"
           fail-on-error: "false"
 
+      - name: Compilar versión de lanzamiento (comprueba R8)
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: ./gradlew assembleRelease
+
       - name: Subir esquema de la base de datos
         if: always() && matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4

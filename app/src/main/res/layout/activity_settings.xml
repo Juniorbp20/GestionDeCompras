@@ -67,7 +67,7 @@
                             android:background="@drawable/bg_icon_badge_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_settings"
-                            android:tint="@color/primary_color"
+                            app:tint="@color/primary_color"
                             android:importantForAccessibility="no" />
 
                         <LinearLayout
@@ -149,7 +149,7 @@
                         android:background="@drawable/bg_icon_badge_blue"
                         android:padding="8dp"
                         android:src="@drawable/ic_lock"
-                        android:tint="@color/primary_color"
+                        app:tint="@color/primary_color"
                         android:importantForAccessibility="no" />
 
                     <LinearLayout
@@ -216,7 +216,7 @@
                             android:background="@drawable/bg_icon_badge_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_notifications"
-                            android:tint="@color/primary_color"
+                            app:tint="@color/primary_color"
                             android:importantForAccessibility="no" />
 
                         <LinearLayout
@@ -486,7 +486,7 @@
                             android:background="@drawable/bg_icon_badge_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_cloud_upload"
-                            android:tint="@color/primary_color"
+                            app:tint="@color/primary_color"
                             android:importantForAccessibility="no" />
 
                         <LinearLayout

@@ -12,97 +12,31 @@
     <string name="tarjeta">Tarjeta</string>
     <string name="nueva_tarjeta">Nueva tarjeta</string>
     <string name="monto_compra">Monto de compra</string>
-    <string name="ganancia_fija">Ganancia fija</string>
-    <string name="ganancia_porcentaje">Ganancia porcentaje</string>
-    <string name="ganancia">Ganancia</string>
-    <string name="total_general">Total general</string>
-    <string name="total_general_amount">Total general: RD$ %,.2f</string>
-    <string name="fecha_registro">Fecha de registro</string>
-    <string name="fecha_entrega">Fecha de entrega</string>
-    <string name="notas">Notas</string>
     <string name="guardar">Guardar</string>
     <string name="banco">Banco</string>
     <string name="alias">Alias</string>
     <string name="limite">L\u00EDmite</string>
-    <string name="dia_corte">D\u00EDa de corte</string>
-    <string name="dia_pago">D\u00EDa de pago (opcional)</string>
-    <string name="fecha_vencimiento">Fecha de vencimiento (MM/YY)</string>
     <string name="nuevo_cliente">Nuevo cliente</string>
     <string name="nombre">Nombre</string>
     <string name="apellido">Apellido</string>
     <string name="telefono">Tel\u00E9fono</string>
     <string name="direccion">Direcci\u00F3n</string>
-    <string name="activo">Activo</string>
     <string name="configuracion">Configuraci\u00F3n</string>
     <string name="tema_de_la_app">Tema de la app</string>
     <string name="claro">Claro</string>
     <string name="oscuro">Oscuro</string>
     <string name="sistema">Sistema</string>
-    <string name="notificaciones">Notificaciones</string>
     <string name="dias_antes_del_corte">D\u00EDas antes del corte</string>
     <string name="calendario">Calendario</string>
-    <string name="clientes">Clientes</string>
     <string name="clientes_title">Clientes</string>
     <string name="clientes_filter_title">Filtros</string>
     <string name="clientes_search_hint">Buscar cliente</string>
     <string name="clientes_empty">No hay clientes</string>
     <string name="clientes_nuevo">Nuevo cliente</string>
     <string name="pedidos_title">Pedidos</string>
-    <string name="gastos_title">Mis Gastos</string>
-    <string name="gastos_nuevo">Nuevo gasto</string>
-    <string name="gastos_del_mes">Gastos del mes</string>
-    <string name="gastos_cantidad_placeholder">0 gastos este mes</string>
-    <string name="gastos_cantidad_format">%d gastos este mes</string>
-    <string name="gastos_filter_title">Buscar y filtrar</string>
-    <string name="gastos_search_hint">Buscar gasto</string>
-    <string name="gastos_desde">Desde</string>
-    <string name="gastos_hasta">Hasta</string>
-    <string name="gastos_empty">No hay gastos</string>
-    <string name="gastos_categoria">Categor\u00EDa</string>
-    <string name="gastos_categoria_obligatoria">Selecciona una categor\u00EDa</string>
-    <string name="editar_gasto_title">Editar gasto</string>
-    <string name="gastos_monto">Monto (RD$)</string>
-    <string name="gastos_fecha">Fecha</string>
-    <string name="gastos_descripcion">Descripci\u00F3n</string>
-    <string name="gastos_notas">Notas (opcional)</string>
-    <string name="gastos_monto_invalido">Ingresa un monto v\u00E1lido</string>
-    <string name="gastos_descripcion_obligatoria">Describe tu gasto</string>
-    <string name="gastos_editado">Gasto actualizado</string>
-    <string name="gastos_guardado">Gasto guardado</string>
-    <string name="gastos_eliminar_title">Eliminar gasto</string>
-    <string name="gastos_eliminar_message">\u00BFEst\u00E1s seguro de que deseas eliminar este gasto?</string>
-    <string name="toast_gasto_eliminado">Gasto eliminado</string>
-    <string name="finanzas_title">Finanzas</string>
-    <string name="finanzas_ingresos">Ingresos</string>
-    <string name="finanzas_gastos">Gastos</string>
-    <string name="finanzas_balance">Balance</string>
-    <string name="finanzas_mes_anterior">Mes anterior</string>
-    <string name="finanzas_mes_siguiente">Mes siguiente</string>
-    <string name="finanzas_categorias_title">Gastos por categoría</string>
-    <string name="finanzas_categorias_hint">Toca una categoría para filtrar el listado</string>
-    <string name="finanzas_sin_gastos">No hay gastos en este periodo</string>
-    <string name="finanzas_sin_resultados">No hay gastos con estos filtros</string>
-    <string name="finanzas_rango_fechas">Rango de fechas</string>
-    <string name="finanzas_limpiar">Limpiar</string>
-    <string name="finanzas_promedio_diario">Promedio diario: %1$s</string>
-    <string name="finanzas_variacion_mas">%1$s más que el periodo anterior</string>
-    <string name="finanzas_variacion_menos">%1$s menos que el periodo anterior</string>
-    <string name="finanzas_variacion_igual">Igual que el periodo anterior</string>
-    <string name="finanzas_todo_el_tiempo">Todo el tiempo</string>
-    <string name="finanzas_todas_categorias">Todas las categorías</string>
-    <plurals name="finanzas_cantidad_periodo">
-        <item quantity="one">%1$d gasto en el periodo</item>
-        <item quantity="other">%1$d gastos en el periodo</item>
-    </plurals>
-    <plurals name="finanzas_resumen_filtro">
-        <item quantity="one">%1$d gasto · %2$s</item>
-        <item quantity="other">%1$d gastos · %2$s</item>
-    </plurals>
     <string name="abono_inicial">Abono inicial (opcional)</string>
-    <string name="pagado_completo">Pagado completo</string>
     <string name="abono_registrar">Registrar abono</string>
     <string name="abono_guardar">Guardar abono</string>
-    <string name="abono_monto">Monto del abono (RD$)</string>
     <string name="abono_metodo">Método de pago</string>
     <string name="abono_notas">Notas (opcional)</string>
     <string name="abono_monto_invalido">Ingresa un monto válido</string>
@@ -132,8 +66,6 @@
     <string name="settings_backup_subtitle">Respalda o restaura tus datos con Google Drive</string>
     <string name="settings_backup_upload">Subir a Google Drive</string>
     <string name="settings_backup_restore">Restaurar desde Google Drive</string>
-    <string name="notif_canal_nombre">Recordatorios diarios</string>
-    <string name="notif_canal_desc">Resumen de pedidos, entregas y cortes de tarjetas</string>
     <string name="notif_canal_cobros_nombre">Cobros pendientes</string>
     <string name="notif_canal_cobros_desc">Recordatorios de pedidos por cobrar</string>
     <string name="notif_canal_entregas_nombre">Entregas de pedidos</string>
@@ -147,19 +79,13 @@
     <string name="notif_cobros_title">Pedidos por cobrar</string>
     <string name="notif_cobros_text">Tienes %1$d pedidos por cobrar (RD$ %2$,.2f).</string>
     <string name="notif_cobros_text_atrasados">Tienes %1$d pedidos por cobrar (RD$ %2$,.2f). %3$d est\u00E1n atrasados.</string>
-    <string name="notif_pedidos_por_cobrar">Pedidos por cobrar</string>
-    <string name="notif_pedidos_atrasados">Pedidos atrasados</string>
-    <string name="notif_entregas_manana">Entregas ma\u00F1ana</string>
-    <string name="notif_corte_tarjeta">Corte de tarjeta en %1$d d\u00EDas</string>
     <string name="notif_entrega_title">Entrega de pedido</string>
     <string name="notif_entrega_hoy">El pedido de %1$s se entrega hoy.</string>
     <string name="notif_entrega_manana">El pedido de %1$s se entrega ma\u00F1ana.</string>
     <string name="notif_entrega_en_dias">El pedido de %1$s se entrega en %2$d d\u00EDas.</string>
-    <string name="notif_entrega_text">El pedido de %s se entrega ma\u00F1ana.</string>
     <string name="notif_corte_title">Corte de tarjeta</string>
     <string name="notif_corte_hoy">El corte de %1$s es hoy.</string>
     <string name="notif_corte_en_dias">El corte de %1$s es en %2$d d\u00EDas.</string>
-    <string name="notif_corte_text">El corte de %1$s es en %2$d d\u00EDas.</string>
     <string name="notif_pago_title">Pago de tarjeta</string>
     <string name="notif_pago_hoy">El pago de %1$s vence hoy.</string>
     <string name="notif_pago_en_dias">El pago de %1$s vence en %2$d d\u00EDas.</string>
@@ -174,8 +100,6 @@
     <string name="notif_prueba_text">Todo listo. Recibir\u00E1s recordatorios de cobros, entregas, tarjetas y un resumen diario.</string>
     <string name="notif_ajustes_titulo">Recordatorios</string>
     <string name="notif_ajustes_subtitulo">Cobros, entregas, tarjetas y resumen diario</string>
-    <string name="notif_ajustes_activar">Activar notificaciones</string>
-    <string name="notif_ajustes_activar_subtitulo">Recibe avisos aunque la app est\u00E9 cerrada</string>
     <string name="notif_estado_activo">Permiso activo. Toca para abrir los ajustes del sistema.</string>
     <string name="notif_estado_inactivo">Permiso desactivado. Toca para activarlo.</string>
     <string name="notif_frecuencia">Frecuencia de cobros</string>
@@ -190,7 +114,6 @@
     <string name="notif_dias_invalidos">Los d\u00EDas deben estar entre 0 y 30</string>
     <string name="notif_hora_ajustada">La hora del resumen debe estar entre 08:00 y 21:59. Se ajust\u00F3 a %1$s.</string>
     <string name="notif_horario_silencio">Horario de silencio: 10:00 p. m. a 8:00 a. m.</string>
-    <string name="notif_guardado">Recordatorios actualizados</string>
     <string name="settings_saved">Configuraci\u00F3n guardada</string>
     <string name="gastos_dashboard_title">Gastos del mes</string>
     <string name="pedido_resumen_title">Resumen del Pedido</string>
@@ -212,8 +135,6 @@
     <string name="total_pendiente">Total pendiente</string>
     <string name="dashboard_trend_placeholder">Sin cambios</string>
     <string name="acciones_rapidas">Acciones r\u00E1pidas</string>
-    <string name="ver_pedidos">Ver pedidos</string>
-    <string name="dashboard_reports">Reportes</string>
     <string name="proximos_pedidos">Pr\u00F3ximos pedidos</string>
     <string name="dashboard_next_orders_subtitle">Los siguientes 5 pedidos a entregar</string>
     <string name="no_hay_pedidos_proximos">No hay pedidos pr\u00F3ximos</string>
@@ -223,15 +144,11 @@
     <string name="tarjetas_subtitle">Administra tus tarjetas de cr\u00E9dito</string>
     <string name="tarjetas_nueva">Nueva tarjeta</string>
     <string name="tarjetas_empty">No hay tarjetas</string>
-    <string name="hint_swipe_tarjeta">Desliza para editar o eliminar</string>
     <string name="reportes_title">Reportes</string>
-    <string name="reportes_subtitle">Resumen de tu negocio</string>
     <string name="reportes_total_cobrado">Total cobrado</string>
     <string name="reportes_total_pendiente">Total pendiente</string>
     <string name="reportes_total_ventas">Total ventas</string>
-    <string name="reportes_total_inversion">Total inversi\u00F3n</string>
     <string name="reportes_total_ganancia">Total ganancia</string>
-    <string name="reportes_lista_pedidos">Lista de pedidos</string>
     <string name="item_pedido_compra_format">Compra: RD$ %,.2f</string>
     <string name="item_pedido_ganancia_format">Ganancia: RD$ %,.2f</string>
     <string name="item_pedido_sin_fecha">Sin fecha</string>
@@ -244,7 +161,6 @@
     <string name="dialog_pago_tarjeta_error">Monto inv\u00E1lido</string>
     <string name="dialog_delete_tarjeta_message">\u00BFEst\u00E1s seguro de que deseas eliminar esta tarjeta? Los pedidos anteriores se conservar\u00E1n sin tarjeta asociada.</string>
     <string name="toast_tarjeta_error">No se pudo eliminar la tarjeta. Int\u00E9ntalo de nuevo.</string>
-    <string name="accion_editar_tarjeta">Editar tarjeta</string>
     <string name="editar_tarjeta_title">Editar tarjeta</string>
     <string name="guardar_cambios">Guardar cambios</string>
     <string name="accion_eliminar">Eliminar</string>
@@ -256,12 +172,7 @@
     <string name="clientes_ver_pedidos">Ver pedidos</string>
     <string name="dialog_delete_cliente_title">Eliminar cliente</string>
     <string name="dialog_delete_cliente_message">\u00BFEst\u00E1s seguro de que deseas eliminar a %s? Todos sus pedidos tambi\u00E9n ser\u00E1n eliminados.</string>
-    <string name="toast_cliente_eliminado">Cliente eliminado</string>
     <string name="pedidos_estado_actualizado">Estado actualizado a %s</string>
-    <string name="pedidos_estado_error">No se pudo actualizar el estado</string>
-    <string name="dialog_delete_pedido_title">Eliminar pedido</string>
-    <string name="dialog_delete_pedido_message">\u00BFEst\u00E1s seguro de que deseas eliminar este pedido?</string>
-    <string name="snackbar_pedido_eliminado">Pedido eliminado</string>
     <string name="pedidos_title_cliente">Pedidos de %s</string>
     <string name="tarjeta_limite_format">L\u00EDmite: RD$ %,.2f</string>
     <string name="tarjeta_deuda_format">Deuda: RD$ %,.2f</string>
@@ -275,6 +186,7 @@
     <string name="dialog_change_estado_title">Cambiar estado del pedido</string>
     <string-array name="pedido_estados_labels">
         <item>Pendiente</item>
+        <item>En camino</item>
         <item>Entregado</item>
         <item>Pagado</item>
         <item>Cancelado</item>
@@ -290,43 +202,24 @@
     <string name="reportes_por_pagar_vacios">No hay pedidos por cobrar</string>
     <string name="reportes_pdf_abrir">Abrir PDF</string>
     <string name="reportes_pdf_open_error">No hay un visor de PDF disponible</string>
-    <string name="reportes_pdf_generado">PDF guardado en %s</string>
     <string name="reportes_pdf_error">No se pudo generar el PDF</string>
     <string name="dialog_pago_tarjeta_excede_deuda">No puedes pagar m\u00E1s de la deuda disponible</string>
     <string name="dialog_tarjeta_en_uso">No puedes eliminar la tarjeta porque tiene pedidos pendientes</string>
     <string name="tarjeta_campos_obligatorios">Completa todos los campos obligatorios</string>
-    <string name="inicio">Inicio</string>
-    <string name="menu_gestion">Gestión</string>
-    <string name="menu_finanzas">Finanzas</string>
-    <string name="menu_sistema">Sistema</string>
-    <string name="drawer_app_name">GESTIÓN DE COMPRAS</string>
     <string name="seccion_cliente_tienda">Cliente y tienda</string>
     <string name="seccion_pago">Datos del pago</string>
-    <string name="seccion_ganancia">Ganancia</string>
     <string name="seccion_fechas">Fechas</string>
     <string name="seccion_notas">Notas</string>
     <string name="calendario_search_hint">Buscar por cliente</string>
     <string name="clientes_filter_hint">Filtrar por</string>
-    <string name="seguridad">Seguridad</string>
     <string name="bloqueo_biometrico">Bloqueo biométrico</string>
     <string name="hora_recordatorio">Hora del recordatorio</string>
-    <string name="datos">Datos</string>
-    <string name="copia_seguridad">Copia de seguridad</string>
-    <string name="restaurar_datos">Restaurar datos</string>
     <string name="resetear_app">Resetear aplicación</string>
     <string name="informacion">Información</string>
-    <string name="version">Versión</string>
-    <string name="contacto">Contacto</string>
     <string name="enviar_sugerencia">Enviar sugerencia</string>
-    <string name="reset_confirm_title">¿Estás seguro?</string>
-    <string name="reset_confirm_message">Esto borrará TODOS los datos de la aplicación. Esta acción no se puede deshacer.</string>
-    <string name="backup_success">Copia de seguridad guardada en Descargas</string>
-    <string name="restore_success">Datos restaurados correctamente</string>
-    <string name="error_general">Ocurrió un error</string>
     <string name="biometric_title">Autenticación requerida</string>
     <string name="biometric_subtitle">Desbloquea para entrar</string>
     <string name="nuevo_cliente_title">Crear Nuevo Cliente</string>
-    <string name="ayuda">Cómo funciona</string>
     <string name="ayuda_title">Manual de Usuario</string>
     <string name="ayuda_intro">Bienvenido a la Guía de Usuario. Usa la barra inferior para moverte entre las secciones principales: Inicio, Pedidos, Clientes, Finanzas y Más (Tarjetas, Reportes, Calendario, Ajustes y Ayuda). En cualquier lista, el botón ⋮ de cada elemento muestra todas sus acciones. Desliza hacia abajo para conocer cada función.</string>
 
@@ -395,7 +288,6 @@
     <string name="actualizacion_mensaje">Hay una nueva versión (v%1$s) de Gestión de Compras.\n\n¿Deseas descargarla e instalarla ahora?</string>
     <string name="actualizar">Actualizar</string>
     <string name="ahora_no">Ahora no</string>
-    <string name="descarga_iniciada">Descargando actualización...</string>
     <string name="descargando_actualizacion">Gestión de Compras - actualización</string>
     <string name="error_descarga">No se pudo iniciar la descarga</string>
     <string name="error_instalacion">La actualización falló; inténtalo de nuevo</string>
@@ -458,12 +350,10 @@
     <!-- ===== Eliminar con deshacer ===== -->
     <string name="accion_deshacer">Deshacer</string>
     <string name="pedido_eliminado_deshacer">Pedido de %1$s eliminado</string>
-    <string name="gasto_eliminado_deshacer">Gasto "%1$s" eliminado</string>
 
     <!-- ===== Estados vacíos ===== -->
     <string name="vacio_crear_pedido">Crear pedido</string>
     <string name="vacio_crear_cliente">Añadir cliente</string>
-    <string name="vacio_crear_gasto">Registrar un gasto</string>
     <string name="vacio_crear_tarjeta">Agregar una tarjeta</string>
 
     <!-- ===== Búsqueda global ===== -->
@@ -493,7 +383,6 @@
     <string name="pedido_editar_titulo">Editar pedido #%1$d</string>
     <string name="pedido_actualizar">Actualizar pedido</string>
     <string name="pedido_faltan_selecciones">Selecciona cliente, tienda y tarjeta.</string>
-    <string name="pedido_faltan_montos">Completa el monto de compra y la ganancia.</string>
     <string name="pedido_valores_invalidos">Verifica los valores numéricos.</string>
     <string name="pedido_supera_limite">El monto de la compra supera el límite de la tarjeta.</string>
     <string name="pedido_actualizado">Pedido actualizado</string>
@@ -565,7 +454,6 @@
     <string name="fin_ingresos">Ingresos</string>
     <string name="fin_gastos">Gastos</string>
     <string name="fin_tasa_ahorro">Ahorro: %1$s%%</string>
-    <string name="fin_tasa_ahorro_na">Ahorro: —</string>
     <string name="fin_variacion_mas">%1$s%% más que el periodo anterior</string>
     <string name="fin_variacion_menos">%1$s%% menos que el periodo anterior</string>
     <string name="fin_variacion_igual">Igual que el periodo anterior</string>
@@ -618,7 +506,6 @@
     <string name="fin_categoria">Categoría</string>
     <string name="fin_cuenta">Cuenta</string>
     <string name="fin_repetir">Repetir automáticamente</string>
-    <string name="fin_frecuencia">Frecuencia</string>
     <string name="fin_frec_semanal">Semanal</string>
     <string name="fin_frec_quincenal">Quincenal</string>
     <string name="fin_frec_mensual">Mensual</string>
@@ -646,7 +533,6 @@
     <string name="fin_nueva_cuenta">Nueva cuenta</string>
     <string name="fin_editar_cuenta">Editar cuenta</string>
     <string name="fin_saldo_inicial">Saldo inicial</string>
-    <string name="fin_saldo_actual">Saldo actual: %1$s</string>
     <string name="fin_tipo_cuenta">Tipo</string>
     <string name="fin_cuenta_efectivo">Efectivo</string>
     <string name="fin_cuenta_banco">Banco</string>
@@ -734,4 +620,38 @@
     <string name="cliente_elegir_contacto">Importar</string>
     <string name="cliente_guardar_contacto">Exportar</string>
     <string name="cliente_contacto_cargado">Datos cargados de %1$s</string>
+
+    <!-- ===== Tiendas ===== -->
+    <string name="tiendas_titulo">Tiendas</string>
+    <string name="tiendas_ayuda">Las tiendas donde compras. Toca una para cambiarle el nombre; los pedidos se actualizan solos.</string>
+    <string name="tiendas_vacio">Aún no hay tiendas. Añade la primera con el botón de abajo.</string>
+    <string name="tienda_renombrar">Cambiar nombre</string>
+    <string name="tienda_duplicada">Ya existe una tienda con ese nombre</string>
+    <string name="tienda_no_eliminar_titulo">No se puede eliminar</string>
+    <string name="tienda_eliminada">Tienda "%1$s" eliminada</string>
+    <string name="accion_entendido">Entendido</string>
+    <string name="mas_tiendas">Tiendas</string>
+    <string name="mas_tiendas_sub">Añadir, renombrar o eliminar tiendas</string>
+    <plurals name="tienda_pedidos">
+        <item quantity="one">%1$d pedido</item>
+        <item quantity="other">%1$d pedidos</item>
+    </plurals>
+    <plurals name="tienda_no_eliminar_mensaje">
+        <item quantity="one">Esta tienda tiene %1$d pedido y no se puede eliminar. Puedes cambiarle el nombre.</item>
+        <item quantity="other">Esta tienda tiene %1$d pedidos y no se puede eliminar. Puedes cambiarle el nombre.</item>
+    </plurals>
+    <string name="pedido_metodo_pago">Método de pago del abono</string>
+    <string name="pedido_pago_completo_metodo">¿Cómo pagó los %1$s restantes?</string>
+    <string name="pedido_pago_completo_nota">Pago completo</string>
+
+    <!-- ===== Artículo y envío del pedido ===== -->
+    <string name="pedido_articulo_hint">Artículo (opcional)</string>
+    <string name="seccion_envio">Envío</string>
+    <string name="pedido_rastreo_hint">Nº de seguimiento (opcional)</string>
+    <string name="detalle_seguimiento">Seguimiento</string>
+    <string name="detalle_articulo">Artículo</string>
+    <string name="abono_monto_corto">Monto del abono</string>
+    <string name="abono_todo_el_saldo">Todo el saldo</string>
+    <string name="pago_tarjeta_monto">Monto a pagar</string>
+    <string name="pago_tarjeta_toda_deuda">Toda la deuda</string>
 </resources>

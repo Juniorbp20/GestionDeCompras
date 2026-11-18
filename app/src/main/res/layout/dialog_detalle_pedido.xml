@@ -120,6 +120,34 @@
 
         </LinearLayout>
 
+        <!-- Número de seguimiento: solo si el pedido lo tiene -->
+        <LinearLayout
+            android:id="@+id/layout_detalle_rastreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detalle_seguimiento"
+                android:textAppearance="@style/TextAppearance.App.Overline" />
+
+            <TextView
+                android:id="@+id/tv_detalle_rastreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFeatureSettings="tnum"
+                android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                android:textColor="@color/gray_dark"
+                android:textIsSelectable="true"
+                tools:text="TBA123456789" />
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

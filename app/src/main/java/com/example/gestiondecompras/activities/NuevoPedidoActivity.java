@@ -50,6 +50,8 @@ public class NuevoPedidoActivity extends AppCompatActivity {
     private double originalMonto = 0; // Guardamos el monto original para ediciones
     private double totalAbonadoOriginal = 0;
     private String estadoOriginal = Pedido.ESTADO_PENDIENTE;
+    /** Pedido cargado al editar: conserva los campos que este formulario no muestra. */
+    @Nullable private Pedido pedidoOriginal;
     private Cliente selectedCliente;
     private Tienda selectedTienda;
     private Tarjeta selectedTarjeta;
@@ -104,6 +106,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         setupDatePickers();
         setupSaveButton();
         setupInputWatchers();
+        setupMetodoPago();
         updateTotalGeneral();
 
         if (getIntent().hasExtra("pedido_id")) {
@@ -254,6 +257,18 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         dialogo.show();
     }
 
+    /** Método de pago del abono inicial (Efectivo por defecto). */
+    private void setupMetodoPago() {
+        binding.spinnerMetodoAbono.setAdapter(new ArrayAdapter<>(this, R.layout.item_dropdown, Abono.METODOS));
+        binding.spinnerMetodoAbono.setText(Abono.METODO_EFECTIVO, false);
+    }
+
+    private String metodoPagoElegido() {
+        String metodo = binding.spinnerMetodoAbono.getText() != null
+                ? binding.spinnerMetodoAbono.getText().toString().trim() : "";
+        return metodo.isEmpty() ? Abono.METODO_EFECTIVO : metodo;
+    }
+
     private void setupDatePickers() {
         binding.btnFechaRegistro.setOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro, false));
         binding.btnFechaRegistro.setEndIconOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro, false));
@@ -261,6 +276,13 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         binding.btnFechaEntrega.setOnClickListener(v -> showDatePickerDialog(fechaEntrega, binding.etFechaEntrega, true));
         binding.btnFechaEntrega.setEndIconOnClickListener(v -> showDatePickerDialog(fechaEntrega, binding.etFechaEntrega, true));
         binding.etFechaEntrega.setOnClickListener(v -> showDatePickerDialog(fechaEntrega, binding.etFechaEntrega, true));
+    }
+
+    /** Texto del campo sin espacios, o null si está vacío (columnas opcionales). */
+    @Nullable
+    private static String textoOpcional(EditText campo) {
+        String texto = campo.getText() != null ? campo.getText().toString().trim() : "";
+        return texto.isEmpty() ? null : texto;
     }
 
     private static String formatoFecha(Calendar calendario) {
@@ -343,13 +365,17 @@ public class NuevoPedidoActivity extends AppCompatActivity {
                 originalMonto = pedido.getMontoCompra(); // Guardar para validar cambios
                 totalAbonadoOriginal = pedido.getTotalAbonado();
                 estadoOriginal = pedido.getEstado();
+                pedidoOriginal = pedido;
                 binding.etMontoCompra.setText(String.valueOf(pedido.getMontoCompra()));
 
                 binding.rbGananciaFija.setChecked(true);
                 binding.etGanancia.setText(String.valueOf(pedido.getGanancia()));
                 binding.etNotas.setText(pedido.getNotas());
+                binding.etArticulo.setText(pedido.getArticulo());
+                binding.etRastreo.setText(pedido.getRastreo());
 
                 binding.layoutAbonoInicial.setVisibility(View.GONE);
+                binding.tilMetodoAbono.setVisibility(View.GONE);
                 binding.tvAbonoInfo.setVisibility(View.VISIBLE);
                 binding.tvAbonoInfo.setText(getString(R.string.abono_info_format,
                         String.format(Locale.getDefault(), "RD$ %,.2f", totalAbonadoOriginal),
@@ -488,6 +514,13 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         // Sin fecha de entrega elegida se usa la de compra
         pedido.fechaEntregaEpoch = fechaEntregaElegida ? fechaEntrega.getTimeInMillis() : fechaRegistro.getTimeInMillis();
         pedido.notas = Objects.requireNonNull(binding.etNotas.getText()).toString().trim();
+        if (pedidoOriginal != null) {
+            pedido.montoUsd = pedidoOriginal.montoUsd;
+            pedido.tasaCambio = pedidoOriginal.tasaCambio;
+            pedido.fotoRecibo = pedidoOriginal.fotoRecibo;
+        }
+        pedido.articulo = textoOpcional(binding.etArticulo);
+        pedido.rastreo = textoOpcional(binding.etRastreo);
 
         if (pedidoIdEdicion > 0) {
             boolean estabaPagado = Pedido.ESTADO_PAGADO.equalsIgnoreCase(estadoOriginal);
@@ -505,7 +538,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
                     : Pedido.ESTADO_PENDIENTE;
         }
 
-        viewModel.savePedido(pedido, tarjeta, abonoInicial, Abono.METODO_EFECTIVO);
+        viewModel.savePedido(pedido, tarjeta, abonoInicial, metodoPagoElegido());
         Toast.makeText(this, pedidoIdEdicion > 0 ? R.string.pedido_actualizado : R.string.pedido_guardado, Toast.LENGTH_SHORT).show();
         finish();
     }

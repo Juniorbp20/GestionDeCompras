@@ -140,7 +140,7 @@
                             android:background="@drawable/bg_icon_badge_blue"
                             android:padding="8dp"
                             android:src="@drawable/ic_list"
-                            android:tint="@color/primary_color"
+                            app:tint="@color/primary_color"
                             android:importantForAccessibility="no" />
 
                         <TextView
@@ -183,7 +183,7 @@
                             android:background="@drawable/bg_icon_badge_green"
                             android:padding="8dp"
                             android:src="@drawable/ic_credit_card"
-                            android:tint="@color/success_color"
+                            app:tint="@color/success_color"
                             android:importantForAccessibility="no" />
 
                         <TextView
@@ -234,7 +234,7 @@
                             android:background="@drawable/bg_icon_badge_red"
                             android:padding="8dp"
                             android:src="@drawable/ic_trending_down"
-                            android:tint="@color/error_color"
+                            app:tint="@color/error_color"
                             android:importantForAccessibility="no" />
 
                         <TextView
@@ -277,7 +277,7 @@
                             android:background="@drawable/bg_icon_badge_green"
                             android:padding="8dp"
                             android:src="@drawable/ic_trending_up"
-                            android:tint="@color/dashboard_card_income"
+                            app:tint="@color/dashboard_card_income"
                             android:importantForAccessibility="no" />
 
                         <TextView
@@ -322,7 +322,7 @@
                         android:background="@drawable/bg_icon_badge_red"
                         android:padding="9dp"
                         android:src="@drawable/ic_wallet"
-                        android:tint="@color/dashboard_card_overdue"
+                        app:tint="@color/dashboard_card_overdue"
                         android:importantForAccessibility="no" />
 
                     <LinearLayout
@@ -390,7 +390,7 @@
                             android:background="@drawable/bg_icon_tile"
                             android:padding="9dp"
                             android:src="@drawable/ic_add_circle"
-                            android:tint="@color/accent_gold"
+                            app:tint="@color/accent_gold"
                             android:importantForAccessibility="no" />
 
                         <TextView
@@ -427,7 +427,7 @@
                             android:background="@drawable/bg_icon_tile"
                             android:padding="9dp"
                             android:src="@drawable/ic_wallet"
-                            android:tint="@color/accent_gold"
+                            app:tint="@color/accent_gold"
                             android:importantForAccessibility="no" />
 
                         <TextView
@@ -473,7 +473,7 @@
                             android:background="@drawable/bg_icon_tile"
                             android:padding="9dp"
                             android:src="@drawable/ic_person_add"
-                            android:tint="@color/accent_gold"
+                            app:tint="@color/accent_gold"
                             android:importantForAccessibility="no" />
 
                         <TextView
@@ -510,7 +510,7 @@
                             android:background="@drawable/bg_icon_tile"
                             android:padding="9dp"
                             android:src="@drawable/ic_calendar"
-                            android:tint="@color/accent_gold"
+                            app:tint="@color/accent_gold"
                             android:importantForAccessibility="no" />
 
                         <TextView
@@ -567,7 +567,7 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:src="@drawable/ic_list"
-                    android:tint="@color/gray_light"
+                    app:tint="@color/gray_light"
                     android:importantForAccessibility="no" />
 
                 <TextView

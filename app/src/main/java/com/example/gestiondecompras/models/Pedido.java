@@ -48,6 +48,21 @@ public class Pedido {
     @ColumnInfo(name = "fecha_entrega")
     public Long fechaEntregaEpoch;
     public String notas;
+
+    /** Monto de la compra en dólares (null si se compró en pesos). */
+    @ColumnInfo(name = "monto_usd")
+    public Double montoUsd;
+    /** Tasa RD$ por US$ usada para convertir {@link #montoUsd}. */
+    @ColumnInfo(name = "tasa_cambio")
+    public Double tasaCambio;
+    /** Número de rastreo del envío (opcional). */
+    public String rastreo;
+    /** Artículo o descripción de lo comprado (opcional). */
+    public String articulo;
+    /** Nombre del archivo de la foto del recibo en files/recibos (opcional). */
+    @ColumnInfo(name = "foto_recibo")
+    public String fotoRecibo;
+
     @NonNull
     @ColumnInfo(name = "estado", defaultValue = ESTADO_PENDIENTE)
     public String estado = ESTADO_PENDIENTE;
@@ -59,6 +74,16 @@ public class Pedido {
     public static final String ESTADO_ENTREGADO = "entregado";
     public static final String ESTADO_PAGADO = "pagado";
     public static final String ESTADO_CANCELADO = "cancelado";
+    /** El pedido ya salió de la tienda pero aún no se ha entregado. */
+    public static final String ESTADO_EN_CAMINO = "en camino";
+
+    public String getArticulo() {
+        return articulo;
+    }
+
+    public String getRastreo() {
+        return rastreo;
+    }
 
     public long getId() {
         return id;

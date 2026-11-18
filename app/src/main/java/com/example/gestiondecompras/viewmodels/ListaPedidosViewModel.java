@@ -117,6 +117,9 @@ public class ListaPedidosViewModel extends AndroidViewModel {
             case "pendientes":
             case "pendiente":
                 return Pedido.ESTADO_PENDIENTE;
+            case "en camino":
+            case "en_camino":
+                return Pedido.ESTADO_EN_CAMINO;
             case "entregados":
             case "entregado":
                 return Pedido.ESTADO_ENTREGADO;
@@ -134,6 +137,10 @@ public class ListaPedidosViewModel extends AndroidViewModel {
         }
     }
 
+    private static boolean contiene(String texto, String criterio) {
+        return texto != null && texto.toLowerCase(Locale.getDefault()).contains(criterio);
+    }
+
     private List<Pedido> filtrar(List<Pedido> origen, String busqueda, Integer clienteId) {
         if ((busqueda == null || busqueda.isEmpty()) && clienteId == null) {
             return origen;
@@ -143,8 +150,10 @@ public class ListaPedidosViewModel extends AndroidViewModel {
         for (Pedido pedido : origen) {
             boolean coincideCliente = clienteId == null || pedido.getClienteId() == clienteId;
             boolean coincideBusqueda = criterio.isEmpty()
-                    || pedido.getClienteNombre().toLowerCase(Locale.getDefault()).contains(criterio)
-                    || pedido.getTienda().toLowerCase(Locale.getDefault()).contains(criterio);
+                    || contiene(pedido.getClienteNombre(), criterio)
+                    || contiene(pedido.getTienda(), criterio)
+                    || contiene(pedido.getArticulo(), criterio)
+                    || contiene(pedido.getRastreo(), criterio);
             if (coincideCliente && coincideBusqueda) {
                 filtrados.add(pedido);
             }
