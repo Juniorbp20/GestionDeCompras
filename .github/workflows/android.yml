@@ -1,9 +1,11 @@
 name: Android CI
 
 on:
-  # Compila y prueba en cada push a cualquier rama (no solo al publicar)
+  # Push solo en la rama principal: las demás ramas se prueban a través de su
+  # pull request, para no ejecutar la misma CI dos veces por cada commit.
+  # Una rama sin pull request se puede probar a mano con "Run workflow".
   push:
-    branches: [ "**" ]
+    branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
   workflow_dispatch:
