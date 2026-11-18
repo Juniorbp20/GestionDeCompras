@@ -38,6 +38,9 @@
         </provider>
 
 
+        <activity android:name="com.example.gestiondecompras.activities.TiendasActivity"
+            android:label="@string/tiendas_titulo"
+            android:parentActivityName=".activities.MasActivity" />
         <activity android:name="com.example.gestiondecompras.activities.TarjetasActivity"
             android:label="@string/tarjetas_title"
             android:parentActivityName=".activities.MainActivity" />

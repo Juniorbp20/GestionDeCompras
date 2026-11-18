@@ -104,6 +104,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         setupDatePickers();
         setupSaveButton();
         setupInputWatchers();
+        setupMetodoPago();
         updateTotalGeneral();
 
         if (getIntent().hasExtra("pedido_id")) {
@@ -254,6 +255,18 @@ public class NuevoPedidoActivity extends AppCompatActivity {
         dialogo.show();
     }
 
+    /** Método de pago del abono inicial (Efectivo por defecto). */
+    private void setupMetodoPago() {
+        binding.spinnerMetodoAbono.setAdapter(new ArrayAdapter<>(this, R.layout.item_dropdown, Abono.METODOS));
+        binding.spinnerMetodoAbono.setText(Abono.METODO_EFECTIVO, false);
+    }
+
+    private String metodoPagoElegido() {
+        String metodo = binding.spinnerMetodoAbono.getText() != null
+                ? binding.spinnerMetodoAbono.getText().toString().trim() : "";
+        return metodo.isEmpty() ? Abono.METODO_EFECTIVO : metodo;
+    }
+
     private void setupDatePickers() {
         binding.btnFechaRegistro.setOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro, false));
         binding.btnFechaRegistro.setEndIconOnClickListener(v -> showDatePickerDialog(fechaRegistro, binding.etFechaRegistro, false));
@@ -350,6 +363,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
                 binding.etNotas.setText(pedido.getNotas());
 
                 binding.layoutAbonoInicial.setVisibility(View.GONE);
+                binding.tilMetodoAbono.setVisibility(View.GONE);
                 binding.tvAbonoInfo.setVisibility(View.VISIBLE);
                 binding.tvAbonoInfo.setText(getString(R.string.abono_info_format,
                         String.format(Locale.getDefault(), "RD$ %,.2f", totalAbonadoOriginal),
@@ -505,7 +519,7 @@ public class NuevoPedidoActivity extends AppCompatActivity {
                     : Pedido.ESTADO_PENDIENTE;
         }
 
-        viewModel.savePedido(pedido, tarjeta, abonoInicial, Abono.METODO_EFECTIVO);
+        viewModel.savePedido(pedido, tarjeta, abonoInicial, metodoPagoElegido());
         Toast.makeText(this, pedidoIdEdicion > 0 ? R.string.pedido_actualizado : R.string.pedido_guardado, Toast.LENGTH_SHORT).show();
         finish();
     }

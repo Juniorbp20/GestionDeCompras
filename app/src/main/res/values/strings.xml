@@ -734,4 +734,27 @@
     <string name="cliente_elegir_contacto">Importar</string>
     <string name="cliente_guardar_contacto">Exportar</string>
     <string name="cliente_contacto_cargado">Datos cargados de %1$s</string>
+
+    <!-- ===== Tiendas ===== -->
+    <string name="tiendas_titulo">Tiendas</string>
+    <string name="tiendas_ayuda">Las tiendas donde compras. Toca una para cambiarle el nombre; los pedidos se actualizan solos.</string>
+    <string name="tiendas_vacio">Aún no hay tiendas. Añade la primera con el botón de abajo.</string>
+    <string name="tienda_renombrar">Cambiar nombre</string>
+    <string name="tienda_duplicada">Ya existe una tienda con ese nombre</string>
+    <string name="tienda_no_eliminar_titulo">No se puede eliminar</string>
+    <string name="tienda_eliminada">Tienda "%1$s" eliminada</string>
+    <string name="accion_entendido">Entendido</string>
+    <string name="mas_tiendas">Tiendas</string>
+    <string name="mas_tiendas_sub">Añadir, renombrar o eliminar tiendas</string>
+    <plurals name="tienda_pedidos">
+        <item quantity="one">%1$d pedido</item>
+        <item quantity="other">%1$d pedidos</item>
+    </plurals>
+    <plurals name="tienda_no_eliminar_mensaje">
+        <item quantity="one">Esta tienda tiene %1$d pedido y no se puede eliminar. Puedes cambiarle el nombre.</item>
+        <item quantity="other">Esta tienda tiene %1$d pedidos y no se puede eliminar. Puedes cambiarle el nombre.</item>
+    </plurals>
+    <string name="pedido_metodo_pago">Método de pago del abono</string>
+    <string name="pedido_pago_completo_metodo">¿Cómo pagó los %1$s restantes?</string>
+    <string name="pedido_pago_completo_nota">Pago completo</string>
 </resources>

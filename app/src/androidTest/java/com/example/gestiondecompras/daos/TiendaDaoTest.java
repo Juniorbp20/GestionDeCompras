@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.gestiondecompras.database.AppDatabase;
+import com.example.gestiondecompras.models.Cliente;
+import com.example.gestiondecompras.models.Pedido;
 import com.example.gestiondecompras.models.Tienda;
 
 import org.junit.After;
@@ -64,6 +66,58 @@ public class TiendaDaoTest {
         assertNotNull(encontrada);
         assertEquals(id, encontrada.getId());
         assertNull(dao.buscarPorNombre("Temu"));
+    }
+
+    private long nuevoPedido(long tiendaId, String nombreTienda) {
+        Cliente cliente = new Cliente();
+        cliente.nombre = "Ana";
+        cliente.apellido = "Lopez";
+        cliente.email = "ana@test.com";
+        cliente.telefono = "8090000000";
+        long clienteId = db.clienteDao().insert(cliente);
+        Pedido p = new Pedido();
+        p.clienteId = clienteId;
+        p.clienteNombre = "Ana";
+        p.tiendaId = tiendaId;
+        p.setTienda(nombreTienda);
+        p.montoCompra = 100;
+        p.totalGeneral = 120;
+        p.fechaRegistroEpoch = System.currentTimeMillis();
+        p.estado = Pedido.ESTADO_PENDIENTE;
+        return db.pedidoDao().insert(p);
+    }
+
+    @Test
+    public void conteo_cuentaPedidosPorTienda() {
+        long amazon = dao.insert(crearTienda("Amazon"));
+        long temu = dao.insert(crearTienda("Temu"));
+        nuevoPedido(amazon, "Amazon");
+        nuevoPedido(amazon, "Amazon");
+        assertEquals(2, dao.contarPedidos(amazon));
+        assertEquals(0, dao.contarPedidos(temu));
+        List<TiendaDao.TiendaConConteo> lista = dao.getTiendasConConteo();
+        assertEquals("Amazon", lista.get(0).nombre);
+        assertEquals(2, lista.get(0).pedidos);
+        assertEquals(0, lista.get(1).pedidos);
+    }
+
+    @Test
+    public void renombrar_actualizaTiendaYPedidos() {
+        long id = dao.insert(crearTienda("Amazn"));
+        long pedidoId = nuevoPedido(id, "Amazn");
+        db.runInTransaction(() -> {
+            dao.actualizarNombre(id, "Amazon");
+            dao.renombrarEnPedidos(id, "Amazon");
+        });
+        assertEquals("Amazon", dao.getAllTiendas().get(0).getNombre());
+        assertEquals("Amazon", db.pedidoDao().getPedidoById(pedidoId).getTienda());
+    }
+
+    @Test
+    public void eliminarPorId_borraTiendaSinPedidos() {
+        long id = dao.insert(crearTienda("Shein"));
+        assertEquals(1, dao.eliminarPorId(id));
+        assertTrue(dao.getAllTiendas().isEmpty());
     }
 
     @Test

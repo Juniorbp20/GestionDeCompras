@@ -261,6 +261,21 @@
                     android:textAppearance="@style/TextAppearance.App.BodyMedium" />
             </LinearLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_metodo_abono"
+                style="@style/Widget.App.TextInputLayout.Dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/pedido_metodo_pago">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/spinner_metodo_abono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:id="@+id/tv_abono_info"
                 android:layout_width="match_parent"

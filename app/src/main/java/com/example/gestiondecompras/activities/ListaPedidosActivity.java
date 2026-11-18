@@ -30,6 +30,7 @@ import com.example.gestiondecompras.databinding.ActivityListaPedidosBinding;
 import com.example.gestiondecompras.models.Abono;
 import com.example.gestiondecompras.models.Pedido;
 import com.example.gestiondecompras.viewmodels.ListaPedidosViewModel;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Locale;
@@ -446,17 +447,27 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
                         return;
                     }
                     if (Pedido.ESTADO_PAGADO.equals(nuevoEstado) && Dinero.esPositivo(pedido.getSaldo())) {
-                        MutableLiveData<Boolean> resultado = new MutableLiveData<>();
-                        resultado.observe(this, ok -> {
-                            if (Boolean.TRUE.equals(ok)) {
-                                Snackbar.make(binding.rvPedidos,
-                                        getString(R.string.pedidos_estado_actualizado, labels[which]),
-                                        Snackbar.LENGTH_SHORT).show();
-                                cargarPedidos();
-                            }
-                        });
-                        viewModel.registrarAbono(pedido, pedido.getSaldo(),
-                                Abono.METODO_EFECTIVO, "Pago completo", resultado);
+                        // Se pregunta cómo pagó el cliente el saldo restante
+                        String etiqueta = labels[which];
+                        dialog.dismiss();
+                        new MaterialAlertDialogBuilder(this)
+                                .setTitle(getString(R.string.pedido_pago_completo_metodo, DetallePedido.moneda(pedido.getSaldo())))
+                                .setItems(Abono.METODOS, (d2, i) -> {
+                                    MutableLiveData<Boolean> resultado = new MutableLiveData<>();
+                                    resultado.observe(this, ok -> {
+                                        if (Boolean.TRUE.equals(ok)) {
+                                            Snackbar.make(binding.rvPedidos,
+                                                    getString(R.string.pedidos_estado_actualizado, etiqueta),
+                                                    Snackbar.LENGTH_SHORT).show();
+                                            cargarPedidos();
+                                        }
+                                    });
+                                    viewModel.registrarAbono(pedido, pedido.getSaldo(),
+                                            Abono.METODOS[i], getString(R.string.pedido_pago_completo_nota), resultado);
+                                })
+                                .setNegativeButton(R.string.accion_cancelar, null)
+                                .show();
+                        return;
                     } else {
                         pedido.estado = nuevoEstado;
                         viewModel.updatePedido(pedido);
