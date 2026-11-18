@@ -48,6 +48,19 @@ public class Pedido {
     @ColumnInfo(name = "fecha_entrega")
     public Long fechaEntregaEpoch;
     public String notas;
+
+    /** Monto de la compra en dólares (null si se compró en pesos). */
+    @ColumnInfo(name = "monto_usd")
+    public Double montoUsd;
+    /** Tasa RD$ por US$ usada para convertir {@link #montoUsd}. */
+    @ColumnInfo(name = "tasa_cambio")
+    public Double tasaCambio;
+    /** Número de rastreo del envío (opcional). */
+    public String rastreo;
+    /** Nombre del archivo de la foto del recibo en files/recibos (opcional). */
+    @ColumnInfo(name = "foto_recibo")
+    public String fotoRecibo;
+
     @NonNull
     @ColumnInfo(name = "estado", defaultValue = ESTADO_PENDIENTE)
     public String estado = ESTADO_PENDIENTE;
