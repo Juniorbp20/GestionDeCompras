@@ -275,6 +275,7 @@
     <string name="dialog_change_estado_title">Cambiar estado del pedido</string>
     <string-array name="pedido_estados_labels">
         <item>Pendiente</item>
+        <item>En camino</item>
         <item>Entregado</item>
         <item>Pagado</item>
         <item>Cancelado</item>
@@ -757,4 +758,11 @@
     <string name="pedido_metodo_pago">Método de pago del abono</string>
     <string name="pedido_pago_completo_metodo">¿Cómo pagó los %1$s restantes?</string>
     <string name="pedido_pago_completo_nota">Pago completo</string>
+
+    <!-- ===== Artículo y envío del pedido ===== -->
+    <string name="pedido_articulo_hint">Artículo (opcional)</string>
+    <string name="seccion_envio">Envío</string>
+    <string name="pedido_rastreo_hint">Nº de seguimiento (opcional)</string>
+    <string name="detalle_seguimiento">Seguimiento</string>
+    <string name="detalle_articulo">Artículo</string>
 </resources>

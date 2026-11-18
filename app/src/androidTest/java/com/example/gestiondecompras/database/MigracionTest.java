@@ -62,4 +62,35 @@ public class MigracionTest {
             assertEquals(2, c.getInt(0));
         }
     }
+
+    @Test
+    public void migracion7a9_conservaPedidosYAnadeColumnasNuevas() throws Exception {
+        SupportSQLiteDatabase db = helper.createDatabase(BD, 7);
+        db.execSQL("INSERT INTO clientes (id, nombre, apellido, telefono, email, direccion, activo) "
+                + "VALUES (1, 'Ana', 'Lopez', '809', 'a@b.c', '', 1)");
+        db.execSQL("INSERT INTO pedidos (cliente_id, cliente_nombre, tienda, monto_compra, ganancia, "
+                + "total_general, fecha_registro_epoch, notas, estado) "
+                + "VALUES (1, 'Ana Lopez', 'Amazon', 100, 20, 120, 1000, 'nota', 'pendiente')");
+        db.close();
+
+        db = helper.runMigrationsAndValidate(BD, 9, true,
+                AppDatabase.MIGRATION_7_8, AppDatabase.MIGRATION_8_9);
+
+        try (Cursor c = db.query("SELECT cliente_nombre, total_general, notas, rastreo, articulo FROM pedidos")) {
+            assertEquals(1, c.getCount());
+            assertTrue(c.moveToFirst());
+            assertEquals("Ana Lopez", c.getString(0));
+            assertEquals(120, c.getDouble(1), 0.0);
+            assertEquals("nota", c.getString(2));
+            assertTrue(c.isNull(3));
+            assertTrue(c.isNull(4));
+        }
+        db.execSQL("UPDATE pedidos SET articulo = 'Audífonos', rastreo = 'TBA123'");
+        try (Cursor c = db.query("SELECT articulo, rastreo FROM pedidos")) {
+            assertTrue(c.moveToFirst());
+            assertEquals("Audífonos", c.getString(0));
+            assertEquals("TBA123", c.getString(1));
+        }
+        db.close();
+    }
 }

@@ -15,6 +15,7 @@ public class PedidoModelTest {
         assertEquals("entregado", Pedido.ESTADO_ENTREGADO);
         assertEquals("pagado", Pedido.ESTADO_PAGADO);
         assertEquals("cancelado", Pedido.ESTADO_CANCELADO);
+        assertEquals("en camino", Pedido.ESTADO_EN_CAMINO);
     }
 
     @Test

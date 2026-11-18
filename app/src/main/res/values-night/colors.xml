@@ -107,4 +107,8 @@
     <color name="status_delivered_bg">#18324A</color>
     <color name="status_paid_bg">#11402B</color>
     <color name="status_cancelled_bg">#4A1E1A</color>
+
+    <!-- Estado "En camino" -->
+    <color name="status_en_camino">#B79BDB</color>
+    <color name="status_en_camino_bg">#2E2442</color>
 </resources>

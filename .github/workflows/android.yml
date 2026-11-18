@@ -61,7 +61,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         shell: bash
         run: |
-          for f in app/schemas/*/8.json; do
+          for f in app/schemas/*/9.json; do
             echo "=====INICIO_ESQUEMA $f"
             base64 -w0 "$f"; echo
             echo "=====FIN_ESQUEMA"

@@ -43,7 +43,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
     private final BorradoConDeshacer borrado = new BorradoConDeshacer();
     private Integer filtroClienteId = null;
     private String filtroClienteNombre = null;
-    private final String[] estados = {"Todos", "Por Cobrar", "Pendientes", "Entregados", "Pagados", "Atrasados"};
+    private final String[] estados = {"Todos", "Por Cobrar", "Pendientes", "En camino", "Entregados", "Pagados", "Atrasados"};
     private boolean filtroAtrasados = false;
 
     @Override
@@ -137,15 +137,16 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
 
         int selection = 0; // Default: Todos
         if (filtroAtrasados) {
-            selection = 5; // Atrasados
+            selection = 6; // Atrasados
         } else if (getIntent() != null && getIntent().hasExtra("filtro_estado")) {
             String extra = getIntent().getStringExtra("filtro_estado");
             if (extra != null) {
                 switch (extra.toLowerCase()) {
                     case "por_cobrar": selection = 1; break;
                     case "pendiente": selection = 2; break;
-                    case "entregado": selection = 3; break;
-                    case "pagado": selection = 4; break;
+                    case "en camino": selection = 3; break;
+                    case "entregado": selection = 4; break;
+                    case "pagado": selection = 5; break;
                     // default 0
                 }
             }
@@ -421,6 +422,7 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
     private void mostrarDialogoEstado(Pedido pedido) {
         final String[] valores = {
                 Pedido.ESTADO_PENDIENTE,
+                Pedido.ESTADO_EN_CAMINO,
                 Pedido.ESTADO_ENTREGADO,
                 Pedido.ESTADO_PAGADO,
                 Pedido.ESTADO_CANCELADO

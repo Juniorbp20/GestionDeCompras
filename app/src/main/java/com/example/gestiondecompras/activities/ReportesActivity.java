@@ -211,6 +211,7 @@ public class ReportesActivity extends AppCompatActivity {
     private static final int COLOR_GREEN = Color.rgb(76, 175, 80);
     private static final int COLOR_BLUE = Color.rgb(33, 150, 243);
     private static final int COLOR_ORANGE = Color.rgb(255, 152, 0);
+    private static final int COLOR_EN_CAMINO = Color.rgb(107, 79, 168);
     private static final int COLOR_RED = Color.rgb(244, 67, 54);
     private static final int COLOR_LIGHT_BG = Color.rgb(243, 247, 252);
 
@@ -432,6 +433,7 @@ public class ReportesActivity extends AppCompatActivity {
         if (Pedido.ESTADO_PAGADO.equalsIgnoreCase(estado)) return COLOR_GREEN;
         if (Pedido.ESTADO_ENTREGADO.equalsIgnoreCase(estado)) return COLOR_BLUE;
         if (Pedido.ESTADO_CANCELADO.equalsIgnoreCase(estado)) return COLOR_RED;
+        if (Pedido.ESTADO_EN_CAMINO.equalsIgnoreCase(estado)) return COLOR_EN_CAMINO;
         return COLOR_ORANGE;
     }
 

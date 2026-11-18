@@ -31,13 +31,15 @@ public final class ExportadorCsv {
 
     public static void exportarPedidos(Context context, List<Pedido> pedidos, String nombreBase) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        String[] encabezado = {"Cliente", "Tienda", "Fecha compra", "Fecha entrega", "Estado",
+        String[] encabezado = {"Cliente", "Tienda", "Artículo", "Seguimiento", "Fecha compra", "Fecha entrega", "Estado",
                 "Compra", "Ganancia", "Total", "Abonado", "Saldo", "Notas"};
         List<String[]> filas = new ArrayList<>();
         for (Pedido p : pedidos) {
             filas.add(new String[]{
                     p.getClienteNombre(),
                     p.getTienda(),
+                    p.getArticulo() != null ? p.getArticulo() : "",
+                    p.getRastreo() != null ? p.getRastreo() : "",
                     p.getFechaRegistro() != null ? sdf.format(p.getFechaRegistro()) : "",
                     p.getFechaEntrega() != null ? sdf.format(p.getFechaEntrega()) : "",
                     p.getEstado(),

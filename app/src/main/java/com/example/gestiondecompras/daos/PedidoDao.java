@@ -25,7 +25,7 @@ public interface PedidoDao {
     @Query("SELECT * FROM pedidos WHERE id = :id LIMIT 1")
     Pedido getPedidoById(long id);
 
-    @Query("SELECT * FROM pedidos WHERE (:estado = '' OR estado = :estado) AND (:busqueda = '' OR cliente_nombre LIKE '%' || :busqueda || '%') AND (:clienteId IS NULL OR cliente_id = :clienteId) ORDER BY fecha_registro_epoch DESC")
+    @Query("SELECT * FROM pedidos WHERE (:estado = '' OR estado = :estado) AND (:busqueda = '' OR cliente_nombre LIKE '%' || :busqueda || '%' OR articulo LIKE '%' || :busqueda || '%' OR rastreo LIKE '%' || :busqueda || '%' OR tienda LIKE '%' || :busqueda || '%') AND (:clienteId IS NULL OR cliente_id = :clienteId) ORDER BY fecha_registro_epoch DESC")
     List<Pedido> getPedidosFiltrados(String estado, String busqueda, Integer clienteId);
 
     @Query("SELECT * FROM pedidos WHERE date(fecha_registro_epoch/1000,'unixepoch')=date(:epoch/1000,'unixepoch') ORDER BY fecha_registro_epoch ASC")
@@ -34,7 +34,7 @@ public interface PedidoDao {
     @Query("SELECT * FROM pedidos WHERE fecha_entrega IS NOT NULL AND date(fecha_entrega/1000,'unixepoch')=date(:epoch/1000,'unixepoch') ORDER BY fecha_entrega ASC")
     List<Pedido> getEntregasPorDia(long epoch);
 
-    @Query("SELECT * FROM pedidos WHERE estado = 'pendiente' AND fecha_entrega IS NOT NULL " +
+    @Query("SELECT * FROM pedidos WHERE estado IN ('pendiente', 'en camino') AND fecha_entrega IS NOT NULL " +
            "AND fecha_entrega >= :desde AND fecha_entrega <= :hasta ORDER BY fecha_entrega ASC")
     List<Pedido> getEntregasPendientesEnRango(long desde, long hasta);
 
@@ -57,10 +57,10 @@ public interface PedidoDao {
     @Query("SELECT cliente_nombre AS clienteNombre, SUM(ganancia) AS totalGanancia FROM pedidos WHERE estado != 'cancelado' GROUP BY cliente_id ORDER BY totalGanancia DESC")
     List<com.example.gestiondecompras.models.ClienteGanancia> getGananciasPorCliente();
 
-    @Query("SELECT COUNT(*) FROM pedidos WHERE estado = 'pendiente' AND fecha_entrega < :todayEpoch")
+    @Query("SELECT COUNT(*) FROM pedidos WHERE estado IN ('pendiente', 'en camino') AND fecha_entrega < :todayEpoch")
     int getOverdueOrdersCount(long todayEpoch);
 
-    @Query("SELECT COUNT(*) FROM pedidos WHERE estado = 'pendiente' AND fecha_entrega IS NOT NULL AND fecha_entrega < :inicioHoy")
+    @Query("SELECT COUNT(*) FROM pedidos WHERE estado IN ('pendiente', 'en camino') AND fecha_entrega IS NOT NULL AND fecha_entrega < :inicioHoy")
     int countAtrasados(long inicioHoy);
 
     @Query("SELECT COUNT(*) FROM pedidos WHERE estado != 'cancelado' " +
@@ -88,7 +88,7 @@ public interface PedidoDao {
            "AND ROUND(p.total_general - COALESCE((SELECT SUM(a.monto) FROM abonos a WHERE a.pedido_id = p.id), 0), 2) > 0")
     double totalPorCobrarGlobal();
 
-    @Query("SELECT * FROM pedidos WHERE estado = 'pendiente' AND fecha_entrega IS NOT NULL AND fecha_entrega < :todayEpoch ORDER BY fecha_entrega ASC")
+    @Query("SELECT * FROM pedidos WHERE estado IN ('pendiente', 'en camino') AND fecha_entrega IS NOT NULL AND fecha_entrega < :todayEpoch ORDER BY fecha_entrega ASC")
     List<Pedido> getPedidosAtrasados(long todayEpoch);
 
     @Query("SELECT * FROM pedidos WHERE fecha_entrega IS NOT NULL AND fecha_entrega >= :fromEpoch ORDER BY fecha_entrega ASC LIMIT :limit")
@@ -113,10 +113,11 @@ public interface PedidoDao {
 
     @Query("SELECT * FROM pedidos WHERE cliente_nombre LIKE '%' || :texto || '%' " +
            "OR tienda LIKE '%' || :texto || '%' OR notas LIKE '%' || :texto || '%' " +
+           "OR articulo LIKE '%' || :texto || '%' OR rastreo LIKE '%' || :texto || '%' " +
            "ORDER BY fecha_registro_epoch DESC LIMIT :limite")
     List<Pedido> buscarPedidos(String texto, int limite);
 
-    @Query("SELECT COUNT(*) FROM pedidos WHERE tarjeta_rel_id = :tarjetaId AND estado = 'pendiente'")
+    @Query("SELECT COUNT(*) FROM pedidos WHERE tarjeta_rel_id = :tarjetaId AND estado IN ('pendiente', 'en camino')")
     int countPedidosPorTarjeta(long tarjetaId);
 
     /** Quita la referencia a la tarjeta en sus pedidos para poder eliminarla conservando el historial. */
