@@ -31,6 +31,16 @@
             android:id="@+id/contentLayout"
             android:orientation="vertical">
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVerTutorial"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="@string/tutorial_ver"
+                app:icon="@drawable/ic_help"
+                app:iconGravity="textStart" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

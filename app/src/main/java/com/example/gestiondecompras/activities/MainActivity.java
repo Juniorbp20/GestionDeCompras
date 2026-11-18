@@ -73,10 +73,12 @@ public class MainActivity extends AppCompatActivity {
         setupNavegacion();
         observeViewModel();
         
-        checkBiometricSecurity();
-        checkFirstRun();
+        // Con bloqueo activo, el tutorial y el permiso se piden tras desbloquear
+        boolean bloqueada = checkBiometricSecurity();
+        if (!bloqueada) {
+            mostrarTutorialOPermisos();
+        }
         loadBannerAd();
-        askNotificationPermission();
         checkForUpdates();
     }
 
@@ -94,16 +96,26 @@ public class MainActivity extends AppCompatActivity {
         binding.adView.loadAd(adRequest);
     }
 
-    private void checkFirstRun() {
-        android.content.SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        boolean isFirstRun = prefs.getBoolean("is_first_run", true);
-        if (isFirstRun) {
-            startActivity(new Intent(this, AyudaActivity.class));
-            prefs.edit().putBoolean("is_first_run", false).apply();
+    /** Al volver del tutorial se pide el permiso de notificaciones (no encima del tutorial). */
+    private final ActivityResultLauncher<Intent> lanzadorTutorial = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), r -> askNotificationPermission());
+
+    /**
+     * Primera vez: muestra el tutorial de bienvenida y, al cerrarlo, pide el permiso de
+     * notificaciones. Las demás veces solo comprueba el permiso.
+     */
+    private void mostrarTutorialOPermisos() {
+        if (!TutorialActivity.yaVisto(this)) {
+            // Se marca al lanzarlo para que no se repita si la pantalla se recrea
+            TutorialActivity.marcarVisto(this);
+            lanzadorTutorial.launch(new Intent(this, TutorialActivity.class));
+        } else {
+            askNotificationPermission();
         }
     }
 
-    private void checkBiometricSecurity() {
+    /** Pide la huella si el bloqueo está activo. Devuelve true si se mostró el bloqueo. */
+    private boolean checkBiometricSecurity() {
         android.content.SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
         boolean biometricEnabled = prefs.getBoolean("biometric_enabled", false);
 
@@ -126,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onAuthenticationSucceeded(@NonNull androidx.biometric.BiometricPrompt.AuthenticationResult result) {
                     super.onAuthenticationSucceeded(result);
+                    mostrarTutorialOPermisos();
                 }
 
                 @Override
@@ -142,7 +155,9 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
             biometricPrompt.authenticate(promptInfo);
+            return true;
         }
+        return false;
     }
 
     /** Barra inferior (Inicio activo) y acceso directo a Ajustes en la barra superior. */

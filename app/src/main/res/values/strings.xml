@@ -654,4 +654,27 @@
     <string name="abono_todo_el_saldo">Todo el saldo</string>
     <string name="pago_tarjeta_monto">Monto a pagar</string>
     <string name="pago_tarjeta_toda_deuda">Toda la deuda</string>
+
+    <!-- ===== Tutorial de bienvenida ===== -->
+    <string name="tutorial_saltar">Saltar</string>
+    <string name="tutorial_atras">Atrás</string>
+    <string name="tutorial_siguiente">Siguiente</string>
+    <string name="tutorial_empezar">Empezar</string>
+    <string name="tutorial_bienvenida">Bienvenida</string>
+    <string name="tutorial_paso_de">Paso %1$d de %2$d</string>
+    <string name="tutorial_ver">Ver tutorial de bienvenida</string>
+    <string name="tutorial_1_titulo">Bienvenido a Gestión de Compras</string>
+    <string name="tutorial_1_texto">Lleva el control de lo que compras para tus clientes: cuánto cuesta, cuánto ganas y cuánto te deben. Te enseñamos lo básico en un minuto.</string>
+    <string name="tutorial_2_titulo">Registra a tus clientes</string>
+    <string name="tutorial_2_texto">En la pestaña Clientes toca + para añadir uno, o impórtalos desde tus contactos. Desde cada cliente puedes llamarle o recordarle un pago por WhatsApp.</string>
+    <string name="tutorial_3_titulo">Añade tus tarjetas</string>
+    <string name="tutorial_3_texto">En Más → Tarjetas registra las tarjetas con las que compras, con su límite y sus días de corte y pago. La app calcula la deuda sola y te avisa antes del corte.</string>
+    <string name="tutorial_4_titulo">Crea tu primer pedido</string>
+    <string name="tutorial_4_texto">Toca + en Inicio o en Pedidos. Elige el cliente, la tienda y la tarjeta (si falta alguno, créalo ahí mismo con +), escribe el monto y tu ganancia, y el total se calcula solo.</string>
+    <string name="tutorial_5_titulo">Cobra y sigue cada pedido</string>
+    <string name="tutorial_5_texto">Toca un pedido para ver el detalle y registrar abonos. Cambia su estado a En camino, Entregado o Pagado. Los pedidos atrasados y por cobrar aparecen en Inicio.</string>
+    <string name="tutorial_6_titulo">Ordena tus finanzas</string>
+    <string name="tutorial_6_texto">En Finanzas apunta tus ingresos y gastos por categoría, fija presupuestos para el mes y revisa los reportes con gráficos.</string>
+    <string name="tutorial_7_titulo">Protege tus datos</string>
+    <string name="tutorial_7_texto">En Ajustes conecta Google Drive para guardar una copia automática cada día y, si quieres, activa el bloqueo con huella. Puedes volver a ver esta guía en Más → Ayuda.</string>
 </resources>

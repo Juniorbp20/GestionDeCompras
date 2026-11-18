@@ -25,6 +25,8 @@ public class AyudaActivity extends AppCompatActivity {
     }
 
     private void setupZoomControls() {
+        binding.btnVerTutorial.setOnClickListener(v ->
+                startActivity(new android.content.Intent(this, TutorialActivity.class)));
         binding.fabZoomIn.setOnClickListener(v -> adjustTextSize(1.1f));
         binding.fabZoomOut.setOnClickListener(v -> adjustTextSize(0.9f));
     }

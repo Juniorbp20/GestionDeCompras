@@ -94,6 +94,8 @@
         <activity android:name="com.example.gestiondecompras.activities.MasActivity"
             android:label="@string/mas_title"
             android:parentActivityName=".activities.MainActivity" />
+        <activity android:name="com.example.gestiondecompras.activities.TutorialActivity"
+            android:label="@string/tutorial_ver" />
         <activity android:name="com.example.gestiondecompras.activities.AyudaActivity"
             android:label="@string/ayuda_title"
             android:parentActivityName=".activities.MainActivity" />
