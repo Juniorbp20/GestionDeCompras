@@ -36,7 +36,7 @@ public class TutorialActivityTest {
     @Test
     public void recorrerTodasLasPaginas_yEmpezar_cierraYMarcaVisto() {
         assertFalse(TutorialActivity.yaVisto(context));
-        try (ActivityScenario<TutorialActivity> escenario = ActivityScenario.launch(TutorialActivity.class)) {
+        try (ActivityScenario<TutorialActivity> escenario = ActivityScenario.launchActivityForResult(TutorialActivity.class)) {
             onView(withId(R.id.btnSiguiente)).check(matches(withText(R.string.tutorial_siguiente)));
             for (int i = 0; i < 6; i++) {
                 onView(withId(R.id.btnSiguiente)).perform(click());
@@ -50,7 +50,7 @@ public class TutorialActivityTest {
 
     @Test
     public void saltar_cierraYMarcaVisto() {
-        try (ActivityScenario<TutorialActivity> escenario = ActivityScenario.launch(TutorialActivity.class)) {
+        try (ActivityScenario<TutorialActivity> escenario = ActivityScenario.launchActivityForResult(TutorialActivity.class)) {
             onView(withId(R.id.btnSaltar)).perform(click());
             escenario.getResult(); // espera a que la pantalla se cierre
         }
