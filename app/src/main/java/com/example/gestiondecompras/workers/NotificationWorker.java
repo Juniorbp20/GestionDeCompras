@@ -418,7 +418,7 @@ public class NotificationWorker extends Worker {
         if (tarjeta.getBanco() != null && !tarjeta.getBanco().isEmpty()) {
             return tarjeta.getBanco();
         }
-        return "Tarjeta";
+        return getApplicationContext().getString(R.string.tarjeta);
     }
 
     public static boolean puedeNotificar(Context context) {

@@ -28,11 +28,7 @@ public interface PedidoDao {
     @Query("SELECT * FROM pedidos WHERE (:estado = '' OR estado = :estado) AND (:busqueda = '' OR cliente_nombre LIKE '%' || :busqueda || '%' OR articulo LIKE '%' || :busqueda || '%' OR rastreo LIKE '%' || :busqueda || '%' OR tienda LIKE '%' || :busqueda || '%') AND (:clienteId IS NULL OR cliente_id = :clienteId) ORDER BY fecha_registro_epoch DESC")
     List<Pedido> getPedidosFiltrados(String estado, String busqueda, Integer clienteId);
 
-    @Query("SELECT * FROM pedidos WHERE date(fecha_registro_epoch/1000,'unixepoch')=date(:epoch/1000,'unixepoch') ORDER BY fecha_registro_epoch ASC")
-    List<Pedido> pedidosPorDia(long epoch);
 
-    @Query("SELECT * FROM pedidos WHERE fecha_entrega IS NOT NULL AND date(fecha_entrega/1000,'unixepoch')=date(:epoch/1000,'unixepoch') ORDER BY fecha_entrega ASC")
-    List<Pedido> getEntregasPorDia(long epoch);
 
     @Query("SELECT * FROM pedidos WHERE estado IN ('pendiente', 'en camino') AND fecha_entrega IS NOT NULL " +
            "AND fecha_entrega >= :desde AND fecha_entrega <= :hasta ORDER BY fecha_entrega ASC")
@@ -41,8 +37,6 @@ public interface PedidoDao {
     @Query("SELECT * FROM pedidos WHERE date(fecha_registro_epoch/1000,'unixepoch')=date(:epoch/1000,'unixepoch') AND (:busqueda = '' OR cliente_nombre LIKE '%' || :busqueda || '%') ORDER BY fecha_registro_epoch ASC")
     List<Pedido> pedidosPorDiaYCliente(long epoch, String busqueda);
 
-    @Query("SELECT * FROM pedidos WHERE (:estado = '' OR estado = :estado) ORDER BY fecha_registro_epoch DESC")
-    List<Pedido> findByEstado(String estado);
 
     @Query("SELECT " +
            "COALESCE(SUM(CASE WHEN p.estado != 'cancelado' THEN p.total_general ELSE 0 END), 0) - " +

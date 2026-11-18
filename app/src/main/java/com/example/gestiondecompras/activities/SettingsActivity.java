@@ -341,10 +341,10 @@ public class SettingsActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
             binding.btnGoogleLogout.setText(R.string.google_cerrar_sesion);
-            binding.btnGoogleLogout.setTextColor(getResources().getColor(android.R.color.holo_red_dark, getTheme()));
+            binding.btnGoogleLogout.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.error_color));
         } else {
             binding.btnGoogleLogout.setText(R.string.google_iniciar_sesion);
-            binding.btnGoogleLogout.setTextColor(getResources().getColor(android.R.color.holo_blue_dark, getTheme()));
+            binding.btnGoogleLogout.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.primary_color));
         }
     }
 

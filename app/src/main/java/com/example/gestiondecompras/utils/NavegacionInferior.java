@@ -2,6 +2,7 @@ package com.example.gestiondecompras.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.view.View;
 
 import androidx.activity.ComponentActivity;
@@ -78,14 +79,25 @@ public final class NavegacionInferior {
         if (clase == null) {
             return;
         }
-        Intent intent = new Intent(activity, clase);
+        // Cambio de pestaña sin animación
+        Intent intent = new Intent(activity, clase).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         if (destino == R.id.tab_inicio) {
             // Vuelve a la instancia existente de Inicio (o la crea si se llegó desde una notificación).
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
         activity.startActivity(intent);
-        activity.overridePendingTransition(0, 0);
         if (pestanaActual != R.id.tab_inicio) {
+            cerrarSinAnimacion(activity);
+        }
+    }
+
+    /** Cierra la pantalla sin animación (API nueva en Android 14+, la anterior en versiones previas). */
+    @SuppressWarnings("deprecation")
+    private static void cerrarSinAnimacion(@NonNull Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            activity.overrideActivityTransition(Activity.OVERRIDE_TRANSITION_CLOSE, 0, 0);
+            activity.finish();
+        } else {
             activity.finish();
             activity.overridePendingTransition(0, 0);
         }

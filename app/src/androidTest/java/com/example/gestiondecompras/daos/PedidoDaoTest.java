@@ -139,7 +139,7 @@ public class PedidoDaoTest {
     }
 
     @Test
-    public void pedidosPorDia_yEntregasPorDia_filtranPorFecha() {
+    public void pedidosPorDiaYCliente_filtraPorFechaYNombre() {
         long hoy = System.currentTimeMillis();
         Pedido p3 = nuevoPedido(Pedido.ESTADO_PENDIENTE, "Carlos Diaz", 300.0, hoy - 2_000_000_000L);
         p3.fechaRegistroEpoch = hoy - 2_000_000_000L;
@@ -147,20 +147,16 @@ public class PedidoDaoTest {
         dao.insert(nuevoPedido(Pedido.ESTADO_PENDIENTE, "Luis Perez", 200.0, hoy));
         dao.insert(p3);
 
-        assertEquals(2, dao.pedidosPorDia(hoy).size());
         assertEquals(2, dao.pedidosPorDiaYCliente(hoy, "").size());
         assertEquals(1, dao.pedidosPorDiaYCliente(hoy, "Ana").size());
-        assertEquals(2, dao.getEntregasPorDia(hoy).size());
     }
 
     @Test
-    public void findByEstado_yGetPedidosNoPagados() {
+    public void getPedidosNoPagados_excluyePagadosYCancelados() {
         dao.insert(nuevoPedido(Pedido.ESTADO_PENDIENTE, "Ana Lopez", 100.0, null));
         dao.insert(nuevoPedido(Pedido.ESTADO_PAGADO, "Luis Perez", 200.0, null));
         dao.insert(nuevoPedido(Pedido.ESTADO_CANCELADO, "Carlos Diaz", 300.0, null));
 
-        assertEquals(1, dao.findByEstado(Pedido.ESTADO_PAGADO).size());
-        assertEquals(3, dao.findByEstado("").size());
         assertEquals(1, dao.getPedidosNoPagados().size());
     }
 
