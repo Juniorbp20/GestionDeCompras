@@ -57,15 +57,10 @@ jobs:
           reporter: "java-junit"
           fail-on-error: "false"
 
-      - name: Mostrar esquema de la base de datos
+      - name: Compilar versión de lanzamiento (comprueba R8)
         if: matrix.os == 'ubuntu-latest'
         shell: bash
-        run: |
-          for f in app/schemas/*/9.json; do
-            echo "=====INICIO_ESQUEMA $f"
-            base64 -w0 "$f"; echo
-            echo "=====FIN_ESQUEMA"
-          done
+        run: ./gradlew assembleRelease
 
       - name: Subir esquema de la base de datos
         if: always() && matrix.os == 'ubuntu-latest'

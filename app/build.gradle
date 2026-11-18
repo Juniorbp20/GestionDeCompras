@@ -55,7 +55,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            // R8: reduce y optimiza el código y quita recursos sin usar (APK más ligero)
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             if (System.getenv("KEYSTORE_PATH") != null && new File(System.getenv("KEYSTORE_PATH")).exists()) {
                 signingConfig signingConfigs.release

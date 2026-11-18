@@ -1,21 +1,30 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Reglas de R8 para la versión de lanzamiento (minifyEnabled + shrinkResources).
+# Room, WorkManager, Glide y AndroidX ya incluyen sus propias reglas.
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Trazas de error legibles en los reportes de fallos
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# --- Google Drive (respaldo en la nube) ---
+# google-api-client rellena los modelos (File, FileList...) por reflexión usando los campos @Key
+-keepattributes Signature,*Annotation*,EnclosingMethod,InnerClasses
+-keep class com.google.api.services.drive.** { *; }
+-keep class com.google.api.client.** { *; }
+-keepclassmembers class * {
+    @com.google.api.client.util.Key <fields>;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Clases opcionales que estas bibliotecas referencian pero que no existen en Android
+-dontwarn com.google.api.client.extensions.android.**
+-dontwarn com.google.api.client.googleapis.extensions.android.**
+-dontwarn com.google.appengine.**
+-dontwarn javax.annotation.**
+-dontwarn javax.naming.**
+-dontwarn org.apache.http.**
+-dontwarn org.ietf.jgss.**
+-dontwarn org.joda.time.**
+-dontwarn sun.misc.Unsafe
+-dontwarn com.google.errorprone.annotations.**
+-dontwarn com.google.j2objc.annotations.**
+-dontwarn org.checkerframework.**
+-dontwarn org.codehaus.mojo.animal_sniffer.**
