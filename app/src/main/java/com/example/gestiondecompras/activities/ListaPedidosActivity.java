@@ -240,11 +240,16 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
         android.widget.EditText etNotas = view.findViewById(R.id.et_notas_abono);
         android.widget.AutoCompleteTextView spinnerMetodo = view.findViewById(R.id.spinner_metodo_abono);
 
+        com.google.android.material.textfield.TextInputLayout tilMonto = view.findViewById(R.id.til_monto_abono);
         tvSaldoActual.setText(getString(R.string.abono_saldo_actual_format, moneda(pedido.getSaldo())));
+        view.findViewById(R.id.btn_abono_todo).setOnClickListener(v -> {
+            etMonto.setText(String.format(java.util.Locale.US, "%.2f", pedido.getSaldo()));
+            etMonto.setSelection(etMonto.length());
+        });
         spinnerMetodo.setAdapter(new ArrayAdapter<>(this, R.layout.item_dropdown, Abono.METODOS));
         spinnerMetodo.setText(Abono.METODO_EFECTIVO, false);
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
                 .setView(view)
                 .setPositiveButton(R.string.abono_guardar, null)
                 .setNegativeButton(R.string.accion_cancelar, null)
@@ -256,15 +261,15 @@ public class ListaPedidosActivity extends AppCompatActivity implements PedidosAd
             try {
                 monto = Dinero.redondear(Double.parseDouble(montoTexto));
             } catch (NumberFormatException ex) {
-                etMonto.setError(getString(R.string.abono_monto_invalido));
+                tilMonto.setError(getString(R.string.abono_monto_invalido));
                 return;
             }
             if (!Dinero.esPositivo(monto)) {
-                etMonto.setError(getString(R.string.abono_monto_invalido));
+                tilMonto.setError(getString(R.string.abono_monto_invalido));
                 return;
             }
             if (Dinero.mayorQue(monto, pedido.getSaldo())) {
-                etMonto.setError(getString(R.string.abono_excede_saldo));
+                tilMonto.setError(getString(R.string.abono_excede_saldo));
                 return;
             }
 

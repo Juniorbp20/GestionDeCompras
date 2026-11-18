@@ -765,4 +765,8 @@
     <string name="pedido_rastreo_hint">Nº de seguimiento (opcional)</string>
     <string name="detalle_seguimiento">Seguimiento</string>
     <string name="detalle_articulo">Artículo</string>
+    <string name="abono_monto_corto">Monto del abono</string>
+    <string name="abono_todo_el_saldo">Todo el saldo</string>
+    <string name="pago_tarjeta_monto">Monto a pagar</string>
+    <string name="pago_tarjeta_toda_deuda">Toda la deuda</string>
 </resources>

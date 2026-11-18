@@ -114,43 +114,49 @@ public class TarjetasActivity extends AppCompatActivity implements TarjetasAdapt
     }
 
     private void mostrarDialogoPago(Tarjeta tarjeta) {
-        android.app.Dialog dialog = new android.app.Dialog(this);
-        dialog.setContentView(R.layout.dialog_pago_tarjeta);
-        android.widget.TextView tvNombre = dialog.findViewById(R.id.tvTarjetaNombre);
-        com.google.android.material.textfield.TextInputEditText etMonto = dialog.findViewById(R.id.etMontoPagoTarjeta);
-        android.widget.Button btnRegistrar = dialog.findViewById(R.id.btnConfirmarPagoTarjeta);
+        View vista = getLayoutInflater().inflate(R.layout.dialog_pago_tarjeta, null);
+        android.widget.TextView tvNombre = vista.findViewById(R.id.tvTarjetaNombre);
+        android.widget.TextView tvDeuda = vista.findViewById(R.id.tvDeudaActual);
+        com.google.android.material.textfield.TextInputLayout tilMonto = vista.findViewById(R.id.tilMontoPagoTarjeta);
+        com.google.android.material.textfield.TextInputEditText etMonto = vista.findViewById(R.id.etMontoPagoTarjeta);
 
         String titulo = tarjeta.banco;
         if (tarjeta.alias != null && !tarjeta.alias.isEmpty()) {
             titulo += " - " + tarjeta.alias;
         }
         tvNombre.setText(titulo);
-        
-        android.widget.TextView tvDeuda = dialog.findViewById(R.id.tvDeudaActual);
-        if (tvDeuda != null) {
-            tvDeuda.setText(getString(R.string.tarjeta_deuda_actual_formato, tarjeta.getDeudaActual()));
-        }
-
-
-        btnRegistrar.setOnClickListener(v -> {
-            try {
-                double pago = Double.parseDouble(String.valueOf(etMonto.getText()));
-                if (pago <= 0) {
-                    throw new NumberFormatException();
-                }
-                pago = Dinero.redondear(pago);
-                if (Dinero.mayorQue(pago, tarjeta.getDeudaActual())) {
-                    Toast.makeText(this, R.string.dialog_pago_tarjeta_excede_deuda, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                // El servicio vuelve a validar contra la deuda guardada y la actualiza
-                viewModel.registrarPago(tarjeta, pago);
-                dialog.dismiss();
-            } catch (NumberFormatException ex) {
-                Toast.makeText(this, R.string.dialog_pago_tarjeta_error, Toast.LENGTH_SHORT).show();
-            }
+        tvDeuda.setText(getString(R.string.tarjeta_deuda_actual_formato, tarjeta.getDeudaActual()));
+        vista.findViewById(R.id.btnPagarTodaDeuda).setOnClickListener(v -> {
+            etMonto.setText(String.format(java.util.Locale.US, "%.2f", tarjeta.getDeudaActual()));
+            etMonto.setSelection(etMonto.length());
         });
 
+        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.dialog_pago_tarjeta_title)
+                .setView(vista)
+                .setPositiveButton(R.string.accion_registrar_pago, null)
+                .setNegativeButton(R.string.accion_cancelar, null)
+                .create();
+        dialog.setOnShowListener(d -> dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            double pago;
+            try {
+                pago = Dinero.redondear(Double.parseDouble(String.valueOf(etMonto.getText()).trim()));
+            } catch (NumberFormatException ex) {
+                tilMonto.setError(getString(R.string.dialog_pago_tarjeta_error));
+                return;
+            }
+            if (!Dinero.esPositivo(pago)) {
+                tilMonto.setError(getString(R.string.dialog_pago_tarjeta_error));
+                return;
+            }
+            if (Dinero.mayorQue(pago, tarjeta.getDeudaActual())) {
+                tilMonto.setError(getString(R.string.dialog_pago_tarjeta_excede_deuda));
+                return;
+            }
+            // El servicio vuelve a validar contra la deuda guardada y la actualiza
+            viewModel.registrarPago(tarjeta, pago);
+            dialog.dismiss();
+        }));
         dialog.show();
     }
 

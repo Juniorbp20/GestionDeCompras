@@ -1,47 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Registrar un abono de un pedido: saldo destacado, monto con "todo el saldo", método y notas -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:paddingHorizontal="24dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="4dp">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/abono_registrar"
-        android:textColor="@color/gray_dark"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textAppearance="@style/TextAppearance.App.Overline" />
 
     <TextView
         android:id="@+id/tv_saldo_abono"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/inter_bold"
+        android:fontFeatureSettings="tnum"
+        android:textColor="@color/gray_dark"
+        android:textSize="20sp"
         tools:text="Saldo pendiente: RD$ 1,000.00" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_monto_abono"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="@string/abono_monto">
+        android:hint="@string/abono_monto_corto"
+        app:prefixText="RD$ ">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_monto_abono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFeatureSettings="tnum"
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_abono_todo"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:minHeight="36dp"
+        android:text="@string/abono_todo_el_saldo" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.App.TextInputLayout.Dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:hint="@string/abono_metodo">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -61,7 +75,7 @@
             android:id="@+id/et_notas_abono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:minLines="2" />
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="3" />
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

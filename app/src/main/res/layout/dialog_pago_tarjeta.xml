@@ -1,45 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Pago de una tarjeta: tarjeta y deuda destacadas, monto con "toda la deuda" -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="24dp">
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="4dp">
 
     <TextView
         android:id="@+id/tvTarjetaNombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:text="Tarjeta" />
+        android:textAppearance="@style/TextAppearance.App.Overline"
+        tools:text="Banco Popular - Visa" />
 
     <TextView
         android:id="@+id/tvDeudaActual"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/holo_red_dark"
-        android:text="Deuda Actual: RD$ 0.00" />
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/inter_bold"
+        android:fontFeatureSettings="tnum"
+        android:textColor="@color/error_color"
+        android:textSize="20sp"
+        tools:text="Deuda actual: RD$ 12,500.00" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMontoPagoTarjeta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Monto a pagar">
+        android:hint="@string/pago_tarjeta_monto"
+        app:prefixText="RD$ ">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etMontoPagoTarjeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFeatureSettings="tnum"
             android:inputType="numberDecimal"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnConfirmarPagoTarjeta"
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPagarTodaDeuda"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registrar pago"
-        android:layout_marginTop="16dp" />
-
+        android:layout_gravity="end"
+        android:minHeight="36dp"
+        android:text="@string/pago_tarjeta_toda_deuda" />
 </LinearLayout>

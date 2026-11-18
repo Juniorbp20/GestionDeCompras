@@ -1,0 +1,880 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 9,
+    "identityHash": "20f883cda4272bc6f2d972b06f456a7e",
+    "entities": [
+      {
+        "tableName": "clientes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT, `apellido` TEXT DEFAULT '', `telefono` TEXT, `direccion` TEXT DEFAULT '', `activo` INTEGER NOT NULL DEFAULT 1, `email` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "apellido",
+            "columnName": "apellido",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "telefono",
+            "columnName": "telefono",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "direccion",
+            "columnName": "direccion",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "activo",
+            "columnName": "activo",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "1"
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tiendas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tarjetas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `banco` TEXT, `alias` TEXT, `limite` REAL NOT NULL, `deuda` REAL NOT NULL, `dia_corte` INTEGER NOT NULL, `dia_pago` INTEGER NOT NULL DEFAULT 0, `fecha_vencimiento` TEXT, `notas` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "banco",
+            "columnName": "banco",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "alias",
+            "columnName": "alias",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "limite",
+            "columnName": "limite",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deudaActual",
+            "columnName": "deuda",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diaCorte",
+            "columnName": "dia_corte",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diaPago",
+            "columnName": "dia_pago",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "fechaVencimiento",
+            "columnName": "fecha_vencimiento",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notas",
+            "columnName": "notas",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "pedidos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `cliente_id` INTEGER NOT NULL, `tienda_id` INTEGER, `tarjeta_rel_id` INTEGER, `cliente_nombre` TEXT DEFAULT '', `tienda` TEXT DEFAULT '', `tarjeta_alias` TEXT DEFAULT '', `monto_compra` REAL NOT NULL, `ganancia` REAL NOT NULL, `total_general` REAL NOT NULL, `fecha_registro_epoch` INTEGER DEFAULT 0, `fecha_entrega` INTEGER, `notas` TEXT, `monto_usd` REAL, `tasa_cambio` REAL, `rastreo` TEXT, `articulo` TEXT, `foto_recibo` TEXT, `estado` TEXT NOT NULL DEFAULT 'pendiente', FOREIGN KEY(`cliente_id`) REFERENCES `clientes`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`tienda_id`) REFERENCES `tiendas`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`tarjeta_rel_id`) REFERENCES `tarjetas`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clienteId",
+            "columnName": "cliente_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tiendaId",
+            "columnName": "tienda_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tarjetaId",
+            "columnName": "tarjeta_rel_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clienteNombre",
+            "columnName": "cliente_nombre",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "tiendaNombre",
+            "columnName": "tienda",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "tarjetaAlias",
+            "columnName": "tarjeta_alias",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "montoCompra",
+            "columnName": "monto_compra",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ganancia",
+            "columnName": "ganancia",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalGeneral",
+            "columnName": "total_general",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaRegistroEpoch",
+            "columnName": "fecha_registro_epoch",
+            "affinity": "INTEGER",
+            "notNull": false,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "fechaEntregaEpoch",
+            "columnName": "fecha_entrega",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notas",
+            "columnName": "notas",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "montoUsd",
+            "columnName": "monto_usd",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tasaCambio",
+            "columnName": "tasa_cambio",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rastreo",
+            "columnName": "rastreo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "articulo",
+            "columnName": "articulo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fotoRecibo",
+            "columnName": "foto_recibo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "estado",
+            "columnName": "estado",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'pendiente'"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_pedidos_cliente_id",
+            "unique": false,
+            "columnNames": [
+              "cliente_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_pedidos_cliente_id` ON `${TABLE_NAME}` (`cliente_id`)"
+          },
+          {
+            "name": "index_pedidos_tienda_id",
+            "unique": false,
+            "columnNames": [
+              "tienda_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_pedidos_tienda_id` ON `${TABLE_NAME}` (`tienda_id`)"
+          },
+          {
+            "name": "index_pedidos_tarjeta_rel_id",
+            "unique": false,
+            "columnNames": [
+              "tarjeta_rel_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_pedidos_tarjeta_rel_id` ON `${TABLE_NAME}` (`tarjeta_rel_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "clientes",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cliente_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "tiendas",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "tienda_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "tarjetas",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "tarjeta_rel_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "gastos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `categoria` TEXT, `descripcion` TEXT, `monto` REAL NOT NULL, `fechaEpoch` INTEGER NOT NULL, `notas` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoria",
+            "columnName": "categoria",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "descripcion",
+            "columnName": "descripcion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "monto",
+            "columnName": "monto",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaEpoch",
+            "columnName": "fechaEpoch",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notas",
+            "columnName": "notas",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "abonos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `pedido_id` INTEGER NOT NULL, `monto` REAL NOT NULL, `fecha_epoch` INTEGER NOT NULL, `metodo` TEXT, `notas` TEXT, FOREIGN KEY(`pedido_id`) REFERENCES `pedidos`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pedidoId",
+            "columnName": "pedido_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "monto",
+            "columnName": "monto",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaEpoch",
+            "columnName": "fecha_epoch",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "metodo",
+            "columnName": "metodo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notas",
+            "columnName": "notas",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_abonos_pedido_id",
+            "unique": false,
+            "columnNames": [
+              "pedido_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_abonos_pedido_id` ON `${TABLE_NAME}` (`pedido_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "pedidos",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "pedido_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "fin_categorias",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT, `tipo` TEXT, `color_key` TEXT, `icono_key` TEXT, `archivada` INTEGER NOT NULL, `orden` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tipo",
+            "columnName": "tipo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "colorKey",
+            "columnName": "color_key",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "iconoKey",
+            "columnName": "icono_key",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "archivada",
+            "columnName": "archivada",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orden",
+            "columnName": "orden",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "fin_cuentas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT, `tipo` TEXT, `saldo_inicial` REAL NOT NULL, `archivada` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tipo",
+            "columnName": "tipo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "saldoInicial",
+            "columnName": "saldo_inicial",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "archivada",
+            "columnName": "archivada",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "fin_movimientos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `tipo` TEXT, `monto` REAL NOT NULL, `fecha_epoch` INTEGER NOT NULL, `descripcion` TEXT, `notas` TEXT, `categoria_id` INTEGER, `cuenta_id` INTEGER, `recurrente_id` INTEGER, FOREIGN KEY(`categoria_id`) REFERENCES `fin_categorias`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL , FOREIGN KEY(`cuenta_id`) REFERENCES `fin_cuentas`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipo",
+            "columnName": "tipo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "monto",
+            "columnName": "monto",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaEpoch",
+            "columnName": "fecha_epoch",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descripcion",
+            "columnName": "descripcion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notas",
+            "columnName": "notas",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "categoriaId",
+            "columnName": "categoria_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cuentaId",
+            "columnName": "cuenta_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "recurrenteId",
+            "columnName": "recurrente_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_fin_movimientos_categoria_id",
+            "unique": false,
+            "columnNames": [
+              "categoria_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_fin_movimientos_categoria_id` ON `${TABLE_NAME}` (`categoria_id`)"
+          },
+          {
+            "name": "index_fin_movimientos_cuenta_id",
+            "unique": false,
+            "columnNames": [
+              "cuenta_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_fin_movimientos_cuenta_id` ON `${TABLE_NAME}` (`cuenta_id`)"
+          },
+          {
+            "name": "index_fin_movimientos_fecha_epoch",
+            "unique": false,
+            "columnNames": [
+              "fecha_epoch"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_fin_movimientos_fecha_epoch` ON `${TABLE_NAME}` (`fecha_epoch`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "fin_categorias",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "categoria_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "fin_cuentas",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cuenta_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "fin_presupuestos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `categoria_id` INTEGER NOT NULL, `monto_mensual` REAL NOT NULL, FOREIGN KEY(`categoria_id`) REFERENCES `fin_categorias`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoriaId",
+            "columnName": "categoria_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "montoMensual",
+            "columnName": "monto_mensual",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_fin_presupuestos_categoria_id",
+            "unique": true,
+            "columnNames": [
+              "categoria_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_fin_presupuestos_categoria_id` ON `${TABLE_NAME}` (`categoria_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "fin_categorias",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "categoria_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "fin_recurrentes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `tipo` TEXT, `monto` REAL NOT NULL, `descripcion` TEXT, `notas` TEXT, `categoria_id` INTEGER, `cuenta_id` INTEGER, `frecuencia` TEXT, `proxima_fecha_epoch` INTEGER NOT NULL, `dia_ancla` INTEGER NOT NULL, `activo` INTEGER NOT NULL, FOREIGN KEY(`categoria_id`) REFERENCES `fin_categorias`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL , FOREIGN KEY(`cuenta_id`) REFERENCES `fin_cuentas`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipo",
+            "columnName": "tipo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "monto",
+            "columnName": "monto",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descripcion",
+            "columnName": "descripcion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notas",
+            "columnName": "notas",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "categoriaId",
+            "columnName": "categoria_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cuentaId",
+            "columnName": "cuenta_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "frecuencia",
+            "columnName": "frecuencia",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "proximaFechaEpoch",
+            "columnName": "proxima_fecha_epoch",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diaAncla",
+            "columnName": "dia_ancla",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "activo",
+            "columnName": "activo",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_fin_recurrentes_categoria_id",
+            "unique": false,
+            "columnNames": [
+              "categoria_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_fin_recurrentes_categoria_id` ON `${TABLE_NAME}` (`categoria_id`)"
+          },
+          {
+            "name": "index_fin_recurrentes_cuenta_id",
+            "unique": false,
+            "columnNames": [
+              "cuenta_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_fin_recurrentes_cuenta_id` ON `${TABLE_NAME}` (`cuenta_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "fin_categorias",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "categoria_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "fin_cuentas",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cuenta_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '20f883cda4272bc6f2d972b06f456a7e')"
+    ]
+  }
+}
